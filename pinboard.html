@@ -548,6 +548,16 @@
     .pinboard-grid{ grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 18px; padding: 0 20px; }
   }
 
+
+  /* LIVE PLAYER */
+  .navlisten{ cursor:pointer; border:none; }
+  .navlisten.playing{ background: var(--purple); }
+  .navlisten .dot{
+    display:inline-block; width:7px; height:7px; border-radius:50%;
+    background: #ff4d6d; margin-right:6px; vertical-align:middle;
+  }
+  .navlisten.playing .dot{ background:#2ec4b6; animation: pulse 1.2s infinite; }
+  @keyframes pulse{ 0%,100%{opacity:1;} 50%{opacity:0.3;} }
 </style>
 </head>
 <body>
@@ -562,7 +572,7 @@
     <li><a href="hotsauce.html">Hot Sauce</a></li>
     <li><a href="pinboard.html" class="active">Pinboard</a></li>
   </ul>
-  <a class="navlisten" href="index.html#listen">▶ Listen live</a>
+  <button class="navlisten"><span class="dot"></span>Listen live</button>
   <button class="navtoggle" aria-label="Open menu"><span></span><span></span><span></span></button>
 </nav>
 
@@ -729,6 +739,49 @@
 
   document.getElementById('pinSubmit').addEventListener('click', submitPin);
   loadPins();
+</script>
+
+<audio id="topsecretAudio" preload="none"></audio>
+<script>
+  (function(){
+    var STREAM_URL = "https://azura-3949.az-streamingserver.com/listen/topsecret.fm/radio.mp3";
+    var audio = document.getElementById('topsecretAudio');
+    var buttons = document.querySelectorAll('.navlisten, .js-tune-in');
+    var playing = false;
+
+    function setLabel(btn){
+      if(btn.classList.contains('navlisten')){
+        btn.innerHTML = playing ? '<span class="dot"></span>Pause' : '<span class="dot"></span>Listen live';
+      } else {
+        btn.textContent = playing ? '\u23F8 Pause' : '\u25B6 Tune in now';
+      }
+    }
+
+    function updateAll(){
+      buttons.forEach(function(btn){
+        setLabel(btn);
+        btn.classList.toggle('playing', playing);
+      });
+    }
+
+    function toggle(e){
+      e.preventDefault();
+      if(!audio.src){ audio.src = STREAM_URL; }
+      if(playing){
+        audio.pause();
+        playing = false;
+      } else {
+        audio.play().catch(function(){});
+        playing = true;
+      }
+      updateAll();
+    }
+
+    buttons.forEach(function(btn){ btn.addEventListener('click', toggle); });
+    audio.addEventListener('pause', function(){ playing = false; updateAll(); });
+    audio.addEventListener('playing', function(){ playing = true; updateAll(); });
+    updateAll();
+  })();
 </script>
 </body>
 </html>
