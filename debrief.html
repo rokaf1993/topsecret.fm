@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Debrief — topsecret.fm</title>
+<style>
+
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+
+  :root{
+    --bg: #fffcf6;
+    --ink: #1b1330;
+    --ink-soft: #4a4160;
+    --pink: #ff4d6d;
+    --yellow: #ffc145;
+    --teal: #2ec4b6;
+    --purple: #2d1b4e;
+    --purple-deep: #1b1330;
+  }
+
+  *{ box-sizing:border-box; margin:0; padding:0; }
+
+  html{ scroll-behavior:smooth; }
+
+  body{
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.5;
+  }
+
+  h1,h2,h3,.brand{
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+  }
+
+  .wrap{ max-width: 1080px; margin:0 auto; padding: 0 32px; }
+
+  /* NAV */
+  nav{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding: 20px 0;
+    border-bottom: 1px solid rgba(27,19,48,0.1);
+  }
+  .brand{ font-size: 19px; letter-spacing: -0.01em; }
+  .navlinks{ display:flex; gap: 28px; list-style:none; }
+  .navlinks a{
+    color: var(--ink);
+    text-decoration:none;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  .navlinks a:hover{ color: var(--pink); }
+  .navlisten{
+    background: var(--pink);
+    color: white;
+    padding: 9px 18px;
+    border-radius: 100px;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration:none;
+  }
+  .navlisten:hover{ background: var(--purple); }
+
+  /* HERO */
+  .hero{
+    background: var(--purple);
+    color: white;
+    padding: 88px 0 96px;
+  }
+  .hero .wrap{ max-width: 720px; }
+  .hero .eyebrow{
+    color: var(--yellow);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    margin-bottom: 18px;
+  }
+  .hero h1{
+    font-size: 52px;
+    line-height: 1.08;
+    letter-spacing: -0.01em;
+  }
+  .hero p{
+    margin-top: 22px;
+    font-size: 17px;
+    color: rgba(255,255,255,0.78);
+    max-width: 46ch;
+  }
+  .hero .ctas{
+    margin-top: 34px;
+    display:flex;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap: 8px;
+    padding: 13px 24px;
+    border-radius: 100px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration:none;
+    border: 2px solid transparent;
+  }
+  .btn-fill{ background: var(--pink); color: white; }
+  .btn-fill:hover{ background: var(--yellow); color: var(--purple); }
+  .btn-outline{ border-color: rgba(255,255,255,0.4); color: white; }
+  .btn-outline:hover{ border-color: white; }
+
+  /* CROSS-LINK CARDS */
+  .cards{
+    padding: 64px 0 8px;
+  }
+  .cards h2{
+    font-size: 15px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--ink-soft);
+    margin-bottom: 24px;
+    font-weight: 600;
+  }
+  .cardgrid{
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+  }
+  .card{
+    padding: 28px 24px;
+    border-radius: 16px;
+    color: white;
+    min-height: 190px;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+  }
+  .card h3{ font-size: 20px; margin-bottom: 10px; }
+  .card p{ font-size: 14px; opacity:0.88; line-height:1.55; }
+  .card .go{ font-size: 13px; font-weight:700; margin-top:16px; }
+  .card.c1{ background: var(--teal); }
+  .card.c2{ background: var(--pink); }
+  .card.c3{ background: #ffb020; }
+
+  /* VALUES */
+  .values{ padding: 76px 0; }
+  .values h2{
+    font-size: 28px;
+    margin-bottom: 40px;
+    max-width: 30ch;
+  }
+  .valuegrid{
+    display:grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 28px;
+  }
+  .value .dot{
+    width: 10px; height:10px; border-radius:50%;
+    margin-bottom: 14px;
+  }
+  .value:nth-child(1) .dot{ background: var(--pink); }
+  .value:nth-child(2) .dot{ background: var(--teal); }
+  .value:nth-child(3) .dot{ background: var(--yellow); }
+  .value:nth-child(4) .dot{ background: var(--purple); }
+  .value h3{ font-size: 16px; margin-bottom: 8px; }
+  .value p{ font-size: 13.5px; color: var(--ink-soft); line-height:1.6; }
+
+  /* LEARN MORE */
+  .learn{ padding: 20px 0 80px; }
+  .learn h2{
+    font-size: 15px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--ink-soft);
+    margin-bottom: 24px;
+    font-weight:600;
+  }
+  .learngrid{
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+  }
+  .learncard{
+    border: 1px solid rgba(27,19,48,0.12);
+    border-radius: 16px;
+    padding: 24px;
+  }
+  .learncard .bar{
+    width: 32px; height: 4px; border-radius: 2px; margin-bottom: 18px;
+  }
+  .learncard:nth-child(1) .bar{ background: var(--pink); }
+  .learncard:nth-child(2) .bar{ background: var(--teal); }
+  .learncard:nth-child(3) .bar{ background: var(--yellow); }
+  .learncard h3{ font-size: 16px; margin-bottom: 8px; }
+  .learncard p{ font-size: 13.5px; color: var(--ink-soft); line-height:1.6; }
+
+  /* NOTICE */
+  .notice{ padding: 0 0 76px; }
+  .noticebox{
+    background: var(--yellow);
+    border-radius: 16px;
+    padding: 32px 32px;
+    display:flex;
+    align-items:flex-start;
+    gap: 20px;
+  }
+  .noticebox .icon{
+    font-size: 26px;
+    line-height:1;
+  }
+  .noticebox h3{
+    font-size: 17px;
+    color: var(--purple-deep);
+    margin-bottom: 6px;
+  }
+  .noticebox p{
+    font-size: 14px;
+    color: var(--purple-deep);
+    opacity: 0.85;
+    line-height: 1.6;
+    max-width: 60ch;
+  }
+  .noticebox a{
+    color: var(--purple-deep);
+    font-weight: 700;
+    text-decoration: underline;
+  }
+
+  /* FOOTER */
+  footer{
+    background: var(--purple-deep);
+    color: rgba(255,255,255,0.7);
+    padding: 56px 0 32px;
+    margin-top: 20px;
+  }
+  .footgrid{
+    display:grid;
+    grid-template-columns: 1.4fr 1fr 1fr 1fr;
+    gap: 24px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+  }
+  .footgrid .brand{ color:white; font-size:18px; margin-bottom: 10px; }
+  .footgrid p{ font-size: 13px; max-width: 30ch; line-height:1.6; }
+  .footcol h4{
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 14px;
+  }
+  .footcol ul{ list-style:none; display:flex; flex-direction:column; gap:10px; }
+  .footcol a{ color: rgba(255,255,255,0.75); text-decoration:none; font-size: 13.5px; }
+  .footcol a:hover{ color: var(--yellow); }
+  .footbottom{
+    padding-top: 24px;
+    font-size: 12.5px;
+    display:flex;
+    justify-content:space-between;
+  }
+
+  @media (max-width: 760px){
+    .hero h1{ font-size: 36px; }
+    .cardgrid, .valuegrid, .learngrid{ grid-template-columns: 1fr; }
+    .footgrid{ grid-template-columns: 1fr 1fr; }
+  }
+
+  /* PAGE HERO (subpages) */
+  .pagehero{
+    color: white;
+    padding: 64px 0 60px;
+  }
+  .pagehero .wrap{ max-width: 720px; }
+  .pagehero .eyebrow{
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    margin-bottom: 14px;
+    opacity: 0.85;
+  }
+  .pagehero h1{
+    font-size: 42px;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+  }
+  .pagehero p{
+    margin-top: 18px;
+    font-size: 16px;
+    color: rgba(255,255,255,0.85);
+    max-width: 52ch;
+  }
+  .pagehero.teal{ background: var(--teal); }
+  .pagehero.pink{ background: var(--pink); }
+  .pagehero.yellow{ background: #ffb020; color: var(--purple-deep); }
+  .pagehero.yellow p{ color: rgba(27,19,48,0.75); }
+  .pagehero.yellow .eyebrow{ color: var(--purple-deep); opacity:0.7; }
+  .pagehero.purple{ background: var(--purple); }
+
+  .navlinks a.active{ color: var(--pink); }
+
+  /* CONTENT SECTIONS */
+  .content{ padding: 64px 0; }
+  .content .lead{
+    font-size: 17px;
+    color: var(--ink-soft);
+    max-width: 62ch;
+    line-height: 1.7;
+    margin-bottom: 48px;
+  }
+  .content h2.sectiontitle{
+    font-size: 15px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--ink-soft);
+    margin-bottom: 24px;
+    font-weight: 600;
+  }
+  .tilegrid{
+    display:grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-bottom: 56px;
+  }
+  .tile{
+    border: 1px solid rgba(27,19,48,0.12);
+    border-radius: 16px;
+    padding: 22px 24px;
+  }
+  .tile h3{ font-size: 16px; margin-bottom: 8px; }
+  .tile p{ font-size: 13.5px; color: var(--ink-soft); line-height:1.6; }
+
+  .quoteblock{
+    border-left: 4px solid var(--pink);
+    padding: 4px 0 4px 22px;
+    margin: 0 0 56px;
+    font-size: 18px;
+    font-family: 'Space Grotesk', sans-serif;
+    color: var(--ink);
+    max-width: 56ch;
+  }
+
+  .infobox{
+    background: rgba(46,196,182,0.08);
+    border: 1px solid rgba(46,196,182,0.3);
+    border-radius: 16px;
+    padding: 24px 26px;
+    margin-bottom: 20px;
+  }
+  .infobox h3{ font-size: 15px; margin-bottom: 8px; }
+  .infobox p{ font-size: 13.5px; color: var(--ink-soft); line-height:1.65; }
+
+  @media (max-width: 760px){
+    .pagehero h1{ font-size: 30px; }
+    .tilegrid{ grid-template-columns: 1fr; }
+  }
+
+
+  /* MOBILE NAV */
+  .navtoggle{
+    display:none;
+    background:none;
+    border:none;
+    cursor:pointer;
+    padding:8px;
+    margin-left: 8px;
+  }
+  .navtoggle span{
+    display:block;
+    width:22px;
+    height:2px;
+    background:var(--ink);
+    margin:5px 0;
+    border-radius:1px;
+  }
+  @media (max-width: 760px){
+    .wrap{ padding: 0 20px; }
+    nav{ position:relative; flex-wrap: nowrap; padding: 16px 0; }
+    .navtoggle{ display:block; }
+    .navlinks{
+      display:none;
+      position:absolute;
+      top: 100%;
+      left:0;
+      right:0;
+      flex-direction:column;
+      gap:0;
+      background: var(--bg);
+      border-bottom: 1px solid rgba(27,19,48,0.12);
+      padding: 8px 20px 16px;
+      z-index: 30;
+    }
+    .navlinks.open{ display:flex; }
+    .navlinks li{
+      border-bottom: 1px solid rgba(27,19,48,0.08);
+    }
+    .navlinks a{
+      display:block;
+      padding: 14px 4px;
+      font-size: 16px;
+    }
+    .navlisten{ font-size:12.5px; padding: 9px 14px; }
+    .hero{ padding: 56px 0 64px; }
+    .hero .ctas{ flex-direction:column; align-items: stretch; }
+    .hero .btn{ justify-content:center; }
+    .pagehero{ padding: 48px 0 44px; }
+    .content{ padding: 44px 0; }
+    .cards, .values, .learn, .notice{ padding-top: 44px; padding-bottom: 8px; }
+    .values{ padding-bottom: 44px; }
+    .learn{ padding-bottom: 56px; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="wrap">
+  <div class="brand"><a href="index.html" style="color:inherit; text-decoration:none;">topsecret.fm</a></div>
+  <ul class="navlinks">
+    <li><a href="archive.html">Archive</a></li><li><a href="debrief.html" class="active">Debrief</a></li><li><a href="redacted.html">Redacted</a></li>
+    <li><a href="pinboard.html">Pinboard</a></li><li><a href="about.html">About</a></li>
+  </ul>
+  <a class="navlisten" href="index.html#listen">▶ Listen live</a>
+  <button class="navtoggle" aria-label="Open menu"><span></span><span></span><span></span></button>
+</nav>
+
+
+<section class="pagehero pink">
+  <div class="wrap">
+    <div class="eyebrow">FILE 02 — DEBRIEF</div>
+    <h1>The week, filed and annotated.</h1>
+    <p>Half briefing, half bit. We take the news seriously enough to make fun of it properly.</p>
+  </div>
+</section>
+
+<section class="content wrap">
+  <p class="lead">Debrief is our news and satire segment — a weekly read of the headlines with heavy, deliberate annotation. It's not a straight news bulletin, and it's not trying to be one.</p>
+
+  <h2 class="sectiontitle">What to expect</h2>
+  <div class="tilegrid">
+    <div class="tile">
+      <h3>The weekly wrap-up</h3>
+      <p>A rundown of the stories that mattered, filed with commentary nobody asked for but everybody needed.</p>
+    </div>
+    <div class="tile">
+      <h3>Redacted headlines</h3>
+      <p>Real stories, deliberately obscured until the punchline lands.</p>
+    </div>
+    <div class="tile">
+      <h3>Field reports</h3>
+      <p>Short segments on stories too strange, or too local, to make the national cut.</p>
+    </div>
+    <div class="tile">
+      <h3>Listener intercepts</h3>
+      <p>Questions and tips sent in, answered on air — sometimes straight, mostly not.</p>
+    </div>
+  </div>
+
+  <div class="infobox">
+    <h3>A quick note on satire</h3>
+    <p>Debrief is parody and commentary, clearly presented as such. We don't present fabricated claims as fact, and we don't target private individuals. If something's a bit, it's built to read as one.</p>
+  </div>
+</section>
+
+
+<footer>
+  <div class="wrap">
+    <div class="footgrid">
+      <div>
+        <div class="brand">topsecret.fm</div>
+        <p>Nothing you were meant to hear, broadcast on a frequency nobody cleared.</p>
+      </div>
+      <div class="footcol">
+        <h4>Listen</h4>
+        <ul>
+          <li><a href="archive.html">The Archive</a></li>
+          <li><a href="debrief.html">Debrief</a></li>
+          <li><a href="redacted.html">Redacted</a></li>
+        </ul>
+      </div>
+      <div class="footcol">
+        <h4>About</h4>
+        <ul>
+          <li><a href="about.html">The crew</a></li>
+          <li><a href="about.html">Sources</a></li>
+          <li><a href="about.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footcol">
+        <h4>Follow</h4>
+        <ul>
+          <li><a href="#">Instagram</a></li>
+          <li><a href="#">RSS feed</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footbottom">
+      <span>© topsecret.fm 2026</span>
+      <span>Declassified on request</span>
+    </div>
+  </div>
+</footer>
+
+
+<script>
+  document.querySelectorAll('.navtoggle').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var nav = btn.closest('nav');
+      var links = nav.querySelector('.navlinks');
+      links.classList.toggle('open');
+    });
+  });
+</script>
+</body>
+</html>
