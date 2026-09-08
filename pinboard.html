@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pinboard — topsecret.fm</title>
+<style>
+
+
+  @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+
+  :root{
+    --bg: #fffcf6;
+    --ink: #1b1330;
+    --ink-soft: #4a4160;
+    --pink: #ff4d6d;
+    --yellow: #ffc145;
+    --teal: #2ec4b6;
+    --purple: #2d1b4e;
+    --purple-deep: #1b1330;
+  }
+
+  *{ box-sizing:border-box; margin:0; padding:0; }
+
+  html{ scroll-behavior:smooth; }
+
+  body{
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.5;
+  }
+
+  h1,h2,h3,.brand{
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+  }
+
+  .wrap{ max-width: 1080px; margin:0 auto; padding: 0 32px; }
+
+  /* NAV */
+  nav{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding: 20px 0;
+    border-bottom: 1px solid rgba(27,19,48,0.1);
+  }
+  .brand{ font-size: 19px; letter-spacing: -0.01em; }
+  .navlinks{ display:flex; gap: 28px; list-style:none; }
+  .navlinks a{
+    color: var(--ink);
+    text-decoration:none;
+    font-size: 14px;
+    font-weight: 500;
+  }
+  .navlinks a:hover{ color: var(--pink); }
+  .navlisten{
+    background: var(--pink);
+    color: white;
+    padding: 9px 18px;
+    border-radius: 100px;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration:none;
+  }
+  .navlisten:hover{ background: var(--purple); }
+
+  /* HERO */
+  .hero{
+    background: var(--purple);
+    color: white;
+    padding: 88px 0 96px;
+  }
+  .hero .wrap{ max-width: 720px; }
+  .hero .eyebrow{
+    color: var(--yellow);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    margin-bottom: 18px;
+  }
+  .hero h1{
+    font-size: 52px;
+    line-height: 1.08;
+    letter-spacing: -0.01em;
+  }
+  .hero p{
+    margin-top: 22px;
+    font-size: 17px;
+    color: rgba(255,255,255,0.78);
+    max-width: 46ch;
+  }
+  .hero .ctas{
+    margin-top: 34px;
+    display:flex;
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+  .btn{
+    display:inline-flex;
+    align-items:center;
+    gap: 8px;
+    padding: 13px 24px;
+    border-radius: 100px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration:none;
+    border: 2px solid transparent;
+  }
+  .btn-fill{ background: var(--pink); color: white; }
+  .btn-fill:hover{ background: var(--yellow); color: var(--purple); }
+  .btn-outline{ border-color: rgba(255,255,255,0.4); color: white; }
+  .btn-outline:hover{ border-color: white; }
+
+  /* CROSS-LINK CARDS */
+  .cards{
+    padding: 64px 0 8px;
+  }
+  .cards h2{
+    font-size: 15px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--ink-soft);
+    margin-bottom: 24px;
+    font-weight: 600;
+  }
+  .cardgrid{
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+  }
+  .card{
+    padding: 28px 24px;
+    border-radius: 16px;
+    color: white;
+    min-height: 190px;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+  }
+  .card h3{ font-size: 20px; margin-bottom: 10px; }
+  .card p{ font-size: 14px; opacity:0.88; line-height:1.55; }
+  .card .go{ font-size: 13px; font-weight:700; margin-top:16px; }
+  .card.c1{ background: var(--teal); }
+  .card.c2{ background: var(--pink); }
+  .card.c3{ background: #ffb020; }
+
+  /* VALUES */
+  .values{ padding: 76px 0; }
+  .values h2{
+    font-size: 28px;
+    margin-bottom: 40px;
+    max-width: 30ch;
+  }
+  .valuegrid{
+    display:grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 28px;
+  }
+  .value .dot{
+    width: 10px; height:10px; border-radius:50%;
+    margin-bottom: 14px;
+  }
+  .value:nth-child(1) .dot{ background: var(--pink); }
+  .value:nth-child(2) .dot{ background: var(--teal); }
+  .value:nth-child(3) .dot{ background: var(--yellow); }
+  .value:nth-child(4) .dot{ background: var(--purple); }
+  .value h3{ font-size: 16px; margin-bottom: 8px; }
+  .value p{ font-size: 13.5px; color: var(--ink-soft); line-height:1.6; }
+
+  /* LEARN MORE */
+  .learn{ padding: 20px 0 80px; }
+  .learn h2{
+    font-size: 15px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--ink-soft);
+    margin-bottom: 24px;
+    font-weight:600;
+  }
+  .learngrid{
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+  }
+  .learncard{
+    border: 1px solid rgba(27,19,48,0.12);
+    border-radius: 16px;
+    padding: 24px;
+  }
+  .learncard .bar{
+    width: 32px; height: 4px; border-radius: 2px; margin-bottom: 18px;
+  }
+  .learncard:nth-child(1) .bar{ background: var(--pink); }
+  .learncard:nth-child(2) .bar{ background: var(--teal); }
+  .learncard:nth-child(3) .bar{ background: var(--yellow); }
+  .learncard h3{ font-size: 16px; margin-bottom: 8px; }
+  .learncard p{ font-size: 13.5px; color: var(--ink-soft); line-height:1.6; }
+
+  /* NOTICE */
+  .notice{ padding: 0 0 76px; }
+  .noticebox{
+    background: var(--yellow);
+    border-radius: 16px;
+    padding: 32px 32px;
+    display:flex;
+    align-items:flex-start;
+    gap: 20px;
+  }
+  .noticebox .icon{
+    font-size: 26px;
+    line-height:1;
+  }
+  .noticebox h3{
+    font-size: 17px;
+    color: var(--purple-deep);
+    margin-bottom: 6px;
+  }
+  .noticebox p{
+    font-size: 14px;
+    color: var(--purple-deep);
+    opacity: 0.85;
+    line-height: 1.6;
+    max-width: 60ch;
+  }
+  .noticebox a{
+    color: var(--purple-deep);
+    font-weight: 700;
+    text-decoration: underline;
+  }
+
+  /* FOOTER */
+  footer{
+    background: var(--purple-deep);
+    color: rgba(255,255,255,0.7);
+    padding: 56px 0 32px;
+    margin-top: 20px;
+  }
+  .footgrid{
+    display:grid;
+    grid-template-columns: 1.4fr 1fr 1fr 1fr;
+    gap: 24px;
+    padding-bottom: 40px;
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+  }
+  .footgrid .brand{ color:white; font-size:18px; margin-bottom: 10px; }
+  .footgrid p{ font-size: 13px; max-width: 30ch; line-height:1.6; }
+  .footcol h4{
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 14px;
+  }
+  .footcol ul{ list-style:none; display:flex; flex-direction:column; gap:10px; }
+  .footcol a{ color: rgba(255,255,255,0.75); text-decoration:none; font-size: 13.5px; }
+  .footcol a:hover{ color: var(--yellow); }
+  .footbottom{
+    padding-top: 24px;
+    font-size: 12.5px;
+    display:flex;
+    justify-content:space-between;
+  }
+
+  @media (max-width: 760px){
+    .hero h1{ font-size: 36px; }
+    .cardgrid, .valuegrid, .learngrid{ grid-template-columns: 1fr; }
+    .footgrid{ grid-template-columns: 1fr 1fr; }
+  }
+
+  /* PAGE HERO (subpages) */
+  .pagehero{
+    color: white;
+    padding: 64px 0 60px;
+  }
+  .pagehero .wrap{ max-width: 720px; }
+  .pagehero .eyebrow{
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    margin-bottom: 14px;
+    opacity: 0.85;
+  }
+  .pagehero h1{
+    font-size: 42px;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+  }
+  .pagehero p{
+    margin-top: 18px;
+    font-size: 16px;
+    color: rgba(255,255,255,0.85);
+    max-width: 52ch;
+  }
+  .pagehero.teal{ background: var(--teal); }
+  .pagehero.pink{ background: var(--pink); }
+  .pagehero.yellow{ background: #ffb020; color: var(--purple-deep); }
+  .pagehero.yellow p{ color: rgba(27,19,48,0.75); }
+  .pagehero.yellow .eyebrow{ color: var(--purple-deep); opacity:0.7; }
+  .pagehero.purple{ background: var(--purple); }
+
+  .navlinks a.active{ color: var(--pink); }
+
+  /* CONTENT SECTIONS */
+  .content{ padding: 64px 0; }
+  .content .lead{
+    font-size: 17px;
+    color: var(--ink-soft);
+    max-width: 62ch;
+    line-height: 1.7;
+    margin-bottom: 48px;
+  }
+  .content h2.sectiontitle{
+    font-size: 15px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--ink-soft);
+    margin-bottom: 24px;
+    font-weight: 600;
+  }
+  .tilegrid{
+    display:grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-bottom: 56px;
+  }
+  .tile{
+    border: 1px solid rgba(27,19,48,0.12);
+    border-radius: 16px;
+    padding: 22px 24px;
+  }
+  .tile h3{ font-size: 16px; margin-bottom: 8px; }
+  .tile p{ font-size: 13.5px; color: var(--ink-soft); line-height:1.6; }
+
+  .quoteblock{
+    border-left: 4px solid var(--pink);
+    padding: 4px 0 4px 22px;
+    margin: 0 0 56px;
+    font-size: 18px;
+    font-family: 'Space Grotesk', sans-serif;
+    color: var(--ink);
+    max-width: 56ch;
+  }
+
+  .infobox{
+    background: rgba(46,196,182,0.08);
+    border: 1px solid rgba(46,196,182,0.3);
+    border-radius: 16px;
+    padding: 24px 26px;
+    margin-bottom: 20px;
+  }
+  .infobox h3{ font-size: 15px; margin-bottom: 8px; }
+  .infobox p{ font-size: 13.5px; color: var(--ink-soft); line-height:1.65; }
+
+  @media (max-width: 760px){
+    .pagehero h1{ font-size: 30px; }
+    .tilegrid{ grid-template-columns: 1fr; }
+  }
+
+
+  /* MOBILE NAV */
+  .navtoggle{
+    display:none;
+    background:none;
+    border:none;
+    cursor:pointer;
+    padding:8px;
+    margin-left: 8px;
+  }
+  .navtoggle span{
+    display:block;
+    width:22px;
+    height:2px;
+    background:var(--ink);
+    margin:5px 0;
+    border-radius:1px;
+  }
+  @media (max-width: 760px){
+    .wrap{ padding: 0 20px; }
+    nav{ position:relative; flex-wrap: nowrap; padding: 16px 0; }
+    .navtoggle{ display:block; }
+    .navlinks{
+      display:none;
+      position:absolute;
+      top: 100%;
+      left:0;
+      right:0;
+      flex-direction:column;
+      gap:0;
+      background: var(--bg);
+      border-bottom: 1px solid rgba(27,19,48,0.12);
+      padding: 8px 20px 16px;
+      z-index: 30;
+    }
+    .navlinks.open{ display:flex; }
+    .navlinks li{
+      border-bottom: 1px solid rgba(27,19,48,0.08);
+    }
+    .navlinks a{
+      display:block;
+      padding: 14px 4px;
+      font-size: 16px;
+    }
+    .navlisten{ font-size:12.5px; padding: 9px 14px; }
+    .hero{ padding: 56px 0 64px; }
+    .hero .ctas{ flex-direction:column; align-items: stretch; }
+    .hero .btn{ justify-content:center; }
+    .pagehero{ padding: 48px 0 44px; }
+    .content{ padding: 44px 0; }
+    .cards, .values, .learn, .notice{ padding-top: 44px; padding-bottom: 8px; }
+    .values{ padding-bottom: 44px; }
+    .learn{ padding-bottom: 56px; }
+  }
+
+  /* PINBOARD */
+  .pin-hero{
+    background: #8a6a45;
+    background-image:
+      repeating-linear-gradient(0deg, rgba(0,0,0,0.06) 0px, rgba(0,0,0,0.06) 1px, transparent 1px, transparent 3px),
+      repeating-linear-gradient(90deg, rgba(0,0,0,0.06) 0px, rgba(0,0,0,0.06) 1px, transparent 1px, transparent 3px);
+    color: white;
+    padding: 64px 0 56px;
+  }
+  .pin-hero .wrap{ max-width: 720px; }
+  .pin-hero .eyebrow{
+    color: #ffe9b3;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    margin-bottom: 14px;
+  }
+  .pin-hero h1{ font-size: 42px; line-height:1.1; }
+  .pin-hero p{ margin-top: 16px; font-size: 15.5px; color: rgba(255,255,255,0.85); max-width: 54ch; }
+
+  .pinboard-wrap{
+    background: #a9835a;
+    background-image:
+      repeating-linear-gradient(0deg, rgba(0,0,0,0.05) 0px, rgba(0,0,0,0.05) 1px, transparent 1px, transparent 3px),
+      repeating-linear-gradient(90deg, rgba(0,0,0,0.05) 0px, rgba(0,0,0,0.05) 1px, transparent 1px, transparent 3px);
+    padding: 48px 0 64px;
+  }
+
+  .pin-form{
+    background: #fffcf6;
+    border-radius: 14px;
+    padding: 22px;
+    max-width: 520px;
+    margin: 0 auto 40px;
+    box-shadow: 0 10px 0 rgba(0,0,0,0.15);
+  }
+  .pin-form textarea{
+    width: 100%;
+    min-height: 70px;
+    border: 2px dashed rgba(27,19,48,0.25);
+    border-radius: 10px;
+    padding: 12px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    resize: vertical;
+    margin-bottom: 12px;
+  }
+  .pin-form input[type="text"]{
+    width: 100%;
+    border: 2px dashed rgba(27,19,48,0.25);
+    border-radius: 10px;
+    padding: 10px 12px;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    margin-bottom: 12px;
+  }
+  .pin-form-row{ display:flex; gap:10px; align-items:center; justify-content:space-between; flex-wrap:wrap; }
+  .pin-submit{
+    background: var(--pink);
+    color: white;
+    border: none;
+    padding: 12px 22px;
+    border-radius: 100px;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+  }
+  .pin-submit:hover{ background: var(--purple); }
+  .pin-status{ font-size: 12.5px; color: var(--ink-soft); }
+
+  .pinboard-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+    gap: 26px;
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+
+  .pin-note{
+    position: relative;
+    background: var(--pin-color, #ffc145);
+    border-radius: 16px;
+    padding: 22px 18px 18px;
+    min-height: 140px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    box-shadow: 0 6px 0 rgba(0,0,0,0.18), 0 10px 14px rgba(0,0,0,0.25);
+    transform: rotate(var(--rot, -2deg));
+    border: 3px solid rgba(255,255,255,0.5);
+  }
+  .pin-note::before{
+    content:"";
+    position:absolute;
+    top:-14px;
+    left:50%;
+    transform: translateX(-50%);
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, #fff, #bbb 60%, #888);
+    box-shadow: 0 3px 4px rgba(0,0,0,0.35);
+  }
+  .pin-note .txt{
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--purple-deep);
+    line-height: 1.4;
+    word-break: break-word;
+  }
+  .pin-note .who{
+    position:absolute;
+    bottom: 8px;
+    right: 14px;
+    font-size: 10.5px;
+    font-weight: 700;
+    color: rgba(27,19,48,0.5);
+  }
+
+  .pin-empty{
+    text-align:center;
+    color: rgba(255,255,255,0.75);
+    font-size: 14px;
+    padding: 20px;
+  }
+
+  @media (max-width: 760px){
+    .pin-hero h1{ font-size: 30px; }
+    .pinboard-grid{ grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 18px; padding: 0 20px; }
+  }
+
+</style>
+</head>
+<body>
+
+<nav class="wrap">
+  <div class="brand"><a href="index.html" style="color:inherit; text-decoration:none;">topsecret.fm</a></div>
+  <ul class="navlinks">
+    <li><a href="archive.html">Archive</a></li>
+    <li><a href="debrief.html">Debrief</a></li>
+    <li><a href="redacted.html">Redacted</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="hotsauce.html">Hot Sauce</a></li>
+    <li><a href="pinboard.html" class="active">Pinboard</a></li>
+  </ul>
+  <a class="navlisten" href="index.html#listen">▶ Listen live</a>
+  <button class="navtoggle" aria-label="Open menu"><span></span><span></span><span></span></button>
+</nav>
+
+
+<section class="pin-hero">
+  <div class="wrap">
+    <div class="eyebrow">COMMUNITY BOARD</div>
+    <h1>The Pinboard.</h1>
+    <p>Leave a note. A message, a shoutout, a recommendation, a bad joke &mdash; anonymous, and pinned up for everyone to see.</p>
+  </div>
+</section>
+
+<section class="pinboard-wrap">
+  <div class="pin-form">
+    <div class="pin-form-row" style="margin-bottom:12px;">
+      <strong style="font-family:'Space Grotesk',sans-serif; font-size:15px; color: var(--ink);">Pin something</strong>
+      <span class="pin-status" id="pinStatus"></span>
+    </div>
+    <textarea id="pinText" maxlength="140" placeholder="Say something worth pinning (max 140 characters)&hellip;"></textarea>
+    <input type="text" id="pinName" maxlength="20" placeholder="Name or handle (optional &mdash; leave blank to stay anonymous)">
+    <div class="pin-form-row">
+      <span class="pin-status">Posts are public and anonymous by default.</span>
+      <button class="pin-submit" id="pinSubmit">Pin it</button>
+    </div>
+  </div>
+
+  <div class="pinboard-grid" id="pinboardGrid">
+    <div class="pin-empty">Loading the board&hellip;</div>
+  </div>
+</section>
+
+
+<footer>
+  <div class="wrap">
+    <div class="footgrid">
+      <div>
+        <div class="brand">topsecret.fm</div>
+        <p>Nothing you were meant to hear, broadcast on a frequency nobody cleared.</p>
+      </div>
+      <div class="footcol">
+        <h4>Listen</h4>
+        <ul>
+          <li><a href="archive.html">The Archive</a></li>
+          <li><a href="debrief.html">Debrief</a></li>
+          <li><a href="redacted.html">Redacted</a></li>
+        </ul>
+      </div>
+      <div class="footcol">
+        <h4>About</h4>
+        <ul>
+          <li><a href="about.html">The crew</a></li>
+          <li><a href="about.html">Sources</a></li>
+          <li><a href="mailto:hello@topsecret.fm">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footcol">
+        <h4>Follow</h4>
+        <ul>
+          <li><a href="https://discord.gg/8hhQPM6Ne" target="_blank" rel="noopener">Discord</a></li>
+          <li><a href="#">Instagram</a></li>
+          <li><a href="#">RSS feed</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footbottom">
+      <span>© topsecret.fm 2026</span>
+      <span>Declassified on request</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.querySelectorAll('.navtoggle').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var nav = btn.closest('nav');
+      var links = nav.querySelector('.navlinks');
+      links.classList.toggle('open');
+    });
+  });
+
+  // ---- PINBOARD BACKEND CONFIG ----
+  // Sign up free at jsonbin.io, create a bin containing: []
+  // then paste your Bin ID and X-Master-Key below.
+  const BIN_ID = "PASTE_YOUR_BIN_ID_HERE";
+  const API_KEY = "PASTE_YOUR_MASTER_KEY_HERE";
+  const API_BASE = "https://api.jsonbin.io/v3/b/" + BIN_ID;
+
+  const colors = ["#ffc145", "#ff4d6d", "#2ec4b6", "#ffb020"];
+  const grid = document.getElementById('pinboardGrid');
+  const statusEl = document.getElementById('pinStatus');
+
+  function renderPins(pins){
+    if(!pins || pins.length === 0){
+      grid.innerHTML = '<div class="pin-empty">No pins yet &mdash; be the first to leave one.</div>';
+      return;
+    }
+    grid.innerHTML = '';
+    pins.slice().reverse().forEach(function(pin, i){
+      const note = document.createElement('div');
+      note.className = 'pin-note';
+      note.style.setProperty('--pin-color', colors[i % colors.length]);
+      note.style.setProperty('--rot', ((i % 5) - 2) + 'deg');
+      const txt = document.createElement('div');
+      txt.className = 'txt';
+      txt.textContent = pin.text;
+      note.appendChild(txt);
+      if(pin.name){
+        const who = document.createElement('div');
+        who.className = 'who';
+        who.textContent = '— ' + pin.name;
+        note.appendChild(who);
+      }
+      grid.appendChild(note);
+    });
+  }
+
+  async function loadPins(){
+    if(BIN_ID.startsWith("PASTE")){
+      grid.innerHTML = '<div class="pin-empty">Pinboard isn\'t connected yet.</div>';
+      return;
+    }
+    try{
+      const res = await fetch(API_BASE + "/latest", {
+        headers: { "X-Master-Key": API_KEY }
+      });
+      const data = await res.json();
+      renderPins(data.record);
+    }catch(e){
+      grid.innerHTML = '<div class="pin-empty">Couldn\'t load the board right now.</div>';
+    }
+  }
+
+  async function submitPin(){
+    const textEl = document.getElementById('pinText');
+    const nameEl = document.getElementById('pinName');
+    const text = textEl.value.trim();
+    if(!text){
+      statusEl.textContent = 'Write something first.';
+      return;
+    }
+    if(BIN_ID.startsWith("PASTE")){
+      statusEl.textContent = 'Pinboard isn\'t connected yet.';
+      return;
+    }
+    statusEl.textContent = 'Pinning\u2026';
+    try{
+      const res = await fetch(API_BASE + "/latest", { headers: { "X-Master-Key": API_KEY } });
+      const data = await res.json();
+      const pins = data.record || [];
+      pins.push({ text: text.slice(0,140), name: nameEl.value.trim().slice(0,20), ts: Date.now() });
+      await fetch(API_BASE, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json", "X-Master-Key": API_KEY },
+        body: JSON.stringify(pins)
+      });
+      textEl.value = '';
+      nameEl.value = '';
+      statusEl.textContent = 'Pinned!';
+      renderPins(pins);
+    }catch(e){
+      statusEl.textContent = 'Something went wrong \u2014 try again.';
+    }
+  }
+
+  document.getElementById('pinSubmit').addEventListener('click', submitPin);
+  loadPins();
+</script>
+</body>
+</html>
