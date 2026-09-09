@@ -529,11 +529,17 @@
 <div class="ticker-wrap">
   <div class="ticker-track">
     <span class="ticker-item"><span class="ticker-dot"></span>THE EARLY EARLY MORNING BREAKFAST SHOW &mdash; relaxing tunes, 6&ndash;9am daily</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>COME CHAI WITH ME &mdash; on air 17:00&ndash;19:00, pull up a cup</span>
     <span class="ticker-item"><span class="ticker-dot"></span>THE EARLY EARLY MORNING BREAKFAST SHOW &mdash; relaxing tunes, 6&ndash;9am daily</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>COME CHAI WITH ME &mdash; on air 17:00&ndash;19:00, pull up a cup</span>
     <span class="ticker-item"><span class="ticker-dot"></span>THE EARLY EARLY MORNING BREAKFAST SHOW &mdash; relaxing tunes, 6&ndash;9am daily</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>COME CHAI WITH ME &mdash; on air 17:00&ndash;19:00, pull up a cup</span>
     <span class="ticker-item"><span class="ticker-dot"></span>THE EARLY EARLY MORNING BREAKFAST SHOW &mdash; relaxing tunes, 6&ndash;9am daily</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>COME CHAI WITH ME &mdash; on air 17:00&ndash;19:00, pull up a cup</span>
     <span class="ticker-item"><span class="ticker-dot"></span>THE EARLY EARLY MORNING BREAKFAST SHOW &mdash; relaxing tunes, 6&ndash;9am daily</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>COME CHAI WITH ME &mdash; on air 17:00&ndash;19:00, pull up a cup</span>
     <span class="ticker-item"><span class="ticker-dot"></span>THE EARLY EARLY MORNING BREAKFAST SHOW &mdash; relaxing tunes, 6&ndash;9am daily</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>COME CHAI WITH ME &mdash; on air 17:00&ndash;19:00, pull up a cup</span>
   </div>
 </div>
 
@@ -562,6 +568,14 @@
     </div>
     <a href="#" class="btn btn-fill js-tune-in" style="background:white; color:var(--purple);">▶ Tune in</a>
   </div>
+
+  <div class="noticebox" style="background: var(--pink); display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap; margin-top:16px;">
+    <div>
+      <h3 style="color:white;">Come Chai With Me</h3>
+      <p style="color: rgba(255,255,255,0.85);">Pull up a cup and stay a while &mdash; loose conversation, tangents, and whatever's on someone's mind. On air 17:00&ndash;19:00.</p>
+    </div>
+    <a href="#" class="btn btn-fill js-tune-in" style="background:white; color:var(--pink);">▶ Tune in</a>
+  </div>
 </section>
 
 <section class="cards wrap" style="padding-bottom:8px;">
@@ -589,7 +603,6 @@
       <div class="np-artist" id="npArtist"></div>
       <div class="np-progressbar"><div class="np-progress" id="npProgress"></div></div>
       <div class="np-time" id="npTime"></div>
-      <div class="np-next" id="npNext"></div>
     </div>
   </div>
 </section>
@@ -817,17 +830,6 @@
       progressEl.style.width = Math.min(100, (elapsed / duration) * 100) + '%';
     }
     if(timeEl) timeEl.textContent = fmtTime(elapsed) + ' / ' + fmtTime(duration);
-
-    var nextEl = document.getElementById('npNext');
-    if(nextEl){
-      var next = data.playing_next;
-      var nextSong = next && next.song;
-      if(nextSong && (nextSong.title || nextSong.text)){
-        nextEl.innerHTML = 'Up next: <strong>' + (nextSong.title || nextSong.text) + '</strong>' + (nextSong.artist ? ' \u2014 ' + nextSong.artist : '');
-      } else {
-        nextEl.textContent = '';
-      }
-    }
 
     if(artEl && song.art){
       artEl.innerHTML = '<img src="' + song.art + '" alt="">';
