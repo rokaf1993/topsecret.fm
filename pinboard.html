@@ -654,11 +654,11 @@
   });
 
   // ---- PINBOARD BACKEND CONFIG ----
-  // Sign up free at jsonbin.io, create a bin containing: []
-  // then paste your Bin ID and X-Master-Key below.
-  const BIN_ID = "PASTE_YOUR_BIN_ID_HERE";
-  const API_KEY = "PASTE_YOUR_MASTER_KEY_HERE";
-  const API_BASE = "https://api.jsonbin.io/v3/b/" + BIN_ID;
+  // Go to https://extendsclass.com/json-storage.html
+  // Paste [] into the JSON editor box, click "Save" (no account needed).
+  // Copy the bin ID from the URI it gives you and paste it below.
+  const BIN_ID = "105ef0390fbf";
+  const API_BASE = "https://json.extendsclass.com/bin/" + BIN_ID;
 
   const colors = ["#ffc145", "#ff4d6d", "#2ec4b6", "#ffb020"];
   const grid = document.getElementById('pinboardGrid');
@@ -695,11 +695,9 @@
       return;
     }
     try{
-      const res = await fetch(API_BASE + "/latest", {
-        headers: { "X-Master-Key": API_KEY }
-      });
+      const res = await fetch(API_BASE);
       const data = await res.json();
-      renderPins(data.record);
+      renderPins(Array.isArray(data) ? data : []);
     }catch(e){
       grid.innerHTML = '<div class="pin-empty">Couldn\'t load the board right now.</div>';
     }
@@ -717,15 +715,15 @@
       statusEl.textContent = 'Pinboard isn\'t connected yet.';
       return;
     }
-    statusEl.textContent = 'Pinning\u2026';
+    statusEl.textContent = 'Pinning…';
     try{
-      const res = await fetch(API_BASE + "/latest", { headers: { "X-Master-Key": API_KEY } });
-      const data = await res.json();
-      const pins = data.record || [];
+      const res = await fetch(API_BASE);
+      const existing = await res.json();
+      const pins = Array.isArray(existing) ? existing : [];
       pins.push({ text: text.slice(0,140), name: nameEl.value.trim().slice(0,20), ts: Date.now() });
       await fetch(API_BASE, {
         method: "PUT",
-        headers: { "Content-Type": "application/json", "X-Master-Key": API_KEY },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(pins)
       });
       textEl.value = '';
@@ -733,7 +731,7 @@
       statusEl.textContent = 'Pinned!';
       renderPins(pins);
     }catch(e){
-      statusEl.textContent = 'Something went wrong \u2014 try again.';
+      statusEl.textContent = 'Something went wrong — try again.';
     }
   }
 
