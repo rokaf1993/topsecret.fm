@@ -389,6 +389,15 @@
     font-size: 10.5px;
     color: rgba(255,255,255,0.55);
   }
+  .np-next{
+    margin-top: 6px;
+    font-size: 11.5px;
+    color: rgba(255,255,255,0.65);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .np-next strong{ color: rgba(255,255,255,0.9); font-weight:600; }
 
   .history-list{
     list-style: none;
@@ -565,6 +574,7 @@
       <div class="np-artist" id="npArtist"></div>
       <div class="np-progressbar"><div class="np-progress" id="npProgress"></div></div>
       <div class="np-time" id="npTime"></div>
+      <div class="np-next" id="npNext"></div>
     </div>
   </div>
 
@@ -797,6 +807,17 @@
       progressEl.style.width = Math.min(100, (elapsed / duration) * 100) + '%';
     }
     if(timeEl) timeEl.textContent = fmtTime(elapsed) + ' / ' + fmtTime(duration);
+
+    var nextEl = document.getElementById('npNext');
+    if(nextEl){
+      var next = data.playing_next;
+      var nextSong = next && next.song;
+      if(nextSong && (nextSong.title || nextSong.text)){
+        nextEl.innerHTML = 'Up next: <strong>' + (nextSong.title || nextSong.text) + '</strong>' + (nextSong.artist ? ' \u2014 ' + nextSong.artist : '');
+      } else {
+        nextEl.textContent = '';
+      }
+    }
 
     if(artEl && song.art){
       artEl.innerHTML = '<img src="' + song.art + '" alt="">';
