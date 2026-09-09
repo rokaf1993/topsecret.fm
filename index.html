@@ -321,6 +321,63 @@
     .learn{ padding-bottom: 56px; }
   }
 
+  /* TICKER BANNER */
+  .ticker-wrap{
+    background: #b23a54;
+    overflow: hidden;
+    white-space: nowrap;
+    padding: 9px 0;
+  }
+  .ticker-track{
+    display: inline-flex;
+    animation: ticker-scroll 18s linear infinite;
+  }
+  .ticker-item{
+    display: inline-flex;
+    align-items: center;
+    color: white;
+    font-size: 12.5px;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    padding: 0 32px;
+  }
+  .ticker-dot{
+    width: 6px; height: 6px; border-radius: 50%;
+    background: white;
+    margin-right: 10px;
+    animation: pulse 1.2s infinite;
+    flex-shrink: 0;
+  }
+  @keyframes ticker-scroll{
+    0%{ transform: translateX(0); }
+    100%{ transform: translateX(-50%); }
+  }
+  @media (max-width: 760px){
+    .ticker-track{ animation-duration: 12s; }
+  }
+
+  /* NOW LIVE BADGE */
+  .live-badge{
+    display:inline-flex;
+    align-items:center;
+    gap: 10px;
+    margin-top: 26px;
+    padding: 10px 18px;
+    border-radius: 100px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.25);
+    font-size: 13.5px;
+    color: rgba(255,255,255,0.9);
+  }
+  .live-badge:hover{ background: rgba(255,255,255,0.16); }
+  .live-badge strong{ color: white; }
+  .live-dot{
+    width: 8px; height: 8px; border-radius:50%;
+    background: var(--pink);
+    animation: pulse 1.2s infinite;
+    flex-shrink:0;
+  }
+
   /* LIVE PLAYER */
   .navlisten{ cursor:pointer; border:none; }
   .navlisten.playing{ background: var(--purple); }
@@ -348,6 +405,17 @@
   <button class="navtoggle" aria-label="Open menu"><span></span><span></span><span></span></button>
 </nav>
 
+<div class="ticker-wrap">
+  <div class="ticker-track">
+    <span class="ticker-item"><span class="ticker-dot"></span>THE EARLY EARLY MORNING BREAKFAST SHOW &mdash; relaxing tunes, 6&ndash;9am daily</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>THE EARLY EARLY MORNING BREAKFAST SHOW &mdash; relaxing tunes, 6&ndash;9am daily</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>THE EARLY EARLY MORNING BREAKFAST SHOW &mdash; relaxing tunes, 6&ndash;9am daily</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>THE EARLY EARLY MORNING BREAKFAST SHOW &mdash; relaxing tunes, 6&ndash;9am daily</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>THE EARLY EARLY MORNING BREAKFAST SHOW &mdash; relaxing tunes, 6&ndash;9am daily</span>
+    <span class="ticker-item"><span class="ticker-dot"></span>THE EARLY EARLY MORNING BREAKFAST SHOW &mdash; relaxing tunes, 6&ndash;9am daily</span>
+  </div>
+</div>
+
 <section class="hero">
   <div class="wrap">
     <div class="eyebrow">Ssshhhh... don't tell a soul! 🤫</div>
@@ -357,6 +425,21 @@
       <a class="btn btn-fill js-tune-in" href="#">▶ Tune in now</a>
       <a class="btn btn-outline" href="#">See what's on file</a>
     </div>
+    <div class="live-badge js-tune-in" style="cursor:pointer;">
+      <span class="live-dot"></span>
+      <span><strong>Early Early Morning Breakfast Show</strong> &mdash; relaxing tunes, 6&ndash;9am daily</span>
+    </div>
+  </div>
+</section>
+
+<section class="cards wrap" style="padding-bottom:8px;">
+  <h2>On the schedule</h2>
+  <div class="noticebox" style="background: var(--teal); display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap;">
+    <div>
+      <h3 style="color:white;">The Early Early Morning Breakfast Show</h3>
+      <p style="color: rgba(255,255,255,0.85);">Relaxing tunes to ease you into the day &mdash; on air every morning, 6:00&ndash;9:00.</p>
+    </div>
+    <a href="#" class="btn btn-fill js-tune-in" style="background:white; color:var(--purple);">▶ Tune in</a>
   </div>
 </section>
 
