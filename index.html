@@ -537,7 +537,7 @@
       <a class="btn btn-fill js-tune-in" href="#">▶ Tune in now</a>
       <a class="btn btn-outline" href="#">See what's on file</a>
     </div>
-    <div class="live-badge js-tune-in" style="cursor:pointer;">
+    <div class="live-badge js-tune-in-quiet" style="cursor:pointer;">
       <span class="live-dot"></span>
       <span><strong>Early Early Morning Breakfast Show</strong> &mdash; relaxing tunes, 6&ndash;9am daily</span>
     </div>
@@ -724,6 +724,7 @@
     var STREAM_URL = "https://azura-3949.az-streamingserver.com/listen/topsecret.fm/radio.mp3";
     var audio = document.getElementById('topsecretAudio');
     var buttons = document.querySelectorAll('.navlisten, .js-tune-in');
+    var quietButtons = document.querySelectorAll('.js-tune-in-quiet');
     var playing = false;
 
     function setLabel(btn){
@@ -737,6 +738,9 @@
     function updateAll(){
       buttons.forEach(function(btn){
         setLabel(btn);
+        btn.classList.toggle('playing', playing);
+      });
+      quietButtons.forEach(function(btn){
         btn.classList.toggle('playing', playing);
       });
     }
@@ -755,6 +759,7 @@
     }
 
     buttons.forEach(function(btn){ btn.addEventListener('click', toggle); });
+    quietButtons.forEach(function(btn){ btn.addEventListener('click', toggle); });
     audio.addEventListener('pause', function(){ playing = false; updateAll(); });
     audio.addEventListener('playing', function(){ playing = true; updateAll(); });
     updateAll();
