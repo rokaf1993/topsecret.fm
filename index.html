@@ -321,6 +321,118 @@
     .learn{ padding-bottom: 56px; }
   }
 
+  /* LIVE TRACKLIST */
+  .np-card{
+    display:flex;
+    align-items:center;
+    gap: 14px;
+    background: var(--purple);
+    border-radius: 14px;
+    padding: 12px 16px;
+    color: white;
+    max-width: 420px;
+  }
+  .np-art{
+    width: 48px; height: 48px;
+    border-radius: 10px;
+    overflow: hidden;
+    flex-shrink: 0;
+    background: rgba(255,255,255,0.12);
+  }
+  .np-art img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .np-art-placeholder{
+    width:100%; height:100%;
+    display:flex; align-items:center; justify-content:center;
+    font-size: 18px;
+    color: rgba(255,255,255,0.5);
+  }
+  .np-info{ flex:1; min-width:0; }
+  .np-label{
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--yellow);
+    font-weight: 700;
+    margin-bottom: 2px;
+  }
+  .np-title{
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .np-artist{
+    font-size: 12px;
+    color: rgba(255,255,255,0.75);
+    margin-top: 1px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .np-progressbar{
+    margin-top: 8px;
+    height: 3px;
+    border-radius: 2px;
+    background: rgba(255,255,255,0.18);
+    overflow: hidden;
+  }
+  .np-progress{
+    height: 100%;
+    width: 0%;
+    background: var(--pink);
+    transition: width 1s linear;
+  }
+  .np-time{
+    margin-top: 4px;
+    font-size: 10.5px;
+    color: rgba(255,255,255,0.55);
+  }
+
+  .history-list{
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+  }
+  .history-list li{
+    display:flex;
+    align-items:center;
+    gap: 14px;
+    padding: 12px 4px;
+    border-bottom: 1px solid rgba(27,19,48,0.08);
+    font-size: 13.5px;
+  }
+  .history-list li:last-child{ border-bottom:none; }
+  .history-art{
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    overflow: hidden;
+    flex-shrink: 0;
+    background: rgba(27,19,48,0.08);
+    display:flex; align-items:center; justify-content:center;
+    color: var(--ink-soft);
+    font-size: 14px;
+  }
+  .history-art img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .history-text{ min-width:0; flex:1; }
+  .history-title{ font-weight:600; color: var(--ink); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .history-artist{ color: var(--ink-soft); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .history-empty{ color: var(--ink-soft); font-style: italic; }
+
+  @media (max-width: 760px){
+    .np-card{ max-width: 100%; padding: 10px 12px; gap: 10px; }
+    .np-art{ width: 42px; height: 42px; }
+    .np-title{ font-size: 13px; }
+    .np-artist{ font-size: 11.5px; }
+    .history-list li{ padding: 10px 2px; gap: 10px; font-size: 12.5px; }
+    .history-art{ width: 30px; height: 30px; }
+  }
+  @media (max-width: 400px){
+    .np-title{ max-width: 160px; }
+    .np-artist{ max-width: 160px; }
+  }
+
   /* TICKER BANNER */
   .ticker-wrap{
     background: #b23a54;
@@ -441,6 +553,25 @@
     </div>
     <a href="#" class="btn btn-fill js-tune-in" style="background:white; color:var(--purple);">▶ Tune in</a>
   </div>
+</section>
+
+<section class="cards wrap" style="padding-top:8px;">
+  <h2>On air right now</h2>
+  <div id="npCard" class="np-card">
+    <div class="np-art"><div class="np-art-placeholder">♪</div></div>
+    <div class="np-info">
+      <div class="np-label">Now playing</div>
+      <div class="np-title" id="npTitle">Loading&hellip;</div>
+      <div class="np-artist" id="npArtist"></div>
+      <div class="np-progressbar"><div class="np-progress" id="npProgress"></div></div>
+      <div class="np-time" id="npTime"></div>
+    </div>
+  </div>
+
+  <h3 class="sectiontitle" style="margin-top:32px;">Recently played</h3>
+  <ul class="history-list" id="historyList">
+    <li class="history-empty">Loading recent tracks&hellip;</li>
+  </ul>
 </section>
 
 <section class="cards wrap">
@@ -628,6 +759,103 @@
     audio.addEventListener('playing', function(){ playing = true; updateAll(); });
     updateAll();
   })();
+</script>
+
+<script>
+(function(){
+  var NOWPLAYING_URL = "https://azura-3949.az-streamingserver.com/api/nowplaying/topsecret.fm";
+
+  function fmtTime(sec){
+    sec = Math.max(0, Math.floor(sec || 0));
+    var m = Math.floor(sec / 60);
+    var s = sec % 60;
+    return m + ':' + (s < 10 ? '0' : '') + s;
+  }
+
+  function updateNowPlaying(data){
+    var np = data.now_playing;
+    if(!np){ return; }
+    var song = np.song || {};
+
+    var titleEl = document.getElementById('npTitle');
+    var artistEl = document.getElementById('npArtist');
+    var progressEl = document.getElementById('npProgress');
+    var timeEl = document.getElementById('npTime');
+    var artEl = document.querySelector('#npCard .np-art');
+
+    if(titleEl) titleEl.textContent = song.title || song.text || 'Unknown track';
+    if(artistEl) artistEl.textContent = song.artist || '';
+
+    var elapsed = np.elapsed || 0;
+    var duration = np.duration || 0;
+    if(progressEl && duration > 0){
+      progressEl.style.width = Math.min(100, (elapsed / duration) * 100) + '%';
+    }
+    if(timeEl) timeEl.textContent = fmtTime(elapsed) + ' / ' + fmtTime(duration);
+
+    if(artEl && song.art){
+      artEl.innerHTML = '<img src="' + song.art + '" alt="">';
+    }
+  }
+
+  function updateHistory(data){
+    var list = document.getElementById('historyList');
+    if(!list) return;
+    var history = data.song_history || [];
+    if(history.length === 0){
+      list.innerHTML = '<li class="history-empty">No recent tracks yet.</li>';
+      return;
+    }
+    list.innerHTML = '';
+    history.slice(0, 8).forEach(function(item){
+      var song = (item.song) || {};
+      var li = document.createElement('li');
+
+      var art = document.createElement('div');
+      art.className = 'history-art';
+      if(song.art){
+        art.innerHTML = '<img src="' + song.art + '" alt="">';
+      } else {
+        art.textContent = '\u266a';
+      }
+
+      var text = document.createElement('div');
+      text.className = 'history-text';
+      var title = document.createElement('div');
+      title.className = 'history-title';
+      title.textContent = song.title || song.text || 'Unknown track';
+      var artist = document.createElement('div');
+      artist.className = 'history-artist';
+      artist.textContent = song.artist || '';
+      text.appendChild(title);
+      text.appendChild(artist);
+
+      li.appendChild(art);
+      li.appendChild(text);
+      list.appendChild(li);
+    });
+  }
+
+  function refreshNowPlaying(){
+    fetch(NOWPLAYING_URL)
+      .then(function(res){ return res.json(); })
+      .then(function(payload){
+        var data = Array.isArray(payload) ? payload[0] : payload;
+        if(!data) return;
+        updateNowPlaying(data);
+        updateHistory(data);
+      })
+      .catch(function(){
+        var titleEl = document.getElementById('npTitle');
+        if(titleEl) titleEl.textContent = "Couldn't load live data";
+      });
+  }
+
+  if(document.getElementById('npCard')){
+    refreshNowPlaying();
+    setInterval(refreshNowPlaying, 15000);
+  }
+})();
 </script>
 </body>
 </html>
