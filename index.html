@@ -577,11 +577,6 @@
       <div class="np-next" id="npNext"></div>
     </div>
   </div>
-
-  <h3 class="sectiontitle" style="margin-top:32px;">Recently played</h3>
-  <ul class="history-list" id="historyList">
-    <li class="history-empty">Loading recent tracks&hellip;</li>
-  </ul>
 </section>
 
 <section class="cards wrap">
@@ -869,7 +864,6 @@
         var data = Array.isArray(payload) ? payload[0] : payload;
         if(!data) return;
         updateNowPlaying(data);
-        updateHistory(data);
       })
       .catch(function(){
         var titleEl = document.getElementById('npTitle');
