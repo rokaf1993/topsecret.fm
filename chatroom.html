@@ -3,8 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hot Sauce — topsecret.fm</title>
+<title>Chatroom — topsecret.fm</title>
 <style>
+
 
   @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap');
 
@@ -421,6 +422,123 @@
   }
   .navlisten.playing .dot{ background:#2ec4b6; animation: pulse 1.2s infinite; }
   @keyframes pulse{ 0%,100%{opacity:1;} 50%{opacity:0.3;} }
+
+  /* CHATROOM */
+  .chat-hero{
+    background: var(--purple);
+    color: white;
+    padding: 56px 0 40px;
+  }
+  .chat-hero .wrap{ max-width: 720px; }
+  .chat-hero .eyebrow{
+    color: var(--yellow);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    margin-bottom: 12px;
+  }
+  .chat-hero h1{ font-size: 38px; line-height:1.1; }
+  .chat-hero p{ margin-top: 14px; font-size: 15px; color: rgba(255,255,255,0.8); max-width: 54ch; }
+
+  .chat-wrap{
+    max-width: 720px;
+    margin: -20px auto 64px;
+    padding: 0 20px;
+  }
+  .chat-window{
+    background: #fffcf6;
+    border-radius: 18px;
+    box-shadow: 0 14px 40px rgba(27,19,48,0.18);
+    display: flex;
+    flex-direction: column;
+    height: 60vh;
+    min-height: 420px;
+    overflow: hidden;
+  }
+  .chat-messages{
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .chat-msg{
+    max-width: 82%;
+    align-self: flex-start;
+  }
+  .chat-msg .bubble{
+    background: #f2ede1;
+    border-radius: 14px 14px 14px 4px;
+    padding: 9px 14px;
+    font-size: 14px;
+    color: var(--ink);
+    line-height: 1.5;
+    word-break: break-word;
+  }
+  .chat-msg.me{ align-self: flex-end; }
+  .chat-msg.me .bubble{
+    background: var(--pink);
+    color: white;
+    border-radius: 14px 14px 4px 14px;
+  }
+  .chat-msg .meta{
+    font-size: 11px;
+    color: var(--ink-soft);
+    margin-bottom: 3px;
+    padding: 0 4px;
+  }
+  .chat-msg.me .meta{ text-align: right; }
+  .chat-empty{
+    margin: auto;
+    color: var(--ink-soft);
+    font-size: 14px;
+    text-align: center;
+  }
+
+  .chat-inputbar{
+    border-top: 1px solid rgba(27,19,48,0.1);
+    padding: 14px 16px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    background: white;
+  }
+  .chat-inputbar input[type="text"]{
+    flex: 1;
+    border: 1px solid rgba(27,19,48,0.15);
+    border-radius: 100px;
+    padding: 10px 16px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+  }
+  .chat-inputbar input[name="handle"]{ max-width: 110px; }
+  .chat-send{
+    background: var(--pink);
+    color: white;
+    border: none;
+    border-radius: 100px;
+    padding: 10px 20px;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    white-space: nowrap;
+  }
+  .chat-send:hover{ background: var(--purple); }
+  .chat-status{
+    text-align: center;
+    font-size: 11.5px;
+    color: var(--ink-soft);
+    padding: 6px 0 0;
+  }
+
+  @media (max-width: 760px){
+    .chat-hero h1{ font-size: 28px; }
+    .chat-window{ height: 65vh; border-radius: 14px; }
+    .chat-inputbar input[name="handle"]{ max-width: 80px; }
+  }
+
 </style>
 </head>
 <body>
@@ -432,67 +550,36 @@
     <li><a href="debrief.html">Debrief</a></li>
     <li><a href="redacted.html">Redacted</a></li>
     <li><a href="about.html">About</a></li>
-    <li><a href="hotsauce.html" class="active">Hot Sauce</a></li>
+    <li><a href="hotsauce.html">Hot Sauce</a></li>
     <li><a href="pinboard.html">Pinboard</a></li>
-    <li><a href="chatroom.html">Chatroom</a></li>
+    <li><a href="chatroom.html" class="active">Chatroom</a></li>
   </ul>
   <button class="navlisten"><span class="dot"></span>Listen live</button>
   <button class="navtoggle" aria-label="Open menu"><span></span><span></span><span></span></button>
 </nav>
 
 
-<section class="pagehero pink">
+<section class="chat-hero">
   <div class="wrap">
-    <div class="eyebrow">SIDE PROJECT</div>
-    <h1>Top Secret Hot Sauce.</h1>
-    <p>The station's own hot sauce. Small batch, deep and spicy, sitting high on the Scoville scale — and given away, not sold.</p>
+    <div class="eyebrow">LIVE ROOM</div>
+    <h1>The Chatroom.</h1>
+    <p>Hang out with other listeners while the show's on. No account needed &mdash; just a name and something to say.</p>
   </div>
 </section>
 
-<section class="content wrap">
-  <p class="lead">Every month, one bottle goes out. No purchase, no store, no listing — just the station rewarding whoever brings something worth hearing.</p>
-
-  <h2 class="sectiontitle">How to win a bottle</h2>
-  <div class="tilegrid">
-    <div class="tile">
-      <h3>Best story</h3>
-      <p>Send in something worth telling — the kind of tale that belongs on Debrief or Redacted.</p>
+<div class="chat-wrap">
+  <div class="chat-window">
+    <div class="chat-messages" id="chatMessages">
+      <div class="chat-empty">Loading the room&hellip;</div>
     </div>
-    <div class="tile">
-      <h3>Rarest vinyl</h3>
-      <p>Show us the deepest cut in your crate. If it's obscure enough to earn a spot in The Archive, it's in the running.</p>
-    </div>
-    <div class="tile">
-      <h3>Best recommendation</h3>
-      <p>A track, a station, a rabbit hole worth falling into — tell us what we're missing.</p>
-    </div>
-    <div class="tile">
-      <h3>Instagram comments</h3>
-      <p>Drop your entry in the comments on our Instagram — that's where each month's winner gets picked from.</p>
+    <div class="chat-inputbar">
+      <input type="text" id="chatHandle" name="handle" maxlength="16" placeholder="Name">
+      <input type="text" id="chatText" maxlength="240" placeholder="Say something&hellip;">
+      <button class="chat-send" id="chatSend">Send</button>
     </div>
   </div>
-
-  <h2 class="sectiontitle">The bottle</h2>
-  <div class="infobox">
-    <h3>Deep, spicy, and flavourful</h3>
-    <p>Sitting very high on the Scoville scale — this isn't a starter sauce. Small batch, made to be talked about, not finished in one sitting.</p>
-  </div>
-
-  <h2 class="sectiontitle">Track this month's drop</h2>
-  <div class="infobox" style="background: rgba(46,196,182,0.08); border-color: rgba(46,196,182,0.3); display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap;">
-    <div>
-      <h3>Follow the drop live on Chalo</h3>
-      <p>We post each month's hot sauce drop as an event on Chalo — a time window and rough location, not an exact pin. Follow along to know when it's live near you.</p>
-    </div>
-    <a href="https://chalo.now/map" target="_blank" rel="noopener" class="btn" style="background: var(--teal); color: white; white-space:nowrap;">Open Chalo map</a>
-  </div>
-
-  <h2 class="sectiontitle">Where to send it</h2>
-  <div class="infobox" style="background: rgba(255,77,109,0.06); border-color: rgba(255,77,109,0.3);">
-    <h3>No address — it's classified</h3>
-    <p>There isn't a shipping address to publish, and that's intentional. Winners are contacted directly through Instagram once picked each month.</p>
-  </div>
-</section>
+  <div class="chat-status" id="chatStatus">&nbsp;</div>
+</div>
 
 
 <footer>
@@ -522,8 +609,8 @@
         <h4>Follow</h4>
         <ul>
           <li><a href="https://discord.gg/8hhQPM6Ne" target="_blank" rel="noopener">Discord</a></li>
+          <li><a href="chatroom.html">Live Chatroom</a></li>
           <li><a href="#">Instagram</a></li>
-          <li><a href="#">RSS feed</a></li>
         </ul>
       </div>
     </div>
@@ -542,49 +629,132 @@
       links.classList.toggle('open');
     });
   });
-</script>
 
-<audio id="topsecretAudio" preload="none"></audio>
-<script>
-  (function(){
-    var STREAM_URL = "https://azura-3949.az-streamingserver.com/listen/topsecret.fm/radio.mp3";
-    var audio = document.getElementById('topsecretAudio');
-    var buttons = document.querySelectorAll('.navlisten, .js-tune-in');
-    var playing = false;
+  // ---- CHATROOM BACKEND CONFIG ----
+  // Go to https://extendsclass.com/json-storage.html, type [] into the
+  // editor, click Save (no account needed), and paste the bin ID below.
+  const CHAT_BIN_ID = "PASTE_YOUR_CHAT_BIN_ID_HERE";
+  const CHAT_API_BASE = "https://json.extendsclass.com/bin/" + CHAT_BIN_ID;
+  const POLL_INTERVAL_MS = 3000;
 
-    function setLabel(btn){
-      if(btn.classList.contains('navlisten')){
-        btn.innerHTML = playing ? '<span class="dot"></span>Pause' : '<span class="dot"></span>Listen live';
-      } else {
-        btn.textContent = playing ? '\u23F8 Pause' : '\u25B6 Tune in now';
-      }
+  const messagesEl = document.getElementById('chatMessages');
+  const statusEl = document.getElementById('chatStatus');
+  const handleEl = document.getElementById('chatHandle');
+  const textEl = document.getElementById('chatText');
+  const sendBtn = document.getElementById('chatSend');
+
+  // Remember the person's chosen name locally
+  const savedHandle = localStorage.getItem('topsecret_chat_handle');
+  if(savedHandle){ handleEl.value = savedHandle; }
+
+  // A random ID to know which bubbles are "mine" for styling
+  let myId = localStorage.getItem('topsecret_chat_id');
+  if(!myId){
+    myId = Math.random().toString(36).slice(2);
+    localStorage.setItem('topsecret_chat_id', myId);
+  }
+
+  let lastRenderedCount = -1;
+
+  function escapeHtml(str){
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  function renderMessages(messages){
+    if(!messages || messages.length === 0){
+      messagesEl.innerHTML = '<div class="chat-empty">No messages yet &mdash; say hi.</div>';
+      lastRenderedCount = 0;
+      return;
+    }
+    if(messages.length === lastRenderedCount) return; // nothing new, skip re-render (keeps scroll position)
+
+    const wasNearBottom = (messagesEl.scrollHeight - messagesEl.scrollTop - messagesEl.clientHeight) < 80;
+
+    messagesEl.innerHTML = '';
+    messages.slice(-100).forEach(function(m){
+      const mine = m.id === myId;
+      const row = document.createElement('div');
+      row.className = 'chat-msg' + (mine ? ' me' : '');
+
+      const meta = document.createElement('div');
+      meta.className = 'meta';
+      meta.textContent = (m.name || 'anon');
+
+      const bubble = document.createElement('div');
+      bubble.className = 'bubble';
+      bubble.textContent = m.text;
+
+      row.appendChild(meta);
+      row.appendChild(bubble);
+      messagesEl.appendChild(row);
+    });
+
+    lastRenderedCount = messages.length;
+
+    if(wasNearBottom){
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+    }
+  }
+
+  async function loadMessages(){
+    if(CHAT_BIN_ID.startsWith("PASTE")){
+      messagesEl.innerHTML = '<div class="chat-empty">Chatroom isn\'t connected yet.</div>';
+      return;
+    }
+    try{
+      const res = await fetch(CHAT_API_BASE);
+      const data = await res.json();
+      renderMessages(Array.isArray(data) ? data : []);
+    }catch(e){
+      // stay quiet on transient poll errors
+    }
+  }
+
+  async function sendMessage(){
+    const name = (handleEl.value || 'anon').trim().slice(0,16) || 'anon';
+    const text = textEl.value.trim();
+    if(!text) return;
+
+    if(CHAT_BIN_ID.startsWith("PASTE")){
+      statusEl.textContent = "Chatroom isn't connected yet.";
+      return;
     }
 
-    function updateAll(){
-      buttons.forEach(function(btn){
-        setLabel(btn);
-        btn.classList.toggle('playing', playing);
+    localStorage.setItem('topsecret_chat_handle', name);
+    statusEl.textContent = 'Sending\u2026';
+
+    try{
+      const res = await fetch(CHAT_API_BASE);
+      const existing = await res.json();
+      const messages = Array.isArray(existing) ? existing : [];
+      messages.push({ id: myId, name: name, text: text.slice(0,240), ts: Date.now() });
+      // keep the bin from growing forever
+      const trimmed = messages.slice(-200);
+
+      await fetch(CHAT_API_BASE, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(trimmed)
       });
-    }
 
-    function toggle(e){
-      e.preventDefault();
-      if(!audio.src){ audio.src = STREAM_URL; }
-      if(playing){
-        audio.pause();
-        playing = false;
-      } else {
-        audio.play().catch(function(){});
-        playing = true;
-      }
-      updateAll();
+      textEl.value = '';
+      statusEl.textContent = '\u00a0';
+      lastRenderedCount = -1; // force re-render
+      renderMessages(trimmed);
+    }catch(e){
+      statusEl.textContent = 'Message failed to send \u2014 try again.';
     }
+  }
 
-    buttons.forEach(function(btn){ btn.addEventListener('click', toggle); });
-    audio.addEventListener('pause', function(){ playing = false; updateAll(); });
-    audio.addEventListener('playing', function(){ playing = true; updateAll(); });
-    updateAll();
-  })();
+  sendBtn.addEventListener('click', sendMessage);
+  textEl.addEventListener('keydown', function(e){
+    if(e.key === 'Enter'){ sendMessage(); }
+  });
+
+  loadMessages();
+  setInterval(loadMessages, POLL_INTERVAL_MS);
 </script>
 </body>
 </html>
