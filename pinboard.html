@@ -664,6 +664,7 @@
   const colors = ["#ffc145", "#ff4d6d", "#2ec4b6", "#ffb020"];
   const grid = document.getElementById('pinboardGrid');
   const statusEl = document.getElementById('pinStatus');
+  let lastKnownGoodPins = null; // never trust an error response over this
 
   function renderPins(pins){
     if(!pins || pins.length === 0){
@@ -690,18 +691,35 @@
     });
   }
 
+  // Returns the pins array on success, or null on ANY failure (bad status,
+  // malformed body, network error) — never an empty array just because the
+  // request itself failed, so a rate limit can't look like "no pins."
+  async function fetchPins(){
+    try{
+      const res = await fetch(API_BASE);
+      if(!res.ok) return null;
+      const data = await res.json();
+      if(!Array.isArray(data)) return null;
+      return data;
+    }catch(e){
+      return null;
+    }
+  }
+
   async function loadPins(){
     if(BIN_ID.startsWith("PASTE")){
       grid.innerHTML = '<div class="pin-empty">Pinboard isn\'t connected yet.</div>';
       return;
     }
-    try{
-      const res = await fetch(API_BASE);
-      const data = await res.json();
-      renderPins(Array.isArray(data) ? data : []);
-    }catch(e){
-      grid.innerHTML = '<div class="pin-empty">Couldn\'t load the board right now.</div>';
+    const data = await fetchPins();
+    if(data === null){
+      if(lastKnownGoodPins === null){
+        grid.innerHTML = '<div class="pin-empty">Having trouble loading the board &mdash; try refreshing in a moment.</div>';
+      }
+      return;
     }
+    lastKnownGoodPins = data;
+    renderPins(data);
   }
 
   async function submitPin(){
@@ -717,19 +735,27 @@
       return;
     }
     statusEl.textContent = 'Pinning…';
+
+    // Build on the last confirmed-good state rather than a fresh (and
+    // possibly failed) read, so a flaky GET can't wipe real pins.
+    const existing = lastKnownGoodPins || (await fetchPins()) || [];
+    const pins = existing.slice();
+    pins.push({ text: text.slice(0,140), name: nameEl.value.trim().slice(0,20), ts: Date.now() });
+
     try{
-      const res = await fetch(API_BASE);
-      const existing = await res.json();
-      const pins = Array.isArray(existing) ? existing : [];
-      pins.push({ text: text.slice(0,140), name: nameEl.value.trim().slice(0,20), ts: Date.now() });
-      await fetch(API_BASE, {
+      const res = await fetch(API_BASE, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(pins)
       });
+      if(!res.ok){
+        statusEl.textContent = 'Pin failed to save (server busy) \u2014 try again in a moment.';
+        return;
+      }
       textEl.value = '';
       nameEl.value = '';
       statusEl.textContent = 'Pinned!';
+      lastKnownGoodPins = pins;
       renderPins(pins);
     }catch(e){
       statusEl.textContent = 'Something went wrong — try again.';
