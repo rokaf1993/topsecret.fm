@@ -654,12 +654,9 @@
     });
   });
 
-  // ---- PINBOARD BACKEND CONFIG ----
-  // Go to https://extendsclass.com/json-storage.html
-  // Paste [] into the JSON editor box, click "Save" (no account needed).
-  // Copy the bin ID from the URI it gives you and paste it below.
-  const BIN_ID = "105ef0390fbf";
-  const API_BASE = "https://json.extendsclass.com/bin/" + BIN_ID;
+  // ---- PINBOARD: live backend (same Cloudflare Worker as the chatroom) ----
+  const WORKER_HOST = "topsecret-chatroom.fazrokadiya.workers.dev";
+  const API_BASE = "https://" + WORKER_HOST + "/pins";
 
   const colors = ["#ffc145", "#ff4d6d", "#2ec4b6", "#ffb020"];
   const grid = document.getElementById('pinboardGrid');
@@ -699,18 +696,14 @@
       const res = await fetch(API_BASE);
       if(!res.ok) return null;
       const data = await res.json();
-      if(!Array.isArray(data)) return null;
-      return data;
+      if(!data || !Array.isArray(data.pins)) return null;
+      return data.pins;
     }catch(e){
       return null;
     }
   }
 
   async function loadPins(){
-    if(BIN_ID.startsWith("PASTE")){
-      grid.innerHTML = '<div class="pin-empty">Pinboard isn\'t connected yet.</div>';
-      return;
-    }
     const data = await fetchPins();
     if(data === null){
       if(lastKnownGoodPins === null){
@@ -730,33 +723,29 @@
       statusEl.textContent = 'Write something first.';
       return;
     }
-    if(BIN_ID.startsWith("PASTE")){
-      statusEl.textContent = 'Pinboard isn\'t connected yet.';
-      return;
-    }
     statusEl.textContent = 'Pinning…';
-
-    // Build on the last confirmed-good state rather than a fresh (and
-    // possibly failed) read, so a flaky GET can't wipe real pins.
-    const existing = lastKnownGoodPins || (await fetchPins()) || [];
-    const pins = existing.slice();
-    pins.push({ text: text.slice(0,140), name: nameEl.value.trim().slice(0,20), ts: Date.now() });
 
     try{
       const res = await fetch(API_BASE, {
-        method: "PUT",
+        method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(pins)
+        body: JSON.stringify({
+          text: text.slice(0,140),
+          name: nameEl.value.trim().slice(0,20)
+        })
       });
+      const data = await res.json().catch(function(){ return null; });
+
       if(!res.ok){
-        statusEl.textContent = 'Pin failed to save (server busy) \u2014 try again in a moment.';
+        statusEl.textContent = (data && data.error) ? data.error : 'Pin failed to save \u2014 try again in a moment.';
         return;
       }
+
       textEl.value = '';
       nameEl.value = '';
       statusEl.textContent = 'Pinned!';
-      lastKnownGoodPins = pins;
-      renderPins(pins);
+      lastKnownGoodPins = data.pins;
+      renderPins(data.pins);
     }catch(e){
       statusEl.textContent = 'Something went wrong — try again.';
     }
