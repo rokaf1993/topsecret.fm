@@ -630,12 +630,8 @@
     });
   });
 
-  // ---- CHATROOM BACKEND CONFIG ----
-  // Go to https://extendsclass.com/json-storage.html, type [] into the
-  // editor, click Save (no account needed), and paste the bin ID below.
-  const CHAT_BIN_ID = "a3c27e27a0d4";
-  const CHAT_API_BASE = "https://json.extendsclass.com/bin/" + CHAT_BIN_ID;
-  const POLL_INTERVAL_MS = 12000; // kept deliberately slow to stay under the free service's quota
+  // ---- CHATROOM: live backend (Cloudflare Worker + Durable Object) ----
+  const WORKER_HOST = "topsecret-chatroom.fazrokadiya.workers.dev";
 
   const messagesEl = document.getElementById('chatMessages');
   const statusEl = document.getElementById('chatStatus');
@@ -643,137 +639,101 @@
   const textEl = document.getElementById('chatText');
   const sendBtn = document.getElementById('chatSend');
 
-  // Remember the person's chosen name locally
   const savedHandle = localStorage.getItem('topsecret_chat_handle');
   if(savedHandle){ handleEl.value = savedHandle; }
 
-  // A random ID to know which bubbles are "mine" for styling
   let myId = localStorage.getItem('topsecret_chat_id');
   if(!myId){
     myId = Math.random().toString(36).slice(2);
     localStorage.setItem('topsecret_chat_id', myId);
   }
 
-  let lastRenderedCount = -1;
-  let lastKnownGoodMessages = null; // never trust an error response over this
+  let ws = null;
+  let reconnectDelay = 1000;
+  let joinedAs = null; // name we last sent a "join" for on the current socket
 
-  function renderMessages(messages){
+  function renderAll(messages){
     if(!messages || messages.length === 0){
       messagesEl.innerHTML = '<div class="chat-empty">No messages yet &mdash; say hi.</div>';
-      lastRenderedCount = 0;
       return;
     }
-    if(messages.length === lastRenderedCount) return; // nothing new, skip re-render (keeps scroll position)
-
     const wasNearBottom = (messagesEl.scrollHeight - messagesEl.scrollTop - messagesEl.clientHeight) < 80;
-
     messagesEl.innerHTML = '';
-    messages.slice(-100).forEach(function(m){
-      const mine = m.id === myId;
-      const row = document.createElement('div');
-      row.className = 'chat-msg' + (mine ? ' me' : '');
+    messages.slice(-100).forEach(appendBubble);
+    if(wasNearBottom){ messagesEl.scrollTop = messagesEl.scrollHeight; }
+  }
 
-      const meta = document.createElement('div');
-      meta.className = 'meta';
-      meta.textContent = (m.name || 'anon');
+  function appendBubble(m){
+    const mine = m.clientId && m.clientId === myId;
+    const row = document.createElement('div');
+    row.className = 'chat-msg' + (mine ? ' me' : '');
 
-      const bubble = document.createElement('div');
-      bubble.className = 'bubble';
-      bubble.textContent = m.text;
+    const meta = document.createElement('div');
+    meta.className = 'meta';
+    meta.textContent = (m.name || 'anon');
 
-      row.appendChild(meta);
-      row.appendChild(bubble);
-      messagesEl.appendChild(row);
+    const bubble = document.createElement('div');
+    bubble.className = 'bubble';
+    bubble.textContent = m.text;
+
+    row.appendChild(meta);
+    row.appendChild(bubble);
+    messagesEl.appendChild(row);
+  }
+
+  function connect(){
+    statusEl.textContent = 'Connecting\u2026';
+    ws = new WebSocket('wss://' + WORKER_HOST + '/ws');
+
+    ws.addEventListener('open', function(){
+      reconnectDelay = 1000;
+      statusEl.textContent = '\u00a0';
+      joinedAs = null; // force a fresh join on this new socket
     });
 
-    lastRenderedCount = messages.length;
-
-    if(wasNearBottom){
-      messagesEl.scrollTop = messagesEl.scrollHeight;
-    }
-  }
-
-  // Fetches the bin. Returns the array on success, or null on any failure
-  // (network error, rate limit, malformed response) — NEVER returns an
-  // empty array just because the request failed, so a bad request can't
-  // be mistaken for "the room is actually empty."
-  async function fetchMessages(){
-    try{
-      const res = await fetch(CHAT_API_BASE);
-      if(!res.ok){
-        return null; // e.g. 429 rate limit, 404, etc — treat as unknown, not empty
+    ws.addEventListener('message', function(event){
+      const data = JSON.parse(event.data);
+      if(data.type === 'history'){
+        renderAll(data.messages);
+      } else if(data.type === 'message'){
+        const wasNearBottom = (messagesEl.scrollHeight - messagesEl.scrollTop - messagesEl.clientHeight) < 80;
+        if(messagesEl.querySelector('.chat-empty')){ messagesEl.innerHTML = ''; }
+        appendBubble(data);
+        if(wasNearBottom){ messagesEl.scrollTop = messagesEl.scrollHeight; }
+      } else if(data.type === 'error'){
+        statusEl.textContent = data.error;
       }
-      const data = await res.json();
-      if(!Array.isArray(data)){
-        return null; // error payloads from the API come back as an object, not an array
-      }
-      return data;
-    }catch(e){
-      return null; // network failure
-    }
-  }
+    });
 
-  async function loadMessages(){
-    if(CHAT_BIN_ID.startsWith("PASTE")){
-      messagesEl.innerHTML = '<div class="chat-empty">Chatroom isn\'t connected yet.</div>';
-      return;
-    }
-    const data = await fetchMessages();
-    if(data === null){
-      // Request failed — keep showing whatever we last successfully loaded,
-      // don't blank the room out. Just quietly note it in the status line.
-      if(lastKnownGoodMessages === null){
-        messagesEl.innerHTML = '<div class="chat-empty">Having trouble loading the room &mdash; retrying&hellip;</div>';
-      }
+    ws.addEventListener('close', function(){
       statusEl.textContent = 'Reconnecting\u2026';
-      return;
-    }
-    lastKnownGoodMessages = data;
-    statusEl.textContent = '\u00a0';
-    renderMessages(data);
+      setTimeout(connect, reconnectDelay);
+      reconnectDelay = Math.min(reconnectDelay * 2, 15000);
+    });
+
+    ws.addEventListener('error', function(){
+      ws.close();
+    });
   }
 
-  async function sendMessage(){
-    const name = (handleEl.value || 'anon').trim().slice(0,16) || 'anon';
-    const text = textEl.value.trim();
-    if(!text) return;
+  function ensureJoined(name){
+    if(joinedAs === name) return;
+    ws.send(JSON.stringify({ type: 'join', name: name, clientId: myId }));
+    joinedAs = name;
+  }
 
-    if(CHAT_BIN_ID.startsWith("PASTE")){
-      statusEl.textContent = "Chatroom isn't connected yet.";
+  function sendMessage(){
+    const name = (handleEl.value || 'anon').trim().slice(0,16) || 'anon';
+    const text = textEl.value.trim().slice(0,240);
+    if(!text) return;
+    if(!ws || ws.readyState !== WebSocket.OPEN){
+      statusEl.textContent = "Not connected yet \u2014 try again in a second.";
       return;
     }
-
     localStorage.setItem('topsecret_chat_handle', name);
-    statusEl.textContent = 'Sending\u2026';
-
-    // Base the new message list on the last confirmed-good state, not a
-    // fresh (and possibly failed) fetch — avoids wiping real messages if
-    // this particular read happens to fail.
-    const existing = lastKnownGoodMessages || (await fetchMessages()) || [];
-    const messages = existing.slice();
-    messages.push({ id: myId, name: name, text: text.slice(0,240), ts: Date.now() });
-    const trimmed = messages.slice(-200); // keep the bin from growing forever
-
-    try{
-      const res = await fetch(CHAT_API_BASE, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(trimmed)
-      });
-
-      if(!res.ok){
-        statusEl.textContent = 'Message failed to send (server busy) \u2014 try again in a moment.';
-        return;
-      }
-
-      textEl.value = '';
-      statusEl.textContent = '\u00a0';
-      lastKnownGoodMessages = trimmed;
-      lastRenderedCount = -1; // force re-render
-      renderMessages(trimmed);
-    }catch(e){
-      statusEl.textContent = 'Message failed to send \u2014 check your connection and try again.';
-    }
+    ensureJoined(name);
+    ws.send(JSON.stringify({ type: 'message', text: text }));
+    textEl.value = '';
   }
 
   sendBtn.addEventListener('click', sendMessage);
@@ -781,8 +741,7 @@
     if(e.key === 'Enter'){ sendMessage(); }
   });
 
-  loadMessages();
-  setInterval(loadMessages, POLL_INTERVAL_MS);
+  connect();
 </script>
 </body>
 </html>
