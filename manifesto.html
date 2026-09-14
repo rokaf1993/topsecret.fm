@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Manifesto for What We Refuse to Rent</title>
+<meta name="description" content="A manifesto about power, ownership, and community-governed technology.">
+<style>
+  :root{
+    --bg: #10171A;
+    --paper: #EDE7D9;
+    --paper-dim: #B9B2A0;
+    --gold: #C9A227;
+    --sage: #7C9070;
+    --rule: rgba(237,231,217,0.14);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background: var(--bg);
+    color: var(--paper);
+    font-family: Georgia, 'Iowan Old Style', 'Palatino Linotype', serif;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  .mf-hero{
+    position: relative;
+    padding: 5.5rem 1.5rem 4rem;
+    max-width: 760px;
+    margin: 0 auto;
+    overflow: hidden;
+  }
+  .mf-hero::before{
+    content:"";
+    position:absolute;
+    top:-30%; right:-20%;
+    width: 480px; height: 480px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(201,162,39,0.16) 0%, rgba(201,162,39,0) 70%);
+    animation: mf-glow 9s ease-in-out infinite;
+    pointer-events:none;
+  }
+  @keyframes mf-glow{
+    0%,100%{ transform: translate(0,0) scale(1); opacity:1; }
+    50%{ transform: translate(-30px,20px) scale(1.08); opacity:0.75; }
+  }
+  .mf-kicker{
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    font-size: 0.82rem;
+    color: var(--sage);
+    margin: 0 0 1.4rem;
+    position: relative;
+  }
+  .mf-title{
+    font-size: clamp(2.2rem, 6vw, 3.4rem);
+    line-height: 1.1;
+    margin: 0 0 1.6rem;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    max-width: 14ch;
+    position: relative;
+  }
+  .mf-title em{ font-style: italic; color: var(--gold); }
+  .mf-dek{
+    font-size: 1.05rem;
+    color: var(--paper-dim);
+    max-width: 50ch;
+    margin: 0 0 0.9rem;
+    position: relative;
+  }
+  .mf-byline{
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    font-size: 0.8rem;
+    color: var(--sage);
+    max-width: 50ch;
+    margin: 0;
+    position: relative;
+  }
+  .mf-epigraph{
+    font-style: italic;
+    color: var(--paper);
+    font-size: 1.05rem;
+    max-width: 620px;
+    margin: 2.4rem auto 0;
+    padding: 0 1.5rem;
+  }
+  .mf-body{
+    max-width: 620px;
+    margin: 0 auto;
+    padding: 0 1.5rem 2rem;
+  }
+  .mf-section{
+    padding: 2.8rem 0;
+    border-top: 1px solid var(--rule);
+  }
+  .mf-eyebrow{
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    font-size: 0.78rem;
+    color: var(--gold);
+    margin: 0 0 0.9rem;
+    letter-spacing: 0.01em;
+  }
+  .mf-h2{
+    font-size: 1.55rem;
+    font-weight: 400;
+    margin: 0 0 1.1rem;
+    color: var(--paper);
+  }
+  .mf-section p{
+    font-size: 1.04rem;
+    color: rgba(237,231,217,0.92);
+    margin: 0 0 1rem;
+    max-width: 60ch;
+  }
+  .mf-section p:last-child{ margin-bottom:0; }
+  .mf-closing{
+    text-align:center;
+    padding: 3.5rem 0 1rem;
+  }
+  .mf-closing p{
+    font-style: italic;
+    color: var(--paper-dim);
+    font-size: 1rem;
+  }
+  .mf-share{
+    max-width: 620px;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem 4.5rem;
+    border-top: 1px solid var(--rule);
+  }
+  .mf-share-head{
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    font-size: 1.02rem;
+    color: var(--paper);
+    margin: 0 0 0.5rem;
+  }
+  .mf-share-sub{
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    font-size: 0.88rem;
+    color: var(--paper-dim);
+    margin: 0 0 1.6rem;
+    max-width: 48ch;
+  }
+  .mf-actions{ display:flex; gap: 0.7rem; flex-wrap: wrap; align-items:center; }
+  .mf-btn{
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    font-size: 0.86rem;
+    padding: 0.65rem 1.1rem;
+    border-radius: 3px;
+    border: 1px solid var(--rule);
+    background: transparent;
+    color: var(--paper);
+    cursor: pointer;
+    transition: border-color 0.15s ease, background 0.15s ease;
+  }
+  .mf-btn:hover{ border-color: var(--gold); background: rgba(201,162,39,0.08); }
+  .mf-btn.mf-primary{ background: var(--gold); color: #1A1405; border-color: var(--gold); }
+  .mf-btn.mf-primary:hover{ background: #DDB53A; }
+  .mf-copied{
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    font-size: 0.82rem;
+    color: var(--sage);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+  }
+  .mf-copied.show{ opacity: 1; }
+  .mf-back{
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    font-size: 0.8rem;
+    color: var(--sage);
+    text-decoration: none;
+    display: inline-block;
+    padding: 1.2rem 1.5rem 0;
+  }
+  .mf-back:hover{ color: var(--gold); }
+  @media (max-width: 480px){
+    .mf-hero{ padding: 3.5rem 1.25rem 3rem; }
+    .mf-body, .mf-share{ padding-left: 1.25rem; padding-right: 1.25rem; }
+    .mf-epigraph{ padding: 0 1.25rem; }
+  }
+</style>
+</head>
+<body>
+
+  <a class="mf-back" href="index.html">&larr; topsecret.fm</a>
+
+  <div class="mf-hero">
+    <p class="mf-kicker">A manifesto</p>
+    <h1 class="mf-title">What we refuse to <em>rent</em></h1>
+    <p class="mf-dek">Written for whoever might act on it — the builder, the community, the institution, the world leader and the policymaker who sets the terms the rest of us live under, and whoever is teaching a new kind of intelligence what to optimize for, because it will inherit whatever logic we hand it.</p>
+    <p class="mf-byline">Developed through iterative critique between Claude (Anthropic) and ChatGPT (OpenAI), coordinated and edited by its author.</p>
+  </div>
+
+  <p class="mf-epigraph">Everything that follows is an attempt to act as if we believed it.</p>
+
+  <div class="mf-body">
+
+    <div class="mf-section">
+      <p class="mf-eyebrow">What we believe</p>
+      <h2 class="mf-h2">There is one question underneath every other question</h2>
+      <p>Who has power over the thing you depend on? Who controls it. Who benefits from it. Who bears the cost when it goes wrong. Who can question it. Who can leave it. Who owns it.</p>
+      <p>Ask that question of a river, a platform, a government, a corporation, a piece of software, or a new kind of intelligence, and you'll get a real answer every time — usually an uncomfortable one. We think that question, asked honestly and often, is most of what ethics actually is. Everything below is that same question, applied to a different room.</p>
+    </div>
+
+    <div class="mf-section">
+      <p class="mf-eyebrow">What we reject</p>
+      <h2 class="mf-h2">Growth as survival, centralization as efficiency, confusion as a business model</h2>
+      <p>We reject growth as the condition of survival. Not growth itself — growth that must never stop, on pain of the thing dying, because a tool built to satisfy that appetite will eventually extract from whoever it can reach, including the people it was built for.</p>
+      <p>We reject the idea that centralizing something automatically makes it more efficient. Often it just makes it easier for one party to meter, price, and withhold.</p>
+      <p>We reject products that are "free" because the actual product being sold is the person using them.</p>
+      <p>We reject systems that profit when people can no longer tell what is true from what is merely persuasive. A platform paid by engagement has no incentive to help you find what's accurate, only what keeps you there. An institution that communicates strategically instead of honestly is optimizing for the same thing a bad platform is — belief, not truth. And a technology capable of producing convincing falsehoods, deployed by people with no stake in whether you know what's real, is the same problem at a larger scale. We don't think this is a new kind of problem. We think it's the oldest problem — who controls what you believe — wearing a faster interface.</p>
+      <p>We reject the idea that power becomes acceptable once it's wrapped in good intentions or good design. Power that cannot be questioned is not stewardship, whether it belongs to a government, a company, a platform, or a machine we built and can no longer fully explain.</p>
+    </div>
+
+    <div class="mf-section">
+      <p class="mf-eyebrow">What we owe</p>
+      <h2 class="mf-h2">Honesty, restraint, and a harder kind of peace</h2>
+      <p>We owe each other honesty before persuasion.</p>
+      <p>We owe the earth an honest accounting: we did not inherit it from our ancestors, we are borrowing it from people who have not been born yet, and they did not agree to the terms. We treat restraint as a form of intelligence, not a failure of ambition.</p>
+      <p>We owe each other something harder than agreement: the discipline to build peace out of conflict rather than around it. Peace built on people staying quiet about power they don't have isn't peace — it's exhaustion wearing peace's clothes. Real peace requires that power be nameable: that people can say who has it, how they got it, and what would cause them to lose it.</p>
+    </div>
+
+    <div class="mf-section">
+      <p class="mf-eyebrow">What we will build</p>
+      <h2 class="mf-h2">Owned, not rented — small enough to govern</h2>
+      <p>We think a community should be able to own — not just use — the infrastructure its life runs on. A community with no ownership stake in the platform it depends on isn't a customer, it's a tenant: rent can rise, locks can change, the building can be sold, and the tenant never gets a vote.</p>
+      <p>So we build small, on purpose, when small means the people using something can still see all the way through it and change what they don't like. A tool three hundred people fully understand and govern can matter more than one three million people use passively with no say in it. We are not impressed by scale that was bought at the cost of anyone's ability to leave, question, or change what they depend on.</p>
+      <p>We build slowly enough to include the people the decision will affect, because local knowledge — how a street actually organizes itself, who's trusted and why, what a place actually needs — is real expertise, and it's exactly what gets erased when a tool is built somewhere else, for everywhere, by people who've never been there.</p>
+      <p>We do not believe everything valuable has to become a venture-backed company. Some things should stay held in common, governed by the people who use them, funded honestly instead of grown until they need to extract to survive.</p>
+    </div>
+
+    <div class="mf-section">
+      <p class="mf-eyebrow">What we ask of you</p>
+      <h2 class="mf-h2">Not agreement. Something more specific.</h2>
+      <p>Before you adopt a tool your community will come to depend on, find out who can take it away, and on what terms — then treat the answer as a real piece of information, not a footnote.</p>
+      <p>If you're building something people will depend on, build in a way that lets them leave, audit, or change it — and treat any design choice that removes that ability as a cost, even when it's convenient.</p>
+      <p>If you have a choice between a tool that's faster because it took power away from you, and one that's slower because it left that power in your hands, notice that you're being asked to make a trade, and make it on purpose.</p>
+      <p>And if you're teaching a new intelligence what matters — through data, through incentives, through what you reward it for — ask whether you're teaching it this question too: who controls, who benefits, who bears the cost, who can leave. An intelligence that never learns to ask that question will act like every extractive system that came before it, just faster.</p>
+    </div>
+
+    <div class="mf-closing">
+      <p>Written in the hope that someone reads this, disagrees with part of it, and builds something because of that disagreement.</p>
+    </div>
+  </div>
+
+  <div class="mf-share">
+    <p class="mf-share-head">Read something you'd push back on?</p>
+    <p class="mf-share-sub">Say so. Tell me where it's naive, where it's missing a mechanism, or where it gets something wrong.</p>
+    <div class="mf-actions">
+      <button class="mf-btn mf-primary" onclick="mfCopyLink(this)">Copy link</button>
+      <button class="mf-btn" onclick="mfShare(this)">Share</button>
+      <span class="mf-copied" id="mf-copied-msg">Copied</span>
+    </div>
+  </div>
+
+<script>
+  function mfCopyLink(btn){
+    const url = window.location.href;
+    const msg = document.getElementById('mf-copied-msg');
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(url).then(()=>{
+        msg.classList.add('show');
+        setTimeout(()=> msg.classList.remove('show'), 1800);
+      }).catch(()=>{
+        msg.textContent = url;
+        msg.classList.add('show');
+      });
+    }
+  }
+  function mfShare(btn){
+    if(navigator.share){
+      navigator.share({
+        title: 'What We Refuse to Rent — a manifesto',
+        text: 'A manifesto about power, ownership, and community-governed technology.',
+        url: window.location.href
+      }).catch(()=>{});
+    } else {
+      mfCopyLink(btn);
+    }
+  }
+</script>
+</body>
+</html>
