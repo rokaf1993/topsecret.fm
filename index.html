@@ -143,9 +143,24 @@
   .card h3{ font-size: 20px; margin-bottom: 10px; }
   .card p{ font-size: 14px; opacity:0.88; line-height:1.55; }
   .card .go{ font-size: 13px; font-weight:700; margin-top:16px; }
-  .card.c1{ background: var(--teal); }
-  .card.c2{ background: var(--pink); }
-  .card.c3{ background: #ffb020; }
+  .card.c1{
+    background: var(--teal);
+    background-image: linear-gradient(to top, rgba(46,196,182,0.88) 15%, rgba(27,19,48,0.5) 80%), url('dsc_0082.jpg');
+    background-size: cover;
+    background-position: center;
+  }
+  .card.c2{
+    background: var(--pink);
+    background-image: linear-gradient(to top, rgba(255,77,109,0.88) 15%, rgba(27,19,48,0.5) 80%), url('dsc_0398.jpg');
+    background-size: cover;
+    background-position: center 20%;
+  }
+  .card.c3{
+    background: #ffb020;
+    background-image: linear-gradient(to top, rgba(27,19,48,0.85) 15%, rgba(27,19,48,0.35) 80%), url('dsc_0061.jpg');
+    background-size: cover;
+    background-position: center;
+  }
 
   /* VALUES */
   .values{ padding: 76px 0; }
@@ -590,16 +605,16 @@
 
 <section class="cards wrap" style="padding-bottom:8px;">
   <h2>Outside the shows</h2>
-  <div class="noticebox" style="background: #ffb020; display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap;">
+  <div class="noticebox" style="background: linear-gradient(to top, rgba(27,19,48,0.88) 20%, rgba(27,19,48,0.5) 80%), url('dsc_0315.jpg'); background-size:cover; background-position:center; display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap;">
     <div>
-      <h3 style="color: var(--purple-deep);">The crate never stops spinning.</h3>
-      <p style="color: rgba(27,19,48,0.8);">No show live? The full archive shuffles completely at random, 24/7 &mdash; no schedule, no repeats you can predict, just whatever gets pulled out of the pile next. You never know what's coming. Neither do we.</p>
+      <h3 style="color: white;">The crate never stops spinning.</h3>
+      <p style="color: rgba(255,255,255,0.85);">No show live? The full archive shuffles completely at random, 24/7 &mdash; no schedule, no repeats you can predict, just whatever gets pulled out of the pile next. You never know what's coming. Neither do we.</p>
       <div class="tags" style="margin-top: 14px;">
-        <span class="pilltag" style="border-color: var(--purple-deep); color: var(--purple-deep);">Got a playlist worth playing?</span>
+        <span class="pilltag" style="border-color: white; color: white;">Got a playlist worth playing?</span>
       </div>
-      <p style="color: rgba(27,19,48,0.8); margin-top: 10px; font-size: 13.5px;">Send it our way &mdash; as an actual file (M3U, CSV, a note on the back of a napkin, whatever) or just list it out in an email. If it's good, it goes in the rotation.</p>
+      <p style="color: rgba(255,255,255,0.85); margin-top: 10px; font-size: 13.5px;">Send it our way &mdash; as an actual file (M3U, CSV, a note on the back of a napkin, whatever) or just list it out in an email. If it's good, it goes in the rotation.</p>
     </div>
-    <a href="mailto:hello@topsecret.fm?subject=Playlist%20submission" class="btn btn-fill" style="background: var(--purple-deep); color:white; white-space:nowrap;">✉ Email your playlist</a>
+    <a href="mailto:hello@topsecret.fm?subject=Playlist%20submission" class="btn btn-fill" style="background: var(--yellow); color:var(--purple-deep); white-space:nowrap;">✉ Email your playlist</a>
   </div>
 </section>
 
