@@ -294,6 +294,11 @@
   }
   .pagehero.teal{ background: var(--teal); }
   .pagehero.pink{ background: var(--pink); }
+  .pagehero.pink.has-photo{
+    background-image: linear-gradient(to top, rgba(255,77,109,0.85) 20%, rgba(27,19,48,0.65) 80%, rgba(27,19,48,0.4)), url('hotsauce-bottle.jpg');
+    background-size: cover;
+    background-position: center 25%;
+  }
   .pagehero.yellow{ background: #ffb020; color: var(--purple-deep); }
   .pagehero.yellow p{ color: rgba(27,19,48,0.75); }
   .pagehero.yellow .eyebrow{ color: var(--purple-deep); opacity:0.7; }
@@ -441,7 +446,7 @@
 </nav>
 
 
-<section class="pagehero pink">
+<section class="pagehero pink has-photo">
   <div class="wrap">
     <div class="eyebrow">SIDE PROJECT</div>
     <h1>Top Secret Hot Sauce.</h1>
