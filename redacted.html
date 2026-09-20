@@ -295,6 +295,14 @@
   .pagehero.teal{ background: var(--teal); }
   .pagehero.pink{ background: var(--pink); }
   .pagehero.yellow{ background: #ffb020; color: var(--purple-deep); }
+  .pagehero.yellow.has-photo{
+    background-image: linear-gradient(to top, rgba(27,19,48,0.88) 20%, rgba(27,19,48,0.55) 70%, rgba(27,19,48,0.25)), url('dsc_0054.jpg');
+    background-size: cover;
+    background-position: center;
+    color: white;
+  }
+  .pagehero.yellow.has-photo .eyebrow{ color: var(--yellow); opacity: 1; }
+  .pagehero.yellow.has-photo p{ color: rgba(255,255,255,0.85); }
   .pagehero.yellow p{ color: rgba(27,19,48,0.75); }
   .pagehero.yellow .eyebrow{ color: var(--purple-deep); opacity:0.7; }
   .pagehero.purple{ background: var(--purple); }
@@ -437,7 +445,7 @@
 </nav>
 
 
-<section class="pagehero yellow">
+<section class="pagehero yellow has-photo">
   <div class="wrap">
     <div class="eyebrow">FILE 03 — REDACTED</div>
     <h1>Off the record, in tone if not in fact.</h1>

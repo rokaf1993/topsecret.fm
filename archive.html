@@ -293,6 +293,11 @@
     max-width: 52ch;
   }
   .pagehero.teal{ background: var(--teal); }
+  .pagehero.teal.has-photo{
+    background-image: linear-gradient(to top, rgba(46,196,182,0.92) 20%, rgba(27,19,48,0.6) 70%, rgba(27,19,48,0.3)), url('dsc_0113.jpg');
+    background-size: cover;
+    background-position: center 30%;
+  }
   .pagehero.pink{ background: var(--pink); }
   .pagehero.yellow{ background: #ffb020; color: var(--purple-deep); }
   .pagehero.yellow p{ color: rgba(27,19,48,0.75); }
@@ -438,7 +443,7 @@
 </nav>
 
 
-<section class="pagehero teal">
+<section class="pagehero teal has-photo">
   <div class="wrap">
     <div class="eyebrow">FILE 01 — THE ARCHIVE</div>
     <h1>Deep crate excavations.</h1>
