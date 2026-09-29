@@ -14,60 +14,123 @@
   var audio = new Audio();
   audio.preload = 'none';
   var wantPlaying = false;
+  var mode = 'live';          // 'live' or 'episode'
+  var episode = null;         // { src, title } when an episode is loaded
 
   function isPlaying() { return wantPlaying && !audio.paused; }
 
+  function fmt(sec) {
+    sec = Math.max(0, Math.floor(sec || 0));
+    var h = Math.floor(sec / 3600), m = Math.floor(sec % 3600 / 60), s = sec % 60;
+    return (h ? h + ':' + (m < 10 ? '0' : '') : '') + m + ':' + (s < 10 ? '0' : '') + s;
+  }
+
+  function setSession(title, artist) {
+    if (!('mediaSession' in navigator)) return;
+    try { navigator.mediaSession.metadata = new MediaMetadata({ title: title, artist: artist }); } catch (e) {}
+  }
+
   function relabel() {
     var on = isPlaying();
+    var liveOn = on && mode === 'live';
     document.querySelectorAll('.navlisten').forEach(function (b) {
       b.innerHTML = '<span class="dot"></span>' + (on ? 'Pause' : 'Listen live');
       b.classList.toggle('playing', on);
       b.setAttribute('aria-pressed', on ? 'true' : 'false');
     });
     document.querySelectorAll('.js-tune-in').forEach(function (b) {
-      b.textContent = on ? '⏸ Pause' : '▶ Tune in now';
-      b.classList.toggle('playing', on);
+      b.textContent = liveOn ? '⏸ Pause' : '▶ Tune in now';
+      b.classList.toggle('playing', liveOn);
     });
     document.querySelectorAll('.js-tune-in-quiet').forEach(function (b) {
-      b.classList.toggle('playing', on);
+      b.classList.toggle('playing', liveOn);
+    });
+    document.querySelectorAll('.js-episode').forEach(function (b) {
+      var mine = mode === 'episode' && episode && b.getAttribute('data-src') === episode.src;
+      var playingThis = mine && on;
+      b.textContent = playingThis ? '⏸ Pause' : (mine && audio.currentTime > 1 ? '▶ Resume' : '▶ Play');
+      b.classList.toggle('playing', playingThis);
+      b.setAttribute('aria-pressed', playingThis ? 'true' : 'false');
+      var row = b.closest('.episode');
+      if (row) row.classList.toggle('is-current', !!mine);
+    });
+    updateProgress();
+  }
+
+  function updateProgress() {
+    if (mode !== 'episode' || !episode) return;
+    document.querySelectorAll('.js-episode').forEach(function (b) {
+      if (b.getAttribute('data-src') !== episode.src) return;
+      var row = b.closest('.episode'); if (!row) return;
+      var t = row.querySelector('.ep-progress');
+      if (t) t.textContent = fmt(audio.currentTime) + (isFinite(audio.duration) ? ' / ' + fmt(audio.duration) : '');
     });
   }
 
-  function toggle() {
-    if (isPlaying()) {
-      wantPlaying = false;
-      audio.pause();
-      // drop the connection so the next play is live, not buffered from minutes ago
-      audio.removeAttribute('src'); audio.load();
-    } else {
-      wantPlaying = true;
-      audio.src = STREAM_URL;
-      audio.play().catch(function () { wantPlaying = false; relabel(); });
+  function stop() {
+    wantPlaying = false;
+    audio.pause();
+    if (mode === 'live') { audio.removeAttribute('src'); audio.load(); } // next play is live, not minutes-old buffer
+  }
+
+  function playLive() {
+    mode = 'live'; episode = null;
+    wantPlaying = true;
+    audio.src = STREAM_URL;
+    audio.play().catch(function () { wantPlaying = false; relabel(); });
+    setSession('topsecret.fm — live', 'Marginalised voices first — the best kept secret');
+  }
+
+  function playEpisode(src, title) {
+    if (mode === 'episode' && episode && episode.src === src) {
+      if (isPlaying()) { stop(); }
+      else { wantPlaying = true; audio.play().catch(function () { wantPlaying = false; relabel(); }); }
+      relabel(); return;
     }
+    mode = 'episode'; episode = { src: src, title: title || 'Episode' };
+    wantPlaying = true;
+    audio.src = src;
+    audio.play().catch(function () { wantPlaying = false; relabel(); });
+    setSession(episode.title, 'topsecret.fm podcasts');
+    relabel();
+  }
+
+  // Listen live / Tune in: pause whatever is playing, otherwise go live
+  function toggleLive() {
+    if (isPlaying()) stop(); else playLive();
     relabel();
   }
 
   audio.addEventListener('playing', relabel);
   audio.addEventListener('pause', relabel);
+  audio.addEventListener('ended', function () { wantPlaying = false; relabel(); });
+  audio.addEventListener('timeupdate', updateProgress);
   audio.addEventListener('error', function () { if (wantPlaying) { wantPlaying = false; relabel(); } });
 
   if ('mediaSession' in navigator) {
     try {
-      navigator.mediaSession.metadata = new MediaMetadata({
-        title: 'topsecret.fm — live',
-        artist: 'Marginalised voices first — the best kept secret'
+      setSession('topsecret.fm — live', 'Marginalised voices first — the best kept secret');
+      navigator.mediaSession.setActionHandler('play', function () {
+        if (isPlaying()) return;
+        if (mode === 'episode' && episode) playEpisode(episode.src, episode.title); else playLive();
+        relabel();
       });
-      navigator.mediaSession.setActionHandler('play', function () { if (!isPlaying()) toggle(); });
-      navigator.mediaSession.setActionHandler('pause', function () { if (isPlaying()) toggle(); });
+      navigator.mediaSession.setActionHandler('pause', function () { if (isPlaying()) { stop(); relabel(); } });
     } catch (e) {}
   }
 
   document.addEventListener('click', function (e) {
-    var b = e.target.closest && e.target.closest('.navlisten, .js-tune-in, .js-tune-in-quiet');
+    if (!e.target.closest) return;
+    var ep = e.target.closest('.js-episode');
+    if (ep) { e.preventDefault(); playEpisode(ep.getAttribute('data-src'), ep.getAttribute('data-title')); return; }
+    var b = e.target.closest('.navlisten, .js-tune-in, .js-tune-in-quiet');
     if (!b) return;
     e.preventDefault();
-    toggle();
+    toggleLive();
   });
+
+  // lets a page re-sync button labels after it draws new episode rows
+  window.tsPlayer = { relabel: relabel };
 
   /* ---------- page timers: tracked so they stop when you leave a page ---------- */
   var _setInterval = window.setInterval.bind(window);

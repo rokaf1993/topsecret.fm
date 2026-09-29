@@ -326,3 +326,23 @@ a.desk-card:hover h3{ color: var(--accent-text); }
 /* links inside body copy */
 .tile p a, .content .infobox p a{ color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--ink); }
 .tile p a:hover{ color: var(--accent-text); border-color: var(--accent-text); }
+
+/* ---------- podcasts ---------- */
+.subscribe{ display:flex; flex-wrap:wrap; align-items:center; gap: 12px; margin-bottom: 40px; }
+.subscribe .kicker{ margin-right: 8px; }
+.subscribe[hidden], .subscribe [hidden]{ display:none !important; }
+.episodes{ margin-bottom: 56px; }
+.episode{ border-top: 1px solid var(--ink); padding: 22px 0 26px; display:flex; flex-direction:column; gap: 8px; }
+.episode:last-child{ border-bottom: 1px solid var(--ink); }
+.episode.is-current h3{ color: var(--accent-text); }
+.ep-meta{ font-size: 12px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink-soft); margin:0; }
+.episode h3{ font-family: var(--serif); font-size: 28px; line-height: 1.2; margin: 0; }
+.ep-desc{ font-size: 15px; line-height: 1.6; color: var(--ink-soft); max-width: 70ch; margin: 0; }
+.ep-actions{ display:flex; align-items:center; gap: 16px; margin-top: 6px; }
+.ep-actions .btn{ cursor: pointer; }
+.ep-progress{ font-size: 13px; font-variant-numeric: tabular-nums; color: var(--ink-soft); }
+.episodes-empty{ border: 1px solid var(--ink); padding: 32px; display:flex; flex-direction:column; gap: 10px; }
+.episodes-empty h3{ font-family: var(--serif); font-size: 30px; line-height: 1.2; margin: 0; }
+.episodes-empty p{ font-size: 15px; color: var(--ink-soft); margin: 0; }
+.episodes-empty .kicker{ color: var(--accent-text); }
+.episodes-empty a{ color: var(--ink); border-bottom: 1px solid var(--ink); text-decoration: none; }
