@@ -318,3 +318,7 @@ a.desk-card:hover h3{ color: var(--accent-text); }
 .chat-inputbar input{ min-width: 0; }
 .chat-send{ flex-shrink: 0; }
 .chat-wrap{ margin-top: 0 !important; }
+
+/* page swap in progress */
+.ts-loading, .ts-loading *{ cursor: progress !important; }
+.ts-loading main, .ts-loading .content{ opacity: .6; transition: opacity .15s; }
