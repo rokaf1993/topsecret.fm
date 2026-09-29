@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>topsecret.fm</title>
+<title>topsecret.fm — Marginalised voices first</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap');
 
@@ -529,197 +529,193 @@
   .navlisten.playing .dot{ background:#2ec4b6; animation: pulse 1.2s infinite; }
   @keyframes pulse{ 0%,100%{opacity:1;} 50%{opacity:0.3;} }
 </style>
+<meta name="description" content="topsecret.fm — Marginalised voices first — the best kept secret. Independent internet radio: rare music, news satire and long-form talk.">
+<meta name="theme-color" content="#F7E9DD">
+<link rel="stylesheet" href="brand.css">
 </head>
 <body>
 
-<nav class="wrap">
-  <div class="brand">topsecret.fm</div>
-  <ul class="navlinks">
-    <li><a href="archive.html">Archive</a></li>
-    <li><a href="debrief.html">Debrief</a></li>
-    <li><a href="redacted.html">Redacted</a></li>
-    <li><a href="pinboard.html">Pinboard</a></li>
-    <li><a href="chatroom.html">Chatroom</a></li>
-    <li><a href="about.html">About</a></li>
-    <li><a href="hotsauce.html">Hot Sauce</a></li>
-  </ul>
-  <button class="navlisten"><span class="dot"></span>Listen live</button>
-  <button class="navtoggle" aria-label="Open menu"><span></span><span></span><span></span></button>
-</nav>
-
-<div class="ticker-wrap">
-  <div class="ticker-track">
-    <span class="ticker-item"><span class="ticker-dot"></span>THE EARLY EARLY MORNING BREAKFAST SHOW &mdash; relaxing tunes, 6&ndash;9am daily</span>
-    <span class="ticker-item"><span class="ticker-dot"></span>COME CHAI WITH ME &mdash; on air 17:00&ndash;19:00, pull up a cup</span>
-    <span class="ticker-item"><span class="ticker-dot"></span>THE EARLY EARLY MORNING BREAKFAST SHOW &mdash; relaxing tunes, 6&ndash;9am daily</span>
-    <span class="ticker-item"><span class="ticker-dot"></span>COME CHAI WITH ME &mdash; on air 17:00&ndash;19:00, pull up a cup</span>
-  </div>
-</div>
-
-<section class="hero">
+<header class="masthead">
   <div class="wrap">
-    <div class="eyebrow">Ssshhhh... don't tell a soul! 🤫</div>
-    <h1>Nothing you were meant to hear.</h1>
-    <p>Rare pressings, unfiled reports, and conversations that never made it into the official record — on a frequency nobody cleared for public consumption.</p>
-    <div class="ctas">
-      <a class="btn btn-fill js-tune-in" href="#">▶ Tune in now</a>
-      <a class="btn btn-outline" href="#">See what's on file</a>
+    <div class="mast-top"><span class="js-dateline">Independent internet radio</span><span class="mast-right">Declassified on request</span></div>
+    <div class="mast-main">
+      <a class="wordmark" href="index.html">topsecret.fm</a>
+      <button class="navlisten"><span class="dot"></span>Listen live</button>
     </div>
-    <div class="live-badge js-tune-in-quiet" style="cursor:pointer;">
-      <span class="live-dot"></span>
-      <span><strong>Early Early Morning Breakfast Show</strong> &mdash; relaxing tunes, 6&ndash;9am daily</span>
-    </div>
+    <p class="strapline"><strong>Marginalised voices first</strong> — the best kept secret.</p>
+    <div class="rule-pair"><svg class="rule rule--thick" viewBox="0 0 1296 34" preserveAspectRatio="none" aria-hidden="true"><path d="M0,8 C300,3 500,18 750,12 C950,7 1150,16 1296,20 C1150,26 950,31 750,22 C500,32 300,29 0,30 Z"/></svg><svg class="rule rule--thin" viewBox="0 0 1296 20" preserveAspectRatio="none" aria-hidden="true"><path d="M0,5 C300,2 500,10 750,7 C950,4 1150,9 1296,11 C1150,14 950,17 750,13 C500,18 300,16 0,17 Z"/></svg></div>
+    <nav>
+      <ul class="navlinks">
+      <li><a href="archive.html">Archive</a></li>
+      <li><a href="debrief.html">Debrief</a></li>
+      <li><a href="redacted.html">Redacted</a></li>
+      <li><a href="pinboard.html">Pinboard</a></li>
+      <li><a href="chatroom.html">Chatroom</a></li>
+      <li><a href="hotsauce.html">Hot Sauce</a></li>
+      <li><a href="about.html">About</a></li>
+      </ul>
+      <button class="navtoggle" aria-label="Open menu"><span></span><span></span><span></span></button>
+    </nav>
+    <svg class="rule rule--thin" viewBox="0 0 1296 20" preserveAspectRatio="none" aria-hidden="true"><path d="M0,5 C300,2 500,10 750,7 C950,4 1150,9 1296,11 C1150,14 950,17 750,13 C500,18 300,16 0,17 Z"/></svg>
   </div>
-</section>
+</header>
+<script>
+  (function(){var d=document.querySelector('.js-dateline');if(d){d.textContent=new Date().toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'})+' · Independent internet radio';}})();
+</script>
 
-<section class="cards wrap" style="padding-top:8px;">
-  <h2>On air right now</h2>
-  <div id="npCard" class="np-card">
-    <div class="np-art"><div class="np-art-placeholder">♪</div></div>
-    <div class="np-info">
-      <div class="np-label">Now playing</div>
-      <div class="np-title" id="npTitle">Loading&hellip;</div>
-      <div class="np-artist" id="npArtist"></div>
-      <div class="np-progressbar"><div class="np-progress" id="npProgress"></div></div>
-      <div class="np-time" id="npTime"></div>
-    </div>
-  </div>
-</section>
+<main class="wrap">
 
-<section class="cards wrap" style="padding-bottom:8px;">
-  <h2>On the schedule</h2>
-  <div class="noticebox" style="background: var(--teal); display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap;">
-    <div>
-      <h3 style="color:white;">The Early Early Morning Breakfast Show</h3>
-      <p style="color: rgba(255,255,255,0.85);">Relaxing tunes to ease you into the day &mdash; on air every morning, 6:00&ndash;9:00.</p>
-    </div>
-    <a href="#" class="btn btn-fill js-tune-in" style="background:white; color:var(--purple);">▶ Tune in</a>
-  </div>
-
-  <div class="noticebox" style="background: var(--pink); display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap; margin-top:16px;">
-    <div>
-      <h3 style="color:white;">Come Chai With Me</h3>
-      <p style="color: rgba(255,255,255,0.85);">Pull up a cup and stay a while &mdash; loose conversation, tangents, and whatever's on someone's mind. On air 17:00&ndash;19:00.</p>
-    </div>
-    <a href="#" class="btn btn-fill js-tune-in" style="background:white; color:var(--pink);">▶ Tune in</a>
-  </div>
-</section>
-
-<section class="cards wrap" style="padding-bottom:8px;">
-  <h2>Outside the shows</h2>
-  <div class="noticebox" style="background: linear-gradient(to top, rgba(27,19,48,0.88) 20%, rgba(27,19,48,0.5) 80%), url('dsc_0315.jpg'); background-size:cover; background-position:center; display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap;">
-    <div>
-      <h3 style="color: white;">The crate never stops spinning.</h3>
-      <p style="color: rgba(255,255,255,0.85);">No show live? The full archive shuffles completely at random, 24/7 &mdash; no schedule, no repeats you can predict, just whatever gets pulled out of the pile next. You never know what's coming. Neither do we.</p>
-      <div class="tags" style="margin-top: 14px;">
-        <span class="pilltag" style="border-color: white; color: white;">Got a playlist worth playing?</span>
+  <!-- lead -->
+  <section class="home-lead">
+    <figure>
+      <img src="r1-07474-0012.jpg" alt="A long escalator tunnel lit by strip lights, in black and white">
+      <figcaption class="fig">Fig. 1 — Filed from the field</figcaption>
+    </figure>
+    <div class="home-lead__text">
+      <p class="kicker">The lead story</p>
+      <h1>A frequency for everything the mainstream left out.</h1>
+      <p class="byline">STAFF REPORT · TOPSECRET.FM</p>
+      <p class="deck">Marginalised voices first. Rare pressings, unfiled reports, and conversations that never made it into the official record — on a frequency nobody cleared for public consumption.</p>
+      <div class="home-lead__ctas">
+        <a class="btn btn-fill js-tune-in" href="#">▶ Tune in now</a>
+        <a class="btn btn-outline" href="archive.html">See what's on file</a>
       </div>
-      <p style="color: rgba(255,255,255,0.85); margin-top: 10px; font-size: 13.5px;">Send it our way &mdash; as an actual file (M3U, CSV, a note on the back of a napkin, whatever) or just list it out in an email. If it's good, it goes in the rotation.</p>
     </div>
-    <a href="mailto:hello@topsecret.fm?subject=Playlist%20submission" class="btn btn-fill" style="background: var(--yellow); color:var(--purple-deep); white-space:nowrap;">✉ Email your playlist</a>
-  </div>
-</section>
+  </section>
 
-<section class="cards wrap">
-  <h2>On the air</h2>
-  <div class="cardgrid">
-    <a class="card c1" href="archive.html" style="text-decoration:none;">
+  <!-- on air now (live data) -->
+  <section class="onair" aria-label="On air right now">
+    <div class="onair__label"><span class="live-dot"></span><span class="kicker">On air now</span></div>
+    <div id="npCard" class="np-card">
+      <div class="np-art"><div class="np-art-placeholder">♪</div></div>
+      <div class="np-info">
+        <div class="np-label">Now playing</div>
+        <div class="np-title" id="npTitle">Loading&hellip;</div>
+        <div class="np-artist" id="npArtist"></div>
+        <div class="np-progressbar"><div class="np-progress" id="npProgress"></div></div>
+        <div class="np-time" id="npTime"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- schedule -->
+  <section class="home-section">
+    <h2 class="sectiontitle">On the schedule</h2>
+    <div class="cols cols--3">
       <div>
-        <h3>The Archive</h3>
-        <p>Deep crate excavations — pressings you won't find on streaming, surfaced from record fairs and boxes nobody labelled right.</p>
+        <h3>The Early Early Morning Breakfast Show</h3>
+        <p class="when">Every morning · 6:00–9:00</p>
+        <p>Relaxing tunes to ease you into the day.</p>
       </div>
-      <div class="go">Enter the archive →</div>
-    </a>
-    <a class="card c2" href="debrief.html" style="text-decoration:none;">
       <div>
-        <h3>Debrief</h3>
-        <p>The week's headlines, filed and heavily annotated. Half briefing, half bit.</p>
+        <h3>Come Chai With Me</h3>
+        <p class="when">Daily · 17:00–19:00</p>
+        <p>Pull up a cup and stay a while — loose conversation, tangents, and whatever's on someone's mind.</p>
       </div>
-      <div class="go">Read the file →</div>
-    </a>
-    <a class="card c3" href="redacted.html" style="text-decoration:none;">
       <div>
-        <h3>Redacted</h3>
-        <p>Long-form talk, off the record in tone if not in fact. Guests, rants, tangents.</p>
+        <h3>The Archive Shuffle</h3>
+        <p class="when">Whenever no show is live · 24/7</p>
+        <p>The crate never stops spinning. The full archive shuffles at random — you never know what's coming. Neither do we.</p>
       </div>
-      <div class="go">Listen in →</div>
-    </a>
-  </div>
-</section>
+    </div>
+  </section>
 
-<section class="values wrap">
-  <h2>How we broadcast</h2>
-  <div class="valuegrid">
-    <div class="value">
-      <div class="dot"></div>
-      <h3>No filter</h3>
-      <p>We say the thing. Satire only lands when nobody's holding back.</p>
+  <!-- photos -->
+  <section class="home-section">
+    <h2 class="sectiontitle">From the field</h2>
+    <div class="field">
+      <figure><img src="dsc_0113.jpg" alt="Neon JAZZ and New Orleans signs glowing in a dark room" loading="lazy"><figcaption class="fig">Fig. 2</figcaption></figure>
+      <figure><img src="dsc_0082.jpg" alt="Glowing buttons on an old arcade machine in the dark" loading="lazy"><figcaption class="fig">Fig. 3</figcaption></figure>
+      <figure><img src="dsc_0167.jpg" alt="A rain-soaked city street under a railway bridge" loading="lazy"><figcaption class="fig">Fig. 4</figcaption></figure>
+      <figure><img src="dsc_0844.jpg" alt="A crowd with umbrellas beneath giant screens at night" loading="lazy"><figcaption class="fig">Fig. 5</figcaption></figure>
     </div>
-    <div class="value">
-      <div class="dot"></div>
-      <h3>No schedule</h3>
-      <p>Segments surface when they're ready, not on a programming grid.</p>
-    </div>
-    <div class="value">
-      <div class="dot"></div>
-      <h3>No permission</h3>
-      <p>If it's obscure enough to need a search warrant, it's in rotation.</p>
-    </div>
-    <div class="value">
-      <div class="dot"></div>
-      <h3>No boring</h3>
-      <p>If a segment isn't earning its airtime, it gets cut. Simple as that.</p>
-    </div>
-  </div>
-</section>
+  </section>
 
-<section class="learn wrap">
-  <h2>Learn more</h2>
-  <div class="learngrid">
-    <a class="learncard" href="about.html" style="text-decoration:none; color:inherit;">
-      <div class="bar"></div>
-      <h3>Meet the crate diggers</h3>
-      <p>Who's behind the console, and how the archive gets built one estate sale at a time.</p>
-    </a>
-    <a class="learncard" href="debrief.html" style="text-decoration:none; color:inherit;">
-      <div class="bar"></div>
-      <h3>Our sources</h3>
-      <p>Where the news gets filed from, and why we annotate it the way we do.</p>
-    </a>
-    <a class="learncard" href="redacted.html" style="text-decoration:none; color:inherit;">
-      <div class="bar"></div>
-      <h3>Behind the mic</h3>
-      <p>How the talk segments come together — and who's cleared to go off script.</p>
-    </a>
-  </div>
-</section>
+  <!-- from the desk -->
+  <section class="home-section">
+    <h2 class="sectiontitle">From the desk</h2>
+    <div class="cols cols--4">
+      <a class="desk-card" href="archive.html">
+        <span class="kicker">File 01 — Archive</span>
+        <h3>Deep crate excavations.</h3>
+        <p>Pressings you won't find on streaming, surfaced from record fairs and boxes nobody labelled right.</p>
+      </a>
+      <a class="desk-card" href="debrief.html">
+        <span class="kicker">File 02 — Debrief</span>
+        <h3>The week, filed and annotated.</h3>
+        <p>The week's headlines, heavily annotated. Half briefing, half bit.</p>
+      </a>
+      <a class="desk-card" href="redacted.html">
+        <span class="kicker">File 03 — Redacted</span>
+        <h3>Off the record, in tone if not in fact.</h3>
+        <p>Long-form talk. Guests, rants, tangents.</p>
+      </a>
+      <a class="desk-card" href="hotsauce.html">
+        <span class="kicker">Side project — Hot Sauce</span>
+        <h3>One bottle a month. Never sold.</h3>
+        <p>Win it with a story, a rare record or a recommendation.</p>
+      </a>
+    </div>
+  </section>
 
-<section class="values wrap" style="padding-top: 0;">
-  <div class="noticebox" style="background: var(--purple); display:flex; align-items:center; justify-content:space-between; gap:20px; flex-wrap:wrap;">
+  <!-- how we broadcast -->
+  <section class="home-section">
+    <h2 class="sectiontitle">How we broadcast</h2>
+    <div class="cols cols--4">
+      <div><h3>No filter</h3><p>We say the thing. Satire only lands when nobody's holding back.</p></div>
+      <div><h3>No schedule</h3><p>Segments surface when they're ready, not on a programming grid.</p></div>
+      <div><h3>No permission</h3><p>If it's obscure enough to need a search warrant, it's in rotation.</p></div>
+      <div><h3>No boring</h3><p>If a segment isn't earning its airtime, it gets cut. Simple as that.</p></div>
+    </div>
+  </section>
+
+  <!-- learn more -->
+  <section class="home-section">
+    <h2 class="sectiontitle">Learn more</h2>
+    <div class="cols cols--3">
+      <div><h3>Meet the crate diggers</h3><p>Who's behind the console, and how the archive gets built one estate sale at a time.</p><a class="go" href="about.html">About the station</a></div>
+      <div><h3>Our sources</h3><p>Where the news gets filed from, and why we annotate it the way we do.</p><a class="go" href="debrief.html">Read Debrief</a></div>
+      <div><h3>Behind the mic</h3><p>How the talk segments come together — and who's cleared to go off script.</p><a class="go" href="redacted.html">Go to Redacted</a></div>
+    </div>
+  </section>
+
+  <!-- ink band -->
+  <section class="band">
     <div>
-      <h3 style="color:white;">Talk to other listeners</h3>
-      <p style="color: rgba(255,255,255,0.8);">Crate finds, hot sauce chat, and whatever else comes up between segments — join the channel.</p>
+      <p class="kicker">Wanted</p>
+      <h3>Got a playlist worth playing?</h3>
+      <p>Send it our way — as an actual file (M3U, CSV, a note on the back of a napkin, whatever) or just list it out in an email. If it's good, it goes in the rotation.</p>
+      <a class="btn btn-on-ink" href="mailto:hello@topsecret.fm?subject=Playlist%20submission">Email your playlist</a>
     </div>
-    <a href="https://discord.gg/8hhQPM6Ne" target="_blank" rel="noopener" class="btn btn-fill">Join on Discord</a>
-  </div>
-</section>
-
-<section class="notice wrap">
-  <div class="noticebox">
-    <div class="icon">⚠️</div>
     <div>
-      <h3>Notice: leaked tapes are a crime against musicality</h3>
+      <p class="kicker">Listeners</p>
+      <h3>Talk to other listeners.</h3>
+      <p>Crate finds, hot sauce chat, and whatever else comes up between segments — join the channel, or leave a note on the Pinboard.</p>
+      <div style="display:flex;gap:12px;flex-wrap:wrap">
+        <a class="btn btn-fill" href="https://discord.gg/8hhQPM6Ne" target="_blank" rel="noopener">Join on Discord</a>
+        <a class="btn btn-on-ink" href="pinboard.html">The Pinboard</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- notice -->
+  <section class="notice-box">
+    <span class="stamp">NOTICE</span>
+    <div>
+      <h3>Leaked tapes are a crime against musicality.</h3>
       <p>Bootlegged sets, ripped masters, and unauthorised leaks will be found and punished, personally, by our DJs. They are not archived here, and they are not <a href="https://soundcloud.com/discover" target="_blank" rel="noopener">over on SoundCloud Discover</a> either. Don't go looking.</p>
     </div>
-  </div>
-</section>
+  </section>
+
+</main>
 
 <footer>
   <div class="wrap">
+    <svg class="rule rule--thick" viewBox="0 0 1296 34" preserveAspectRatio="none" aria-hidden="true"><path d="M0,8 C300,3 500,18 750,12 C950,7 1150,16 1296,20 C1150,26 950,31 750,22 C500,32 300,29 0,30 Z"/></svg>
     <div class="footgrid">
       <div>
         <div class="brand">topsecret.fm</div>
-        <p>Nothing you were meant to hear, broadcast on a frequency nobody cleared.</p>
+        <p>Marginalised voices first — the best kept secret.</p>
       </div>
       <div class="footcol">
         <h4>Listen</h4>

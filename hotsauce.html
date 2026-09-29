@@ -429,23 +429,39 @@
   .navlisten.playing .dot{ background:#2ec4b6; animation: pulse 1.2s infinite; }
   @keyframes pulse{ 0%,100%{opacity:1;} 50%{opacity:0.3;} }
 </style>
+<meta name="description" content="topsecret.fm — Marginalised voices first — the best kept secret. Independent internet radio: rare music, news satire and long-form talk.">
+<meta name="theme-color" content="#F7E9DD">
+<link rel="stylesheet" href="brand.css">
 </head>
 <body>
 
-<nav class="wrap">
-  <div class="brand"><a href="index.html" style="color:inherit; text-decoration:none;">topsecret.fm</a></div>
-  <ul class="navlinks">
-    <li><a href="archive.html">Archive</a></li>
-    <li><a href="debrief.html">Debrief</a></li>
-    <li><a href="redacted.html">Redacted</a></li>
-    <li><a href="about.html">About</a></li>
-    <li><a href="hotsauce.html" class="active">Hot Sauce</a></li>
-    <li><a href="pinboard.html">Pinboard</a></li>
-    <li><a href="chatroom.html">Chatroom</a></li>
-  </ul>
-  <button class="navlisten"><span class="dot"></span>Listen live</button>
-  <button class="navtoggle" aria-label="Open menu"><span></span><span></span><span></span></button>
-</nav>
+<header class="masthead masthead--compact">
+  <div class="wrap">
+    <div class="mast-top"><span class="js-dateline">Independent internet radio</span><span class="mast-right">Declassified on request</span></div>
+    <div class="mast-main">
+      <a class="wordmark" href="index.html">topsecret.fm</a>
+      <button class="navlisten"><span class="dot"></span>Listen live</button>
+    </div>
+    <p class="strapline"><strong>Marginalised voices first</strong> — the best kept secret.</p>
+    <div class="rule-pair"><svg class="rule rule--thick" viewBox="0 0 1296 34" preserveAspectRatio="none" aria-hidden="true"><path d="M0,8 C300,3 500,18 750,12 C950,7 1150,16 1296,20 C1150,26 950,31 750,22 C500,32 300,29 0,30 Z"/></svg><svg class="rule rule--thin" viewBox="0 0 1296 20" preserveAspectRatio="none" aria-hidden="true"><path d="M0,5 C300,2 500,10 750,7 C950,4 1150,9 1296,11 C1150,14 950,17 750,13 C500,18 300,16 0,17 Z"/></svg></div>
+    <nav>
+      <ul class="navlinks">
+      <li><a href="archive.html">Archive</a></li>
+      <li><a href="debrief.html">Debrief</a></li>
+      <li><a href="redacted.html">Redacted</a></li>
+      <li><a href="pinboard.html">Pinboard</a></li>
+      <li><a href="chatroom.html">Chatroom</a></li>
+      <li><a href="hotsauce.html" class="active">Hot Sauce</a></li>
+      <li><a href="about.html">About</a></li>
+      </ul>
+      <button class="navtoggle" aria-label="Open menu"><span></span><span></span><span></span></button>
+    </nav>
+    <svg class="rule rule--thin" viewBox="0 0 1296 20" preserveAspectRatio="none" aria-hidden="true"><path d="M0,5 C300,2 500,10 750,7 C950,4 1150,9 1296,11 C1150,14 950,17 750,13 C500,18 300,16 0,17 Z"/></svg>
+  </div>
+</header>
+<script>
+  (function(){var d=document.querySelector('.js-dateline');if(d){d.textContent=new Date().toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'})+' · Independent internet radio';}})();
+</script>
 
 
 <section class="pagehero pink has-photo">
@@ -504,10 +520,11 @@
 
 <footer>
   <div class="wrap">
+    <svg class="rule rule--thick" viewBox="0 0 1296 34" preserveAspectRatio="none" aria-hidden="true"><path d="M0,8 C300,3 500,18 750,12 C950,7 1150,16 1296,20 C1150,26 950,31 750,22 C500,32 300,29 0,30 Z"/></svg>
     <div class="footgrid">
       <div>
         <div class="brand">topsecret.fm</div>
-        <p>Nothing you were meant to hear, broadcast on a frequency nobody cleared.</p>
+        <p>Marginalised voices first — the best kept secret.</p>
       </div>
       <div class="footcol">
         <h4>Listen</h4>
