@@ -650,13 +650,12 @@
     });
   });
 
-  // ---- CHATROOM BACKEND CONFIG ----
-  // Go to https://extendsclass.com/json-storage.html, type [] into the
-  // editor, click Save (no account needed), and paste the bin ID below.
-  const CHAT_BIN_ID = "a3c27e27a0d4";
-  const CHAT_API_BASE = "https://json.extendsclass.com/bin/" + CHAT_BIN_ID;
-  const POLL_INTERVAL_MS = 12000; // kept deliberately slow to stay under the free service's quota
-
+  // ---- CHATROOM BACKEND (Supabase project "topsecret-fm") ----
+  // The publishable key is safe to ship in the page: the database only lets
+  // the public read messages and add new ones (no edits, no deletes).
+  const SB_URL = "https://lukybmzjfyluowlawbyq.supabase.co/rest/v1/chat_messages";
+  const SB_KEY = "sb_publishable_YNwjSEmIjicci_aAI1amTg_8qbqKGKd";
+  const POLL_INTERVAL_MS = 4000;
   const messagesEl = document.getElementById('chatMessages');
   const statusEl = document.getElementById('chatStatus');
   const handleEl = document.getElementById('chatHandle');
@@ -674,125 +673,107 @@
     localStorage.setItem('topsecret_chat_id', myId);
   }
 
-  let lastRenderedCount = -1;
-  let lastKnownGoodMessages = null; // never trust an error response over this
+  let messages = [];      // everything shown so far, oldest first
+  let lastId = 0;         // newest message id we have
+  let loadedOnce = false;
+  let loading = false;
 
-  function renderMessages(messages){
-    if(!messages || messages.length === 0){
+  function renderMessages(){
+    if(messages.length === 0){
       messagesEl.innerHTML = '<div class="chat-empty">No messages yet &mdash; say hi.</div>';
-      lastRenderedCount = 0;
       return;
     }
-    if(messages.length === lastRenderedCount) return; // nothing new, skip re-render (keeps scroll position)
-
     const wasNearBottom = (messagesEl.scrollHeight - messagesEl.scrollTop - messagesEl.clientHeight) < 80;
-
     messagesEl.innerHTML = '';
     messages.slice(-100).forEach(function(m){
-      const mine = m.id === myId;
+      const mine = m.client_id === myId;
       const row = document.createElement('div');
       row.className = 'chat-msg' + (mine ? ' me' : '');
-
       const meta = document.createElement('div');
       meta.className = 'meta';
-      meta.textContent = (m.name || 'anon');
-
+      meta.textContent = (m.handle || 'anon');
       const bubble = document.createElement('div');
       bubble.className = 'bubble';
       bubble.textContent = m.text;
-
       row.appendChild(meta);
       row.appendChild(bubble);
       messagesEl.appendChild(row);
     });
-
-    lastRenderedCount = messages.length;
-
-    if(wasNearBottom){
+    if(wasNearBottom || !loadedOnce){
       messagesEl.scrollTop = messagesEl.scrollHeight;
     }
   }
 
-  // Fetches the bin. Returns the array on success, or null on any failure
-  // (network error, rate limit, malformed response) — NEVER returns an
-  // empty array just because the request failed, so a bad request can't
-  // be mistaken for "the room is actually empty."
-  async function fetchMessages(){
-    try{
-      const res = await fetch(CHAT_API_BASE);
-      if(!res.ok){
-        return null; // e.g. 429 rate limit, 404, etc — treat as unknown, not empty
-      }
-      const data = await res.json();
-      if(!Array.isArray(data)){
-        return null; // error payloads from the API come back as an object, not an array
-      }
-      return data;
-    }catch(e){
-      return null; // network failure
-    }
+  function addMessages(rows){
+    let added = false;
+    rows.forEach(function(m){
+      if(m.id > lastId){ messages.push(m); lastId = m.id; added = true; }
+    });
+    if(messages.length > 300){ messages = messages.slice(-200); }
+    return added;
   }
 
   async function loadMessages(){
-    if(CHAT_BIN_ID.startsWith("PASTE")){
-      messagesEl.innerHTML = '<div class="chat-empty">Chatroom isn\'t connected yet.</div>';
-      return;
-    }
-    const data = await fetchMessages();
-    if(data === null){
-      // Request failed — keep showing whatever we last successfully loaded,
-      // don't blank the room out. Just quietly note it in the status line.
-      if(lastKnownGoodMessages === null){
+    if(loading || (loadedOnce && document.hidden)) return; // don't poll from background tabs
+    loading = true;
+    try{
+      const url = loadedOnce
+        ? SB_URL + '?select=id,handle,text,client_id&id=gt.' + lastId + '&order=id.asc'
+        : SB_URL + '?select=id,handle,text,client_id&order=id.desc&limit=100';
+      const res = await fetch(url, { headers: { apikey: SB_KEY } });
+      if(!res.ok) throw new Error(res.status);
+      let rows = await res.json();
+      if(!loadedOnce) rows = rows.reverse();
+      const added = addMessages(rows);
+      const first = !loadedOnce;
+      loadedOnce = true;
+      if(added || first) renderMessages();
+      statusEl.textContent = ' ';
+    }catch(e){
+      if(!loadedOnce){
         messagesEl.innerHTML = '<div class="chat-empty">Having trouble loading the room &mdash; retrying&hellip;</div>';
       }
-      statusEl.textContent = 'Reconnecting\u2026';
-      return;
+      statusEl.textContent = 'Reconnecting…';
+    }finally{
+      loading = false;
     }
-    lastKnownGoodMessages = data;
-    statusEl.textContent = '\u00a0';
-    renderMessages(data);
   }
 
   async function sendMessage(){
     const name = (handleEl.value || 'anon').trim().slice(0,16) || 'anon';
-    const text = textEl.value.trim();
+    const text = textEl.value.trim().slice(0,240);
     if(!text) return;
 
-    if(CHAT_BIN_ID.startsWith("PASTE")){
-      statusEl.textContent = "Chatroom isn't connected yet.";
-      return;
-    }
-
     localStorage.setItem('topsecret_chat_handle', name);
-    statusEl.textContent = 'Sending\u2026';
-
-    // Base the new message list on the last confirmed-good state, not a
-    // fresh (and possibly failed) fetch — avoids wiping real messages if
-    // this particular read happens to fail.
-    const existing = lastKnownGoodMessages || (await fetchMessages()) || [];
-    const messages = existing.slice();
-    messages.push({ id: myId, name: name, text: text.slice(0,240), ts: Date.now() });
-    const trimmed = messages.slice(-200); // keep the bin from growing forever
+    statusEl.textContent = 'Sending…';
+    sendBtn.disabled = true;
 
     try{
-      const res = await fetch(CHAT_API_BASE, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(trimmed)
+      const res = await fetch(SB_URL, {
+        method: 'POST',
+        headers: { apikey: SB_KEY, 'Content-Type': 'application/json', Prefer: 'return=representation' },
+        body: JSON.stringify({ handle: name, text: text, client_id: myId })
       });
-
       if(!res.ok){
-        statusEl.textContent = 'Message failed to send (server busy) \u2014 try again in a moment.';
+        let msg = '';
+        try{ msg = (await res.json()).message || ''; }catch(_){}
+        statusEl.textContent = msg === 'slow down' ? 'Easy — one message every couple of seconds.'
+          : msg === 'chat is busy' ? 'The room is busy — try again in a moment.'
+          : 'Message failed to send — try again in a moment.';
         return;
       }
-
+      const rows = await res.json();
       textEl.value = '';
-      statusEl.textContent = '\u00a0';
-      lastKnownGoodMessages = trimmed;
-      lastRenderedCount = -1; // force re-render
-      renderMessages(trimmed);
+      statusEl.textContent = ' ';
+      // pick up anything that arrived just before ours, then ours
+      await loadMessages();
+      if(addMessages(rows)) renderMessages();
+      messagesEl.scrollTop = messagesEl.scrollHeight;
     }catch(e){
-      statusEl.textContent = 'Message failed to send \u2014 check your connection and try again.';
+      statusEl.textContent = 'Message failed to send — check your connection and try again.';
+    }finally{
+      sendBtn.disabled = false;
+      textEl.focus();
     }
   }
 

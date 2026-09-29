@@ -674,19 +674,18 @@
     });
   });
 
-  // ---- PINBOARD BACKEND CONFIG ----
-  // Go to https://extendsclass.com/json-storage.html
-  // Paste [] into the JSON editor box, click "Save" (no account needed).
-  // Copy the bin ID from the URI it gives you and paste it below.
-  const BIN_ID = "105ef0390fbf";
-  const API_BASE = "https://json.extendsclass.com/bin/" + BIN_ID;
+  // ---- PINBOARD BACKEND (Supabase project "topsecret-fm") ----
+  // The publishable key is safe to ship in the page: the database only lets
+  // the public read pins and add new ones (no edits, no deletes).
+  const SB_URL = "https://lukybmzjfyluowlawbyq.supabase.co/rest/v1/pins";
+  const SB_KEY = "sb_publishable_YNwjSEmIjicci_aAI1amTg_8qbqKGKd";
 
   const colors = ["#ffc145", "#ff4d6d", "#2ec4b6", "#ffb020"];
   const grid = document.getElementById('pinboardGrid');
   const statusEl = document.getElementById('pinStatus');
-  let lastKnownGoodPins = null; // never trust an error response over this
+  let pins = null; // oldest first
 
-  function renderPins(pins){
+  function renderPins(){
     if(!pins || pins.length === 0){
       grid.innerHTML = '<div class="pin-empty">No pins yet &mdash; be the first to leave one.</div>';
       return;
@@ -711,74 +710,54 @@
     });
   }
 
-  // Returns the pins array on success, or null on ANY failure (bad status,
-  // malformed body, network error) — never an empty array just because the
-  // request itself failed, so a rate limit can't look like "no pins."
-  async function fetchPins(){
-    try{
-      const res = await fetch(API_BASE);
-      if(!res.ok) return null;
-      const data = await res.json();
-      if(!Array.isArray(data)) return null;
-      return data;
-    }catch(e){
-      return null;
-    }
-  }
-
   async function loadPins(){
-    if(BIN_ID.startsWith("PASTE")){
-      grid.innerHTML = '<div class="pin-empty">Pinboard isn\'t connected yet.</div>';
-      return;
-    }
-    const data = await fetchPins();
-    if(data === null){
-      if(lastKnownGoodPins === null){
+    try{
+      const res = await fetch(SB_URL + '?select=id,text,name&order=id.desc&limit=200', { headers: { apikey: SB_KEY } });
+      if(!res.ok) throw new Error(res.status);
+      pins = (await res.json()).reverse();
+      renderPins();
+    }catch(e){
+      if(pins === null){
         grid.innerHTML = '<div class="pin-empty">Having trouble loading the board &mdash; try refreshing in a moment.</div>';
       }
-      return;
     }
-    lastKnownGoodPins = data;
-    renderPins(data);
   }
 
   async function submitPin(){
     const textEl = document.getElementById('pinText');
     const nameEl = document.getElementById('pinName');
-    const text = textEl.value.trim();
+    const btn = document.getElementById('pinSubmit');
+    const text = textEl.value.trim().slice(0,140);
     if(!text){
       statusEl.textContent = 'Write something first.';
       return;
     }
-    if(BIN_ID.startsWith("PASTE")){
-      statusEl.textContent = 'Pinboard isn\'t connected yet.';
-      return;
-    }
     statusEl.textContent = 'Pinning…';
-
-    // Build on the last confirmed-good state rather than a fresh (and
-    // possibly failed) read, so a flaky GET can't wipe real pins.
-    const existing = lastKnownGoodPins || (await fetchPins()) || [];
-    const pins = existing.slice();
-    pins.push({ text: text.slice(0,140), name: nameEl.value.trim().slice(0,20), ts: Date.now() });
-
+    btn.disabled = true;
     try{
-      const res = await fetch(API_BASE, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(pins)
+      const res = await fetch(SB_URL, {
+        method: 'POST',
+        headers: { apikey: SB_KEY, 'Content-Type': 'application/json', Prefer: 'return=representation' },
+        body: JSON.stringify({ text: text, name: nameEl.value.trim().slice(0,20) })
       });
       if(!res.ok){
-        statusEl.textContent = 'Pin failed to save (server busy) \u2014 try again in a moment.';
+        let msg = '';
+        try{ msg = (await res.json()).message || ''; }catch(_){}
+        statusEl.textContent = msg === 'pinboard is busy'
+          ? 'Lots of pins going up right now — try again in a minute.'
+          : 'Pin failed to save — try again in a moment.';
         return;
       }
+      const rows = await res.json();
       textEl.value = '';
       nameEl.value = '';
       statusEl.textContent = 'Pinned!';
-      lastKnownGoodPins = pins;
-      renderPins(pins);
+      pins = (pins || []).concat(rows);
+      renderPins();
     }catch(e){
-      statusEl.textContent = 'Something went wrong — try again.';
+      statusEl.textContent = 'Something went wrong — check your connection and try again.';
+    }finally{
+      btn.disabled = false;
     }
   }
 
