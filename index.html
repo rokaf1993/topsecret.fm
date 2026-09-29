@@ -532,6 +532,7 @@
 <meta name="description" content="topsecret.fm — Marginalised voices first — the best kept secret. Independent internet radio: rare music, news satire and long-form talk.">
 <meta name="theme-color" content="#F7E9DD">
 <link rel="stylesheet" href="brand.css">
+<script src="site.js"></script>
 </head>
 <body>
 
@@ -765,53 +766,6 @@
   });
 </script>
 
-<audio id="topsecretAudio" preload="none"></audio>
-<script>
-  (function(){
-    var STREAM_URL = "https://azura-3949.az-streamingserver.com/listen/topsecret.fm/topsecretfm.mp3";
-    var audio = document.getElementById('topsecretAudio');
-    var buttons = document.querySelectorAll('.navlisten, .js-tune-in');
-    var quietButtons = document.querySelectorAll('.js-tune-in-quiet');
-    var playing = false;
-
-    function setLabel(btn){
-      if(btn.classList.contains('navlisten')){
-        btn.innerHTML = playing ? '<span class="dot"></span>Pause' : '<span class="dot"></span>Listen live';
-      } else {
-        btn.textContent = playing ? '\u23F8 Pause' : '\u25B6 Tune in now';
-      }
-    }
-
-    function updateAll(){
-      buttons.forEach(function(btn){
-        setLabel(btn);
-        btn.classList.toggle('playing', playing);
-      });
-      quietButtons.forEach(function(btn){
-        btn.classList.toggle('playing', playing);
-      });
-    }
-
-    function toggle(e){
-      e.preventDefault();
-      if(!audio.src){ audio.src = STREAM_URL; }
-      if(playing){
-        audio.pause();
-        playing = false;
-      } else {
-        audio.play().catch(function(){});
-        playing = true;
-      }
-      updateAll();
-    }
-
-    buttons.forEach(function(btn){ btn.addEventListener('click', toggle); });
-    quietButtons.forEach(function(btn){ btn.addEventListener('click', toggle); });
-    audio.addEventListener('pause', function(){ playing = false; updateAll(); });
-    audio.addEventListener('playing', function(){ playing = true; updateAll(); });
-    updateAll();
-  })();
-</script>
 
 <script>
 (function(){
