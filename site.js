@@ -128,7 +128,7 @@
     if (busy) return;
     busy = true;
     document.documentElement.classList.add('ts-loading');
-    fetch(url, { credentials: 'same-origin' })
+    fetch(url, { credentials: 'same-origin', cache: 'no-cache' }) // always check for the current page, never an old saved copy
       .then(function (r) { if (!r.ok) throw new Error(r.status); return r.text(); })
       .then(function (html) {
         var doc = new DOMParser().parseFromString(html, 'text/html');
