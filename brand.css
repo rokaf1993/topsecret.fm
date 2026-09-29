@@ -322,3 +322,7 @@ a.desk-card:hover h3{ color: var(--accent-text); }
 /* page swap in progress */
 .ts-loading, .ts-loading *{ cursor: progress !important; }
 .ts-loading main, .ts-loading .content{ opacity: .6; transition: opacity .15s; }
+
+/* links inside body copy */
+.tile p a, .content .infobox p a{ color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--ink); }
+.tile p a:hover{ color: var(--accent-text); border-color: var(--accent-text); }
