@@ -17,16 +17,31 @@
 
   function isPlaying() { return wantPlaying && !audio.paused; }
 
+  var buffering = false;
+  function setBuffering(v) { if (buffering !== v) { buffering = v; relabel(); } }
+
+  /* the logo loader: sits at the page corner, shown by the .ts-loading class */
+  function ensureLoader() {
+    if (!document.body || document.body.querySelector('.ts-loader')) return;
+    var l = document.createElement('div');
+    l.className = 'ts-loader';
+    l.setAttribute('aria-hidden', 'true');
+    document.body.appendChild(l);
+  }
+
   function relabel() {
     var on = isPlaying();
+    var wait = buffering && wantPlaying;
     document.querySelectorAll('.navlisten').forEach(function (b) {
-      b.innerHTML = '<span class="dot"></span>' + (on ? 'Pause' : 'Listen live');
+      b.innerHTML = '<span class="dot"></span>' + (wait ? 'Tuning in…' : on ? 'Pause' : 'Listen live');
       b.classList.toggle('playing', on);
+      b.classList.toggle('buffering', wait);
       b.setAttribute('aria-pressed', on ? 'true' : 'false');
     });
     document.querySelectorAll('.js-tune-in').forEach(function (b) {
-      b.textContent = on ? '⏸ Pause' : '▶ Tune in now';
+      b.textContent = wait ? 'Tuning in…' : on ? '⏸ Pause' : '▶ Tune in now';
       b.classList.toggle('playing', on);
+      b.classList.toggle('buffering', wait);
     });
     document.querySelectorAll('.js-tune-in-quiet').forEach(function (b) {
       b.classList.toggle('playing', on);
@@ -36,20 +51,23 @@
   function toggle() {
     if (isPlaying()) {
       wantPlaying = false;
+      buffering = false;
       audio.pause();
       // drop the connection so the next play is live, not buffered from minutes ago
       audio.removeAttribute('src'); audio.load();
     } else {
       wantPlaying = true;
+      buffering = true;
       audio.src = STREAM_URL;
-      audio.play().catch(function () { wantPlaying = false; relabel(); });
+      audio.play().catch(function () { wantPlaying = false; buffering = false; relabel(); });
     }
     relabel();
   }
 
-  audio.addEventListener('playing', relabel);
+  audio.addEventListener('playing', function () { buffering = false; relabel(); });
+  audio.addEventListener('waiting', function () { if (wantPlaying) setBuffering(true); });
   audio.addEventListener('pause', relabel);
-  audio.addEventListener('error', function () { if (wantPlaying) { wantPlaying = false; relabel(); } });
+  audio.addEventListener('error', function () { if (wantPlaying) { wantPlaying = false; buffering = false; relabel(); } });
 
   if ('mediaSession' in navigator) {
     try {
@@ -140,6 +158,7 @@
         document.body.innerHTML = doc.body.innerHTML;
         if (push) history.pushState({ ts: 1 }, '', url);
         runScripts(document.body);
+        ensureLoader();
         relabel();
         var hash = new URL(url, location.href).hash;
         var target = hash && document.getElementById(hash.slice(1));
@@ -165,6 +184,7 @@
 
   document.addEventListener('DOMContentLoaded', function () {
     document.querySelectorAll('audio#topsecretAudio').forEach(function (a) { a.remove(); });
+    ensureLoader();
     relabel();
   });
 })();

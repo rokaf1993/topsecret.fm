@@ -319,9 +319,41 @@ a.desk-card:hover h3{ color: var(--accent-text); }
 .chat-send{ flex-shrink: 0; }
 .chat-wrap{ margin-top: 0 !important; }
 
-/* page swap in progress */
-.ts-loading, .ts-loading *{ cursor: progress !important; }
+/* page swap in progress: the logo becomes the cursor and a wobbling logo loader appears */
+.ts-loading, .ts-loading *{ cursor: url("logo-cursor.png") 16 16, progress !important; }
 .ts-loading main, .ts-loading .content{ opacity: .6; transition: opacity .15s; }
+
+@keyframes ts-wobble{
+  0%,100%{ transform: rotate(-14deg) translateY(0); }
+  50%    { transform: rotate(14deg) translateY(-6px); }
+}
+@keyframes ts-appear{ from{ opacity: 0; } to{ opacity: 1; } }
+.ts-loader{
+  position: fixed; right: 20px; bottom: 20px; z-index: 9999;
+  width: 72px; height: 72px; pointer-events: none;
+  background: url("logo.png") center / contain no-repeat;
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,.25));
+  display: none;
+}
+/* short delay so a fast page swap doesn't flash the loader */
+.ts-loading .ts-loader{
+  display: block; opacity: 0;
+  animation: ts-appear .2s .15s forwards, ts-wobble .7s ease-in-out infinite;
+}
+
+/* Listen button while the stream is connecting: the dot turns into the logo */
+.navlisten.buffering .dot{
+  width: 22px !important; height: 22px !important; border-radius: 0 !important;
+  background: url("logo.png") center / contain no-repeat !important;
+  animation: ts-wobble .7s ease-in-out infinite !important;
+  vertical-align: middle;
+}
+.navlisten.buffering, .js-tune-in.buffering{ cursor: url("logo-cursor.png") 16 16, progress; }
+
+@media (prefers-reduced-motion: reduce){
+  .ts-loading .ts-loader{ animation: ts-appear .2s .15s forwards; }
+  .navlisten.buffering .dot{ animation: none !important; }
+}
 
 /* links inside body copy */
 .tile p a, .content .infobox p a{ color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--ink); }
