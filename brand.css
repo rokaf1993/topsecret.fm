@@ -358,3 +358,40 @@ a.desk-card:hover h3{ color: var(--accent-text); }
 /* links inside body copy */
 .tile p a, .content .infobox p a{ color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--ink); }
 .tile p a:hover{ color: var(--accent-text); border-color: var(--accent-text); }
+
+/* ---------- the logo, front and centre ---------- */
+.wordmark{ display:inline-flex; align-items:center; gap: .18em; }
+.wordmark-logo{
+  width: 1.25em; height: 1.25em; flex-shrink:0; margin: -.12em 0 -.12em -.06em;
+  transform: rotate(-6deg); transition: transform .3s cubic-bezier(.3,1.6,.5,1);
+}
+.wordmark:hover .wordmark-logo{ transform: rotate(8deg) scale(1.06); }
+
+/* big stamp over the lead photo: the one splash of colour on a black-and-white page */
+.home-lead figure{ position: relative; }
+.home-lead img.lead-stamp{
+  position:absolute; right: -18px; bottom: 4px; z-index: 2;
+  width: clamp(130px, 18vw, 220px); height:auto; min-height:0; max-height:none;
+  object-fit: contain; filter: drop-shadow(0 8px 14px rgba(0,0,0,.28));
+  transform: rotate(-10deg); transition: transform .35s cubic-bezier(.3,1.6,.5,1);
+}
+.home-lead figure:hover img.lead-stamp{ transform: rotate(4deg) scale(1.05); }
+
+/* now-playing art: the logo stands in until real cover art loads */
+.np-art-placeholder img{ width: 82%; height: 82%; object-fit: contain; display:block; margin:auto; }
+
+/* footer */
+.foot-brand{ display:flex; align-items:center; gap: 10px; }
+.foot-brand img{ width: 44px; height: 44px; flex-shrink:0; }
+
+@media (max-width: 760px){
+  /* phones: the logo + name get the full row, Listen live drops beneath */
+  .mast-main{ flex-wrap: wrap; row-gap: 10px; }
+  .wordmark{ font-size: clamp(30px, 10.4vw, 44px); min-width: 0; }
+  .masthead--compact .wordmark{ font-size: clamp(28px, 9vw, 40px); }
+  .navlisten{ flex-shrink: 0; }
+  .home-lead img.lead-stamp{ right: 8px; bottom: 16px; width: 112px; }
+}
+@media (prefers-reduced-motion: reduce){
+  .wordmark-logo, .home-lead img.lead-stamp{ transition: none; }
+}
