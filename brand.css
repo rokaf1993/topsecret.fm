@@ -395,3 +395,29 @@ a.desk-card:hover h3{ color: var(--accent-text); }
 @media (prefers-reduced-motion: reduce){
   .wordmark-logo, .home-lead img.lead-stamp{ transition: none; }
 }
+
+/* ---------- the secret logo (placed by site.js) ---------- */
+.ts-egg{
+  position: absolute; z-index: 40; width: 40px; height: 40px;
+  background: url("logo-lg.png") center / contain no-repeat;
+  transform: rotate(var(--egg-tilt, -12deg)); opacity: .9;
+  filter: drop-shadow(0 3px 5px rgba(0,0,0,.25));
+  transition: transform .3s cubic-bezier(.3,1.6,.5,1), opacity .2s;
+  animation: ts-peek 7s ease-in-out infinite;
+}
+.ts-egg:hover, .ts-egg:focus-visible{ opacity: 1; transform: rotate(0deg) scale(1.35); animation: none; }
+.ts-egg:focus-visible{ outline: 2px solid var(--ink); outline-offset: 4px; border-radius: 50%; }
+.ts-egg--found{ animation: ts-found .9s ease-in forwards !important; }
+@keyframes ts-peek{
+  0%, 88%, 100%{ transform: rotate(var(--egg-tilt, -12deg)); }
+  92%{ transform: rotate(calc(var(--egg-tilt, -12deg) + 18deg)) scale(1.1); }
+  96%{ transform: rotate(calc(var(--egg-tilt, -12deg) - 12deg)); }
+}
+@keyframes ts-found{
+  30%{ transform: rotate(0) scale(1.6); opacity: 1; }
+  100%{ transform: rotate(360deg) scale(0); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce){
+  .ts-egg{ animation: none; transition: none; }
+  .ts-egg--found{ animation: none !important; opacity: 0; }
+}
