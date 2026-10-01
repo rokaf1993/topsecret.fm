@@ -87,6 +87,66 @@
     toggle();
   });
 
+
+  /* ---------- the secret logo ----------
+     A small logo hides somewhere different on every page.
+     Click it and it opens one of these charities at random, in a new tab
+     (so the stream keeps playing). Edit this list freely. */
+  var CHARITIES = [
+    { name: 'Youth Music',  url: 'https://youthmusic.org.uk' },          // music for young people facing barriers
+    { name: 'Help Musicians', url: 'https://www.helpmusicians.org.uk' }, // support for musicians in need
+    { name: 'Bipolar UK',   url: 'https://www.bipolaruk.org' },          // peer support for people with bipolar
+    { name: 'Mind',         url: 'https://www.mind.org.uk' },            // mental health
+    { name: 'Trussell',     url: 'https://www.trussell.org.uk' },        // food banks
+    { name: 'Crisis',       url: 'https://www.crisis.org.uk' },          // homelessness
+    { name: 'akt',          url: 'https://www.akt.org.uk' },             // LGBTQ+ young people facing homelessness
+    { name: 'Refugee Action', url: 'https://www.refugee-action.org.uk' },// refugees and people seeking asylum
+    { name: "Women's Aid",  url: 'https://www.womensaid.org.uk' }        // domestic abuse
+  ];
+  function pickCharity() { return CHARITIES[Math.floor(Math.random() * CHARITIES.length)]; }
+
+  function placeEgg() {
+    if (!document.body) return;
+    var egg = document.querySelector('.ts-egg');
+    if (!egg) {
+      egg = document.createElement('a');
+      egg.className = 'ts-egg';
+      egg.target = '_blank';
+      egg.rel = 'noopener';
+      egg.addEventListener('click', function (e) {
+        var c = pickCharity();
+        egg.href = c.url;           // the link opens whichever charity is picked now
+        egg.classList.add('ts-egg--found');
+        setTimeout(function () { egg.classList.remove('ts-egg--found'); placeEgg(); }, 900);
+      });
+      document.body.appendChild(egg);
+    }
+    var c = pickCharity();
+    egg.href = c.url;
+    egg.title = 'Psst. You found the secret.';
+    egg.setAttribute('aria-label', 'Secret logo: visit a charity we support (opens in a new tab)');
+
+    // hide it peeking out from the corner of a random block on the page
+    var spots = Array.prototype.filter.call(
+      document.querySelectorAll('main figure, main section, main article, .tile, .np-card, .footgrid > div'),
+      function (el) { var r = el.getBoundingClientRect(); return r.width > 120 && r.height > 60; });
+    var x, y, docW = document.documentElement.clientWidth;
+    if (spots.length) {
+      var r = spots[Math.floor(Math.random() * spots.length)].getBoundingClientRect();
+      var right = Math.random() < 0.5, bottom = Math.random() < 0.5;
+      x = (right ? r.right - 22 : r.left - 18) + window.scrollX;
+      y = (bottom ? r.bottom - 22 : r.top - 18) + window.scrollY;
+    } else {
+      x = 20 + Math.random() * (docW - 80);
+      y = 300 + Math.random() * 600;
+    }
+    x = Math.max(4, Math.min(x, docW - 48));
+    egg.style.left = Math.round(x) + 'px';
+    egg.style.top = Math.round(y) + 'px';
+    egg.style.setProperty('--egg-tilt', (Math.random() * 50 - 25).toFixed(0) + 'deg');
+  }
+  window.addEventListener('load', function () { placeEgg(); });
+
   /* ---------- page timers: tracked so they stop when you leave a page ---------- */
   var _setInterval = window.setInterval.bind(window);
   var _setTimeout = window.setTimeout.bind(window);
@@ -159,6 +219,7 @@
         if (push) history.pushState({ ts: 1 }, '', url);
         runScripts(document.body);
         ensureLoader();
+        _setTimeout(placeEgg, 400);
         relabel();
         var hash = new URL(url, location.href).hash;
         var target = hash && document.getElementById(hash.slice(1));
