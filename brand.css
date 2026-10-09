@@ -421,3 +421,56 @@ a.desk-card:hover h3{ color: var(--accent-text); }
   .ts-egg{ animation: none; transition: none; }
   .ts-egg--found{ animation: none !important; opacity: 0; }
 }
+
+/* ==========================================================
+   Merch & Hot Sauce: guest drops
+   ========================================================== */
+.drop-tiers{ display:grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 0 32px; margin-bottom: 56px; }
+.drop-tier{ border-top: 1px solid var(--ink); padding: 18px 0 8px; }
+.drop-tier__no{ font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--ink-soft); }
+.drop-tier h3{ font-family: var(--serif); font-size: 30px; line-height: 1.1; margin: 10px 0 6px; color: var(--ink); }
+.drop-tier__when{ font-family: var(--serif); font-style: italic; font-size: 17px; line-height: 1.45; color: var(--ink-body); margin: 0 0 14px; }
+.drop-tier ul{ list-style: none; padding: 0; margin: 0; }
+.drop-tier li{ font-size: 15px; line-height: 1.5; color: var(--ink-soft); padding: 9px 0 9px 22px; border-top: 1px dotted rgba(27,19,48,.3); position: relative; }
+.drop-tier li::before{ content: "+"; position: absolute; left: 2px; top: 8px; font-weight: 700; color: var(--accent-text); }
+.drop-tier--top{ border-top: 4px solid var(--accent); padding-top: 15px; }
+.drop-tier--top .drop-tier__no{ color: var(--accent-text); }
+
+.drop-how{ display:grid; grid-template-columns: 5fr 7fr; gap: 48px; align-items: start; margin-bottom: 8px; }
+.drop-file{
+  position: relative; background: var(--paper-2); border: 1px solid var(--ink);
+  padding: 30px 28px 26px; transform: rotate(-1.5deg);
+  box-shadow: 6px 6px 0 var(--ink);
+}
+.drop-file__stamp{
+  position: absolute; top: 18px; right: 18px; transform: rotate(8deg);
+  font-size: 12px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--accent-text); border: 2px solid var(--accent-text); padding: 5px 10px;
+}
+.drop-file__row{ display:flex; gap: 16px; padding: 11px 0; border-bottom: 1px solid rgba(27,19,48,.18); font-size: 15px; }
+.drop-file__row:first-of-type{ padding-top: 0; }
+.drop-file__row span{ flex: 0 0 74px; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--ink-soft); padding-top: 3px; }
+.drop-file__row b{ font-family: var(--serif); font-size: 19px; font-weight: 600; color: var(--ink); }
+.drop-file__redact{ background: var(--ink); color: var(--ink) !important; padding: 0 6px; user-select: none; transition: color .25s; }
+.drop-file:hover .drop-file__redact{ color: var(--paper) !important; }
+.drop-file__logo{ display:block; width: 72px; height: 72px; margin: 18px 0 0 auto; transform: rotate(-8deg); }
+
+.drop-steps{ list-style: none; counter-reset: step; padding: 0; margin: 0; }
+.drop-steps li{ counter-increment: step; display: grid; grid-template-columns: 56px 1fr; column-gap: 8px; padding: 16px 0; border-top: 1px solid var(--ink); }
+.drop-steps li::before{ content: "0" counter(step); grid-row: span 2; font-family: var(--serif); font-size: 34px; line-height: 1; color: var(--accent-text); }
+.drop-steps h3{ font-family: var(--serif); font-size: 22px; line-height: 1.2; margin: 0 0 4px; color: var(--ink); }
+.drop-steps p{ font-size: 15px; line-height: 1.6; color: var(--ink-soft); margin: 0; }
+
+.drop-band{ margin: 56px 0 24px; }
+#hot-sauce{ padding-top: 8px; }
+
+@media (max-width: 900px){
+  .drop-tiers{ grid-template-columns: 1fr; gap: 28px; }
+  .drop-how{ grid-template-columns: 1fr; gap: 36px; }
+  .drop-file{ transform: none; box-shadow: 4px 4px 0 var(--ink); }
+  .drop-band{ grid-template-columns: 1fr; }
+  .drop-band > div + div{ border-left: none; border-top: 1px solid rgba(247,233,221,0.3); }
+}
+@media (max-width: 760px){
+  .band > div{ padding: 28px 22px; }
+}
