@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unsubscribe · topsecret.fm</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#F7E9DD">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="stylesheet" href="brand.css">
+<style>
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  body{ min-height:100vh; display:flex; align-items:center; justify-content:center; padding: 32px 16px; }
+  .box{ max-width: 520px; width:100%; border:1px solid var(--ink); background: var(--paper-2); padding: 36px 32px; }
+  .mark{ display:flex; align-items:center; gap:10px; font-family: var(--serif); font-weight:600; font-size:22px; color: var(--ink); text-decoration:none; margin-bottom: 28px; }
+  .mark img{ width:40px; height:40px; }
+  h1{ font-size: 30px; line-height:1.15; margin: 6px 0 12px; }
+  p{ font-size:15px; line-height:1.6; color: var(--ink-soft); }
+  .btn{ margin-top: 22px; display:inline-flex; }
+</style>
+<script src="newsletter.js"></script>
+</head>
+<body>
+  <main class="box">
+    <a class="mark" href="index.html"><img src="logo-lg.png" alt="">topsecret.fm</a>
+    <p class="kicker">The dispatch</p>
+    <h1 id="title">Unsubscribing you…</h1>
+    <p id="msg">One moment.</p>
+    <a class="btn btn-outline" href="index.html">Back to the station</a>
+  </main>
+<script>
+(function(){
+  var token = new URLSearchParams(location.search).get('token') || '';
+  var t = document.getElementById('title'), m = document.getElementById('msg');
+  if (!token) { t.textContent = "That link is missing something."; m.textContent = "Use the unsubscribe link at the bottom of any newsletter email, or email hello@topsecret.fm and we'll take you off the list."; return; }
+  fetch(window.TOPSECRET_NEWSLETTER_URL, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ action:'unsubscribe', token: token }) })
+    .then(function(r){ return r.json().then(function(d){ return { ok:r.ok, d:d }; }); })
+    .then(function(res){
+      if (!res.ok) throw new Error(res.d.error);
+      t.textContent = "You're unsubscribed.";
+      m.textContent = "You won't get any more newsletter emails from topsecret.fm. Changed your mind? You can sign up again on the homepage any time.";
+    })
+    .catch(function(e){
+      t.textContent = "That didn't work.";
+      m.textContent = (e && e.message ? e.message + " " : "") + "Email hello@topsecret.fm and we'll take you off the list by hand.";
+    });
+})();
+</script>
+</body>
+</html>

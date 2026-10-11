@@ -240,6 +240,24 @@ footer .rule{ margin-bottom: 28px; }
 .cols > *{ padding: 0 28px; border-right: 1px solid var(--ink); display:flex; flex-direction:column; gap: 10px; }
 .cols > *:first-child{ padding-left: 0; }
 .cols > *:last-child{ padding-right: 0; border-right: none; }
+/* ---------- newsletter signup ---------- */
+.signup{ border: 1px solid var(--ink); background: var(--paper-2); padding: 32px 36px; display:grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items:center; }
+.signup h3{ font-family: var(--serif); font-size: 30px; line-height: 1.15; color: var(--ink); margin: 6px 0 8px; }
+.signup p{ font-size: 15px; line-height: 1.55; color: var(--ink-soft); max-width: 46ch; }
+.signup-form{ display:flex; gap: 10px; flex-wrap: wrap; }
+.signup-form input[type=email]{ flex: 1 1 220px; min-width: 0; font: 500 15px var(--sans); color: var(--ink); background: var(--paper); border: 1px solid var(--ink); border-radius: 0; padding: 13px 14px; }
+.signup-form input[type=email]:focus{ outline: 2px solid var(--accent); outline-offset: 1px; }
+.signup-form .btn{ cursor:pointer; }
+.signup-form .btn[disabled]{ opacity: .6; cursor: wait; }
+.signup-hp{ position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden; }
+.signup-msg{ flex-basis: 100%; font-size: 13.5px; min-height: 1.3em; color: var(--ink-soft); }
+.signup-msg.is-ok{ color: var(--ink); font-weight: 600; }
+.signup-msg.is-err{ color: var(--accent-text); font-weight: 600; }
+@media (max-width: 760px){
+  .signup{ grid-template-columns: 1fr; padding: 24px 20px; gap: 18px; }
+  .signup h3{ font-size: 26px; }
+}
+
 /* multi-row 3-column grids */
 .cols--3{ row-gap: 36px; }
 .cols--3 > *:nth-child(3n+1){ padding-left: 0; }

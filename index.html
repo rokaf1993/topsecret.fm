@@ -535,6 +535,7 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="stylesheet" href="brand.css">
 <script src="site.js"></script>
+<script src="newsletter.js" defer></script>
 </head>
 <body>
 
@@ -636,6 +637,23 @@
         <p class="when">Whenever no show is live · 24/7</p>
         <p>The crate never stops spinning. The full archive shuffles at random — you never know what's coming. Neither do we.</p>
       </div>
+    </div>
+  </section>
+
+  <!-- newsletter -->
+  <section class="home-section" id="newsletter">
+    <div class="signup">
+      <div>
+        <p class="kicker">The dispatch</p>
+        <h3>Get the new shows before anyone else.</h3>
+        <p>New shows, guest slots and one-off specials, sent to your inbox from hello@topsecret.fm. No spam, unsubscribe any time.</p>
+      </div>
+      <form class="signup-form js-signup" data-source="homepage" novalidate>
+        <label class="signup-hp" aria-hidden="true">Leave this empty <input type="text" name="website" tabindex="-1" autocomplete="off"></label>
+        <input type="email" name="email" placeholder="you@example.com" aria-label="Email address" autocomplete="email" required>
+        <button class="btn btn-ink" type="submit">Sign me up</button>
+        <p class="signup-msg" role="status" aria-live="polite"></p>
+      </form>
     </div>
   </section>
 

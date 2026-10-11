@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Newsletter desk · topsecret.fm</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#F7E9DD">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="stylesheet" href="brand.css">
+<style>
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  body{ padding: 0 16px 64px; }
+  .desk{ max-width: 1100px; margin: 0 auto; }
+  header.top{ display:flex; align-items:center; justify-content:space-between; gap:16px; padding: 22px 0; border-bottom: 2px solid var(--ink); margin-bottom: 28px; flex-wrap:wrap; }
+  .mark{ display:flex; align-items:center; gap:10px; font-family: var(--serif); font-weight:600; font-size:22px; color: var(--ink); text-decoration:none; }
+  .mark img{ width:40px; height:40px; }
+  .mark small{ font-family: var(--sans); font-size: 12px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color: var(--accent-text); margin-left: 6px; }
+  h1{ font-size: 34px; line-height:1.1; margin: 4px 0 6px; }
+  h2{ font-size: 22px; margin-bottom: 12px; }
+  p.sub{ color: var(--ink-soft); font-size: 15px; }
+  label{ display:block; font-size:12.5px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color: var(--ink); margin: 18px 0 6px; }
+  input[type=text], input[type=email], input[type=password], textarea{
+    width:100%; font: 400 15px/1.5 var(--sans); color: var(--ink); background: var(--paper-2);
+    border:1px solid var(--ink); border-radius:0; padding: 12px 14px; }
+  textarea{ min-height: 280px; resize: vertical; }
+  input:focus, textarea:focus{ outline: 2px solid var(--accent); outline-offset: 1px; }
+  .hint{ font-size: 13px; color: var(--ink-soft); margin-top: 6px; }
+  .btn{ cursor:pointer; }
+  .btn[disabled]{ opacity:.55; cursor: not-allowed; }
+  .row{ display:flex; gap: 10px; flex-wrap: wrap; align-items:center; margin-top: 14px; }
+  .grid{ display:grid; grid-template-columns: 1.4fr 1fr; gap: 32px; align-items:start; }
+  .panel{ border:1px solid var(--ink); background: var(--paper-2); padding: 22px 24px; }
+  .panel + .panel{ margin-top: 20px; }
+  .stats{ display:flex; gap: 28px; margin-bottom: 6px; }
+  .stat b{ display:block; font-family: var(--serif); font-size: 40px; line-height:1; color: var(--ink); }
+  .stat span{ font-size:12px; font-weight:700; letter-spacing:1px; text-transform:uppercase; color: var(--ink-soft); }
+  ul.list{ list-style:none; font-size: 14px; }
+  ul.list li{ display:flex; justify-content:space-between; gap: 12px; padding: 8px 0; border-bottom: 1px solid rgba(27,19,48,.15); }
+  ul.list li:last-child{ border-bottom:none; }
+  ul.list .muted, .muted{ color: var(--ink-soft); }
+  ul.list .em{ overflow:hidden; text-overflow:ellipsis; white-space:nowrap; min-width:0; }
+  .msg{ margin-top: 12px; font-size: 14px; min-height: 1.3em; }
+  .msg.ok{ color: var(--ink); font-weight:600; }
+  .msg.err{ color: var(--accent-text); font-weight:600; }
+  .warn{ border:1px solid var(--accent-text); background:#fff1f3; padding: 12px 14px; font-size: 14px; line-height:1.5; margin: 16px 0 0; }
+  .preview{ border:1px solid var(--ink); background:#fffaf4; margin-top: 20px; }
+  .preview .ph{ padding: 14px 18px; border-bottom: 2px solid var(--ink); font-family: var(--serif); font-weight:600; font-size: 20px; }
+  .preview .pb{ padding: 18px; font-size: 15px; line-height:1.6; }
+  .preview .pb h3{ font-family: var(--serif); font-size: 22px; margin-bottom: 14px; }
+  .preview .pb p{ margin-bottom: 14px; }
+  .preview .pf{ padding: 12px 18px; border-top:1px solid var(--ink); font-size: 12px; color: var(--ink-soft); }
+  #lock{ max-width: 420px; }
+  [hidden]{ display:none !important; }
+  @media (max-width: 860px){ .grid{ grid-template-columns: 1fr; } h1{ font-size: 28px; } }
+</style>
+<script src="newsletter.js"></script>
+</head>
+<body>
+<div class="desk">
+  <header class="top">
+    <a class="mark" href="index.html"><img src="logo-lg.png" alt="">topsecret.fm<small>Newsletter desk</small></a>
+    <button class="btn btn-outline" id="lockBtn" hidden>Lock</button>
+  </header>
+
+  <!-- password gate -->
+  <section id="lock" class="panel">
+    <h2>Staff only</h2>
+    <p class="sub">Enter the newsletter admin password to see subscribers and send emails.</p>
+    <form id="lockForm">
+      <label for="pw">Admin password</label>
+      <input type="password" id="pw" autocomplete="current-password" required>
+      <div class="row"><button class="btn btn-ink" type="submit">Open the desk</button></div>
+      <p class="msg" id="lockMsg"></p>
+    </form>
+  </section>
+
+  <!-- desk -->
+  <section id="app" hidden>
+    <p class="kicker">The dispatch</p>
+    <h1>Email your readers</h1>
+    <p class="sub">Sent from <b>hello@topsecret.fm</b> to everyone on the list. Replies come back to hello@topsecret.fm. An unsubscribe link is added to every email automatically.</p>
+
+    <div class="warn" id="resendWarn" hidden>
+      <b>Sending isn't switched on yet.</b> You can see and collect subscribers, but emails won't go out until the <code>RESEND_API_KEY</code> secret is added in Supabase and topsecret.fm is verified in Resend.
+    </div>
+
+    <div class="grid" style="margin-top:24px">
+      <div>
+        <div class="panel">
+          <label for="subject" style="margin-top:0">Subject</label>
+          <input type="text" id="subject" maxlength="200" placeholder="New on topsecret.fm: Pete Gorston live, Sunday 2pm">
+          <label for="body">Message</label>
+          <textarea id="body" placeholder="Hello from the station,&#10;&#10;Here's what's coming up this week…&#10;&#10;Tune in at https://topsecret.fm"></textarea>
+          <p class="hint">Plain text. Leave a blank line between paragraphs. Links starting with https:// become clickable.</p>
+
+          <div class="preview" id="preview">
+            <div class="ph">topsecret.fm</div>
+            <div class="pb"><h3 id="pvSubject">Your subject</h3><div id="pvBody"><p class="muted">Your message will appear here.</p></div></div>
+            <div class="pf">You're getting this because you signed up at topsecret.fm. Unsubscribe.</div>
+          </div>
+
+          <label for="testTo">Send a test first</label>
+          <div class="row" style="margin-top:0">
+            <input type="email" id="testTo" placeholder="hello@topsecret.fm" style="flex:1 1 220px; width:auto">
+            <button class="btn btn-outline" id="testBtn" type="button">Send test</button>
+          </div>
+
+          <div class="row" style="margin-top:22px; padding-top:18px; border-top:1px solid var(--ink)">
+            <button class="btn btn-fill" id="sendBtn" type="button">Send to all subscribers</button>
+          </div>
+          <p class="msg" id="sendMsg"></p>
+        </div>
+      </div>
+
+      <div>
+        <div class="panel">
+          <div class="stats">
+            <div class="stat"><b id="statActive">–</b><span>Subscribers</span></div>
+            <div class="stat"><b id="statUnsub">–</b><span>Unsubscribed</span></div>
+          </div>
+        </div>
+        <div class="panel">
+          <h2>Latest sign-ups</h2>
+          <ul class="list" id="recentSubs"><li class="muted">Loading…</li></ul>
+        </div>
+        <div class="panel">
+          <h2>Sent so far</h2>
+          <ul class="list" id="sends"><li class="muted">Loading…</li></ul>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+(function(){
+  var URL_ = window.TOPSECRET_NEWSLETTER_URL;
+  var KEY_STORE = 'tsfm_nl_key';
+  var key = '';
+  try { key = sessionStorage.getItem(KEY_STORE) || ''; } catch(e) {}
+
+  var $ = function(id){ return document.getElementById(id); };
+  var subject = $('subject'), body = $('body');
+  var activeCount = 0;
+
+  function call(payload){
+    return fetch(URL_, { method:'POST', headers:{ 'Content-Type':'application/json', 'x-admin-key': key }, body: JSON.stringify(payload) })
+      .then(function(r){ return r.json().then(function(d){ if(!r.ok) { var e = new Error(d.error || ('Error ' + r.status)); e.status = r.status; throw e; } return d; }); });
+  }
+  function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+  function fmt(d){ try { return new Date(d).toLocaleString('en-GB', { day:'numeric', month:'short', hour:'2-digit', minute:'2-digit' }); } catch(e){ return d; } }
+  function say(el, text, kind){ el.textContent = text; el.className = 'msg' + (kind ? ' ' + kind : ''); }
+
+  function showDesk(d){
+    $('lock').hidden = true; $('app').hidden = false; $('lockBtn').hidden = false;
+    activeCount = d.active;
+    $('statActive').textContent = d.active;
+    $('statUnsub').textContent = d.unsubscribed;
+    $('resendWarn').hidden = !!d.resendConfigured;
+    $('sendBtn').textContent = 'Send to all ' + d.active + ' subscriber' + (d.active === 1 ? '' : 's');
+    $('recentSubs').innerHTML = d.recentSubs.length
+      ? d.recentSubs.map(function(s){ return '<li><span class="em">' + esc(s.email) + '</span><span class="muted">' + fmt(s.subscribed_at) + '</span></li>'; }).join('')
+      : '<li class="muted">No one yet. The signup form is on the homepage.</li>';
+    $('sends').innerHTML = d.sends.length
+      ? d.sends.map(function(s){ return '<li><span class="em">' + esc(s.subject) + '</span><span class="muted">' + s.recipients + ' · ' + fmt(s.sent_at) + '</span></li>'; }).join('')
+      : '<li class="muted">Nothing sent yet.</li>';
+  }
+
+  function load(){
+    return call({ action:'stats' }).then(showDesk);
+  }
+
+  $('lockForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    key = $('pw').value;
+    say($('lockMsg'), 'Checking…');
+    load().then(function(){
+      try { sessionStorage.setItem(KEY_STORE, key); } catch(e) {}
+      say($('lockMsg'), '');
+    }).catch(function(err){
+      key = '';
+      say($('lockMsg'), err.status === 401 ? 'That password is wrong.' : err.message, 'err');
+    });
+  });
+
+  $('lockBtn').addEventListener('click', function(){
+    key = ''; try { sessionStorage.removeItem(KEY_STORE); } catch(e) {}
+    $('app').hidden = true; $('lock').hidden = false; $('lockBtn').hidden = true; $('pw').value = '';
+  });
+
+  // live preview
+  function renderPreview(){
+    $('pvSubject').textContent = subject.value.trim() || 'Your subject';
+    var t = body.value.trim();
+    $('pvBody').innerHTML = t
+      ? t.split(/\n\s*\n/).map(function(p){ return '<p>' + esc(p).replace(/(https?:\/\/[^\s<]+)/g, '<a href="$1" target="_blank" rel="noopener">$1</a>').replace(/\n/g,'<br>') + '</p>'; }).join('')
+      : '<p class="muted">Your message will appear here.</p>';
+  }
+  subject.addEventListener('input', renderPreview);
+  body.addEventListener('input', renderPreview);
+
+  function ready(){
+    if (!subject.value.trim() || !body.value.trim()) { say($('sendMsg'), 'Add a subject and a message first.', 'err'); return false; }
+    return true;
+  }
+
+  $('testBtn').addEventListener('click', function(){
+    if (!ready()) return;
+    var to = $('testTo').value.trim();
+    if (!to) { say($('sendMsg'), 'Enter an address to send the test to.', 'err'); return; }
+    var b = this; b.disabled = true; say($('sendMsg'), 'Sending test…');
+    call({ action:'send', subject: subject.value, body: body.value, testTo: to })
+      .then(function(){ say($('sendMsg'), 'Test sent to ' + to + '. Check the inbox (and spam folder).', 'ok'); })
+      .catch(function(err){ say($('sendMsg'), err.message, 'err'); })
+      .finally(function(){ b.disabled = false; });
+  });
+
+  $('sendBtn').addEventListener('click', function(){
+    if (!ready()) return;
+    if (!activeCount) { say($('sendMsg'), 'There are no subscribers to send to yet.', 'err'); return; }
+    if (!confirm('Send "' + subject.value.trim() + '" to ' + activeCount + ' subscriber' + (activeCount === 1 ? '' : 's') + ' now? This can\'t be undone.')) return;
+    var b = this; b.disabled = true; say($('sendMsg'), 'Sending…');
+    call({ action:'send', subject: subject.value, body: body.value })
+      .then(function(d){
+        say($('sendMsg'), 'Sent to ' + d.recipients + ' subscriber' + (d.recipients === 1 ? '' : 's') + '.', 'ok');
+        subject.value = ''; body.value = ''; renderPreview();
+        return load();
+      })
+      .catch(function(err){ say($('sendMsg'), err.message, 'err'); })
+      .finally(function(){ b.disabled = false; });
+  });
+
+  if (key) load().catch(function(){ key=''; try { sessionStorage.removeItem(KEY_STORE); } catch(e) {} });
+})();
+</script>
+</body>
+</html>
