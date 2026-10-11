@@ -240,6 +240,10 @@ footer .rule{ margin-bottom: 28px; }
 .cols > *{ padding: 0 28px; border-right: 1px solid var(--ink); display:flex; flex-direction:column; gap: 10px; }
 .cols > *:first-child{ padding-left: 0; }
 .cols > *:last-child{ padding-right: 0; border-right: none; }
+/* multi-row 3-column grids */
+.cols--3{ row-gap: 36px; }
+.cols--3 > *:nth-child(3n+1){ padding-left: 0; }
+.cols--3 > *:nth-child(3n){ padding-right: 0; border-right: none; }
 .cols h3{ font-family: var(--serif); font-size: 25px; line-height: 1.2; color: var(--ink); }
 .cols p{ font-size: 14.5px; line-height: 1.55; color: var(--ink-soft); }
 .cols .when{ font-size: 12.5px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--accent-text); }
@@ -281,7 +285,7 @@ a.desk-card:hover h3{ color: var(--accent-text); }
   .home-lead{ grid-template-columns: 1fr; gap: 20px; }
   .home-lead img{ min-height: 0; height: 300px; }
   .home-lead__text{ border-left: none; padding-left: 0; }
-  .cols--3, .cols--4{ grid-template-columns: 1fr; }
+  .cols--3, .cols--4{ grid-template-columns: 1fr; row-gap: 0; }
   .cols > *{ padding: 16px 0 !important; border-right: none; border-top: 1px solid var(--ink); }
   .cols > *:last-child{ border-bottom: 1px solid var(--ink); }
   .field{ grid-template-columns: repeat(2, minmax(0,1fr)); gap: 12px; }
