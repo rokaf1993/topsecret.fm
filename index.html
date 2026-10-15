@@ -613,9 +613,9 @@
         <p>A mixed indie radio show, live on air.</p>
       </div>
       <div>
-        <h3>Undiscovered Reggae Sounds from Brixton Village</h3>
-        <p class="when">Every Thursday · 15:00–16:00</p>
-        <p>An hour of reggae you won’t have heard yet, dug out of Brixton Village.</p>
+        <h3>Unfiled Riddims</h3>
+        <p class="when"><span class="js-live-now" data-day="4" data-start="15" data-end="16" hidden><span class="live-dot" style="display:inline-block; vertical-align:middle; margin-right:6px;"></span>Live now · </span>Every Thursday · 15:00–16:00</p>
+        <p>Undiscovered reggae sounds from Brixton Village: an hour of riddims you won’t have heard yet, never filed anywhere else.</p>
       </div>
       <div>
         <h3>The Early Early Morning Breakfast Show</h3>
@@ -922,6 +922,20 @@
     setInterval(refreshNowPlaying, 15000);
   }
 })();
+</script>
+<script>
+  // Show "Live now" on weekly shows during their slot (UK time)
+  (function(){
+    function check(){
+      var p=new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/London',weekday:'short',hour:'2-digit',hour12:false}).formatToParts(new Date());
+      var days={Sun:0,Mon:1,Tue:2,Wed:3,Thu:4,Fri:5,Sat:6},d,h;
+      p.forEach(function(x){ if(x.type==='weekday')d=days[x.value]; if(x.type==='hour')h=parseInt(x.value,10)%24; });
+      document.querySelectorAll('.js-live-now').forEach(function(el){
+        el.hidden=!(d===+el.dataset.day && h>=+el.dataset.start && h<+el.dataset.end);
+      });
+    }
+    check(); setInterval(check,60000);
+  })();
 </script>
 </body>
 </html>
