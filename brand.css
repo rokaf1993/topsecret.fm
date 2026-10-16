@@ -4,7 +4,7 @@
    Loaded after each page's own <style>, so it restyles the
    shared classes without touching any page's scripts.
    ========================================================== */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400;1,6..72,600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=Inter:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400;1,6..72,600&display=swap');
 
 :root{
   --paper: #F7E9DD;
@@ -496,3 +496,98 @@ a.desk-card:hover h3{ color: var(--accent-text); }
 @media (max-width: 760px){
   .band > div{ padding: 28px 22px; }
 }
+
+/* ==========================================================
+   Dossier layer — the Top Secret Records look, site-wide.
+   Pure styling: no markup or script hooks are changed.
+   ========================================================== */
+:root{ --mono: 'IBM Plex Mono', ui-monospace, Menlo, monospace; }
+
+/* --- monospace "file" labels --- */
+.kicker, .fig, .sectiontitle, .content h2.sectiontitle,
+.pagehero .eyebrow, .chat-hero .eyebrow, .pin-hero .eyebrow, .pagehero.yellow .eyebrow,
+.home-lead__text .byline, .footcol h4, .mast-top{
+  font-family: var(--mono) !important; font-weight: 600; letter-spacing: .14em;
+}
+.content h2.sectiontitle::before, .sectiontitle::before{
+  content:""; display:inline-block; width: 9px; height: 9px; background: var(--accent);
+  margin-right: 10px; vertical-align: 0;
+}
+
+/* --- inner-page heroes become the dark dossier --- */
+.pagehero, .pagehero[class], .chat-hero, .pin-hero{
+  position: relative; overflow: hidden;
+  background-color: var(--ink) !important;
+  background-image:
+    repeating-linear-gradient(0deg, rgba(255,255,255,.035) 0 1px, transparent 1px 3px),
+    radial-gradient(ellipse at 80% 45%, rgba(255,77,109,.22), transparent 60%),
+    repeating-radial-gradient(circle at 88% 50%, rgba(247,233,221,.05) 0 1px, transparent 1px 9px) !important;
+  color: var(--paper) !important;
+  padding: 72px 0 80px;
+}
+.pagehero h1, .chat-hero h1, .pin-hero h1{
+  color: var(--paper) !important; font-size: clamp(48px, 7.5vw, 104px); line-height: .92; letter-spacing: -.03em;
+}
+.pagehero .eyebrow, .chat-hero .eyebrow, .pin-hero .eyebrow, .pagehero.yellow .eyebrow{ color: var(--accent) !important; }
+.pagehero p, .chat-hero p, .pin-hero p, .pagehero.yellow p{ color: rgba(247,233,221,.86) !important; }
+.pagehero a, .chat-hero a, .pin-hero a{ color: var(--paper); }
+.pagehero::after, .chat-hero::after, .pin-hero::after{
+  content: "DECLASSIFIED"; position: absolute; right: 7%; top: 50%;
+  transform: translateY(-50%) rotate(-10deg);
+  font-family: var(--mono); font-weight: 600; font-size: 22px; letter-spacing: .2em;
+  color: var(--accent); border: 3px solid var(--accent); padding: 8px 16px 6px;
+  pointer-events: none;
+}
+@media (max-width: 960px){
+  .pagehero::after, .chat-hero::after, .pin-hero::after{ display:none; }
+  .pagehero, .pagehero[class], .chat-hero, .pin-hero{ padding: 48px 0 56px; }
+}
+
+/* --- ticker strip under the masthead --- */
+.ts-ticker{ background: var(--accent); color: var(--ink); overflow:hidden; white-space:nowrap; border-top: 2px solid var(--ink); border-bottom: 2px solid var(--ink); }
+.ts-ticker > div{ display:inline-block; padding: 11px 0; font-family: var(--mono); font-weight:600; font-size: 12.5px; letter-spacing:.14em; text-transform:uppercase; animation: ts-tick 40s linear infinite; }
+.ts-ticker span{ padding: 0 20px; }
+@keyframes ts-tick{ to{ transform: translateX(-50%); } }
+
+/* --- buttons: hard offset shadow --- */
+.btn{ font-family: var(--mono); letter-spacing: .12em; transition: transform .12s, box-shadow .12s, background .15s, color .15s; }
+.btn-fill, .btn.btn-fill{ box-shadow: 4px 4px 0 var(--ink); }
+.btn-ink, .btn-outline, .btn.btn-outline{ box-shadow: 4px 4px 0 var(--accent); }
+.btn-on-ink{ box-shadow: 4px 4px 0 var(--accent); }
+.btn:hover{ transform: translate(-2px,-2px); }
+.btn-fill:hover{ box-shadow: 6px 6px 0 var(--accent); }
+.btn-ink:hover, .btn-outline:hover, .btn-on-ink:hover{ box-shadow: 6px 6px 0 var(--ink); }
+.btn:active{ transform: translate(2px,2px); box-shadow: 1px 1px 0 var(--accent); }
+
+/* --- tiles get catalogue numbers --- */
+.tilegrid{ counter-reset: tsfile; }
+.tilegrid .tile{ counter-increment: tsfile; transition: background .2s; padding-left: 4px; padding-right: 4px; }
+.tilegrid .tile::before{
+  content: "No. " counter(tsfile, decimal-leading-zero);
+  display:block; font-family: var(--mono); font-size: 11.5px; letter-spacing: .12em; color: var(--accent-text); margin-bottom: 8px;
+}
+.tilegrid .tile:hover{ background: var(--paper-2); }
+
+/* --- boxes read as memos and slips --- */
+.infobox{ border: 1.5px dashed var(--ink); background: var(--paper-2); }
+.notice-box{ border-style: dashed !important; border-width: 1.5px !important; background: var(--paper-2); }
+.signup{ box-shadow: 8px 8px 0 var(--ink); }
+.onair{ box-shadow: 6px 6px 0 var(--accent); background: var(--paper-2); }
+.quoteblock{ border-top-width: 2px; border-bottom-width: 2px; }
+.quoteblock::first-letter{ color: var(--accent); }
+
+/* --- dark bands and photos --- */
+.band{
+  background-image:
+    repeating-linear-gradient(0deg, rgba(255,255,255,.035) 0 1px, transparent 1px 3px),
+    radial-gradient(ellipse at 85% 30%, rgba(255,77,109,.2), transparent 55%);
+}
+.home-lead figure, .page-figure{ position: relative; }
+.home-lead__text h1{ letter-spacing: -.02em; }
+
+@media (prefers-reduced-motion: reduce){
+  .ts-ticker > div{ animation: none; }
+  .btn, .btn:hover, .btn:active{ transform: none; transition: none; }
+}
+.pagehero + .wrap .page-figure, .pagehero ~ .content .page-figure:first-child{ margin-top: 40px; }
+.chat-window{ margin-top: 40px !important; box-shadow: 8px 8px 0 var(--accent) !important; }
