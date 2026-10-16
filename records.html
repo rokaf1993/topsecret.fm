@@ -429,6 +429,158 @@
 <link rel="icon" type="image/png" href="favicon.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="stylesheet" href="brand.css">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&display=swap');
+  :root{ --mono: 'IBM Plex Mono', ui-monospace, Menlo, monospace; }
+
+  /* ---------- HERO: the dossier ---------- */
+  .tsr-hero{
+    position: relative; overflow: hidden;
+    background: var(--ink); color: var(--paper);
+    padding: 72px 0 88px;
+  }
+  .tsr-hero::before{ /* scanlines + grain */
+    content:""; position:absolute; inset:0; pointer-events:none;
+    background:
+      repeating-linear-gradient(0deg, rgba(255,255,255,.035) 0 1px, transparent 1px 3px),
+      radial-gradient(ellipse at 75% 40%, rgba(255,77,109,.18), transparent 60%);
+  }
+  .tsr-hero .wrap{ position:relative; display:grid; grid-template-columns: 1.15fr .85fr; gap: 48px; align-items:center; }
+  .tsr-meta{
+    font-family: var(--mono); font-size: 12px; letter-spacing: .12em; text-transform: uppercase;
+    color: rgba(247,233,221,.7); display:flex; flex-wrap:wrap; gap: 6px 18px; margin-bottom: 28px;
+  }
+  .tsr-meta b{ color: var(--accent); font-weight:600; }
+  .tsr-hero h1{
+    font-family: var(--serif); font-weight: 600; color: var(--paper);
+    font-size: clamp(56px, 9vw, 128px); line-height: .88; letter-spacing: -.035em; margin: 0 0 28px;
+  }
+  .tsr-hero h1 em{ font-style: italic; font-weight: 400; color: var(--accent); }
+  .tsr-hero h1 .tsr-redact{
+    display:inline-block; position:relative; color: var(--paper);
+  }
+  .tsr-hero p.tsr-intro{
+    font-family: var(--serif); font-size: 22px; line-height: 1.45; max-width: 30ch; color: rgba(247,233,221,.88); margin:0;
+  }
+
+  /* vinyl */
+  .tsr-vinyl-wrap{ position:relative; aspect-ratio:1; max-width: 440px; width:100%; justify-self:end; }
+  .tsr-sleeve{
+    position:absolute; top: 6%; bottom: 6%; left: 0; width: 64%; background: var(--paper); border-radius: 4px;
+    box-shadow: 0 30px 60px rgba(0,0,0,.45);
+    display:flex; flex-direction:column; justify-content:space-between; padding: 22px;
+    color: var(--ink); z-index: 2;
+  }
+  .tsr-sleeve .s-top{ font-family: var(--mono); font-size: 11px; letter-spacing:.14em; text-transform:uppercase; display:flex; justify-content:space-between; }
+  .tsr-sleeve .s-title{ font-family: var(--serif); font-size: clamp(28px, 3.4vw, 40px); line-height: .95; letter-spacing:-.02em; }
+  .tsr-sleeve .s-bars span{ display:block; height: 10px; background: var(--ink); margin-top: 7px; }
+  .tsr-sleeve .s-bars span:nth-child(2){ width: 72%; }
+  .tsr-sleeve .s-bars span:nth-child(3){ width: 48%; background: var(--accent); }
+  .tsr-disc{
+    position:absolute; top: 50%; margin-top: -42%; right: 0; width: 84%; aspect-ratio:1; z-index:1;
+    animation: tsr-spin 9s linear infinite;
+    transform-origin: 50% 50%;
+  }
+  .tsr-vinyl-wrap:hover .tsr-disc{ animation-duration: 2.2s; }
+  @keyframes tsr-spin{ to{ transform: rotate(360deg); } }
+
+  .tsr-stamp{
+    position:absolute; z-index:3; right: 2%; bottom: 0;
+    font-family: var(--mono); font-weight:600; font-size: 22px; letter-spacing: .18em;
+    color: var(--accent); border: 3px solid var(--accent); padding: 8px 14px 6px;
+    transform: rotate(-10deg); background: var(--ink);
+  }
+
+  /* ---------- ticker ---------- */
+  .tsr-ticker{ background: var(--accent); color: var(--ink); overflow:hidden; white-space:nowrap; border-top: 2px solid var(--ink); border-bottom: 2px solid var(--ink); }
+  .tsr-ticker div{ display:inline-block; padding: 12px 0; font-family: var(--mono); font-weight:600; font-size: 13px; letter-spacing:.14em; text-transform:uppercase; animation: tsr-tick 38s linear infinite; }
+  .tsr-ticker span{ padding: 0 22px; }
+  @keyframes tsr-tick{ to{ transform: translateX(-50%); } }
+
+  /* ---------- the constitution ---------- */
+  .tsr-body{ padding-top: 72px; padding-bottom: 24px; }
+  .tsr-head{ display:flex; justify-content:space-between; align-items:flex-end; gap: 24px; flex-wrap:wrap; border-bottom: 2px solid var(--ink); padding-bottom: 18px; margin-bottom: 8px; }
+  .tsr-head h2{ font-family: var(--serif); font-size: clamp(36px, 5vw, 60px); line-height: 1; letter-spacing:-.025em; margin:0; }
+  .tsr-head h2 em{ font-weight:400; }
+  .tsr-btn{
+    font-family: var(--mono); font-size: 12px; font-weight:600; letter-spacing:.14em; text-transform:uppercase;
+    background: var(--ink); color: var(--paper); border:0; padding: 12px 18px; cursor:pointer;
+    box-shadow: 4px 4px 0 var(--accent); transition: transform .12s, box-shadow .12s;
+  }
+  .tsr-btn:hover{ transform: translate(-2px,-2px); box-shadow: 6px 6px 0 var(--accent); }
+  .tsr-btn:active{ transform: translate(2px,2px); box-shadow: 1px 1px 0 var(--accent); }
+
+  .tsr-preamble{
+    font-family: var(--serif); font-size: clamp(22px, 2.6vw, 30px); line-height: 1.35; max-width: 34ch;
+    margin: 36px 0 40px; color: var(--ink);
+  }
+  .tsr-preamble .lbl{ display:block; font-family: var(--mono); font-size: 12px; letter-spacing:.14em; color: var(--accent-text); margin-bottom: 10px; text-transform: uppercase; }
+
+  .tsr-articles{ display:grid; grid-template-columns: repeat(2, 1fr); gap: 0; border-top: 1px solid var(--ink); }
+  .tsr-art{
+    position:relative; padding: 26px 28px 30px 0; border-bottom: 1px solid var(--ink);
+    display:grid; grid-template-columns: 92px 1fr; gap: 0 18px;
+  }
+  .tsr-art:nth-child(even){ padding-left: 28px; padding-right:0; border-left: 1px solid var(--ink); }
+  .tsr-cat{ font-family: var(--mono); font-size: 12px; letter-spacing:.08em; color: var(--ink-soft); padding-top: 8px; }
+  .tsr-cat b{ display:block; font-family: var(--serif); font-size: 44px; line-height: 1; letter-spacing:-.02em; color: var(--ink); font-weight:400; font-style: italic; margin-top: 4px; }
+  .tsr-art h3{ font-family: var(--serif); font-size: 26px; line-height:1.15; margin: 4px 0 10px; color: var(--ink); }
+  .tsr-art p{ font-size: 15.5px; line-height: 1.6; color: var(--ink-soft); margin:0; }
+  .tsr-art:hover{ background: var(--paper-2); }
+
+  /* redaction bars: lift on hover / focus / "declassify all" */
+  .tsr-r{
+    color: var(--ink); background-color: transparent;
+    background-image: linear-gradient(var(--ink), var(--ink));
+    background-repeat: no-repeat; background-position: right center; background-size: 100% 100%;
+    -webkit-box-decoration-break: clone; box-decoration-break: clone;
+    transition: background-size .45s cubic-bezier(.7,0,.2,1), color .2s .25s;
+  }
+  .tsr-art:hover .tsr-r,
+  .tsr-art:focus-within .tsr-r,
+  .tsr-declassified .tsr-r{ background-size: 0% 100%; color: var(--ink-soft); }
+
+  .tsr-note{
+    margin: 48px 0 0; padding: 22px 26px; background: var(--paper-2);
+    border: 1.5px dashed var(--ink); position:relative; max-width: 760px;
+  }
+  .tsr-note::before{
+    content:"MEMO"; position:absolute; top:-11px; left: 20px; background: var(--paper);
+    padding: 0 8px; font-family: var(--mono); font-size: 11px; font-weight:600; letter-spacing:.16em; color: var(--accent-text);
+  }
+  .tsr-note p{ margin:0; font-size: 14.5px; line-height:1.6; color: var(--ink-soft); }
+
+  /* ---------- release schedule ---------- */
+  .tsr-releases{ padding-top: 64px; padding-bottom: 88px; }
+  .tsr-releases h2{ font-family: var(--serif); font-size: clamp(32px, 4vw, 48px); letter-spacing:-.02em; margin: 0 0 22px; }
+  .tsr-row{
+    display:grid; grid-template-columns: 120px 1fr auto; gap: 18px; align-items:center;
+    padding: 18px 0; border-top: 1px solid var(--ink); font-family: var(--mono); font-size: 14px;
+  }
+  .tsr-row:last-of-type{ border-bottom: 1px solid var(--ink); }
+  .tsr-row .bar{ height: 16px; background: var(--ink); }
+  .tsr-row .st{ font-size: 12px; letter-spacing:.12em; text-transform:uppercase; color: var(--accent-text); white-space:nowrap; }
+  .tsr-row .st::before{ content:""; display:inline-block; width:8px; height:8px; border-radius:50%; background: var(--accent); margin-right: 8px; animation: pulse 1.6s infinite; }
+  .tsr-cta{ display:flex; flex-wrap:wrap; align-items:center; gap: 18px 28px; margin-top: 36px; }
+  .tsr-cta p{ font-family: var(--serif); font-size: 22px; margin:0; }
+  a.tsr-btn{ text-decoration:none; display:inline-block; }
+
+  @media (max-width: 860px){
+    .tsr-hero{ padding: 48px 0 64px; }
+    .tsr-hero .wrap{ grid-template-columns: 1fr; gap: 40px; }
+    .tsr-vinyl-wrap{ justify-self:center; max-width: 340px; }
+    .tsr-stamp{ font-size: 16px; }
+    .tsr-articles{ grid-template-columns: 1fr; }
+    .tsr-art, .tsr-art:nth-child(even){ padding: 22px 0 26px; border-left:0; grid-template-columns: 64px 1fr; }
+    .tsr-cat b{ font-size: 34px; }
+    .tsr-row{ grid-template-columns: 92px 1fr; }
+    .tsr-row .st{ grid-column: 1 / -1; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .tsr-disc, .tsr-ticker div, .tsr-row .st::before{ animation: none; }
+    .tsr-r{ transition: none; }
+  }
+</style>
 <script src="site.js"></script>
 </head>
 <body>
@@ -463,59 +615,117 @@
 </script>
 
 
-<section class="pagehero purple">
+<section class="tsr-hero">
   <div class="wrap">
-    <div class="eyebrow">FILE 00 — THE LABEL</div>
-    <h1>Top Secret Records</h1>
-    <p>The record label from topsecret.fm. Marginalised voices first — pressed, filed and declassified on request.</p>
+    <div>
+      <div class="tsr-meta"><span>File 00</span><span><b>●</b> The label</span><span>Cat. TSR</span><span>Clearance: public</span></div>
+      <h1>Top <em>Secret</em><br>Records</h1>
+      <p class="tsr-intro">The record label from topsecret.fm. Marginalised voices first — pressed, filed and declassified on request.</p>
+    </div>
+    <div class="tsr-vinyl-wrap" aria-hidden="true">
+      <svg class="tsr-disc" viewBox="0 0 200 200">
+        <circle cx="100" cy="100" r="99" fill="#0d0918"/>
+        <g fill="none" stroke="rgba(247,233,221,.09)" stroke-width=".6">
+          <circle cx="100" cy="100" r="94"/><circle cx="100" cy="100" r="88"/><circle cx="100" cy="100" r="82"/>
+          <circle cx="100" cy="100" r="76"/><circle cx="100" cy="100" r="70"/><circle cx="100" cy="100" r="64"/>
+          <circle cx="100" cy="100" r="58"/><circle cx="100" cy="100" r="52"/><circle cx="100" cy="100" r="46"/>
+        </g>
+        <path d="M100 6 A94 94 0 0 1 180 52" stroke="rgba(247,233,221,.22)" stroke-width="5" fill="none" stroke-linecap="round"/>
+        <circle cx="100" cy="100" r="36" fill="#FF4D6D"/>
+        <circle cx="100" cy="100" r="36" fill="none" stroke="#1B1330" stroke-width="1.2" stroke-dasharray="2 3"/>
+        <text x="100" y="94" text-anchor="middle" font-family="Newsreader, Georgia, serif" font-size="15" font-style="italic" fill="#1B1330">TSR</text>
+        <rect x="80" y="101" width="40" height="4" fill="#1B1330"/>
+        <text x="100" y="117" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="5.5" letter-spacing="1" fill="#1B1330">SIDE A · 33⅓</text>
+        <circle cx="100" cy="100" r="2.6" fill="#F7E9DD"/>
+      </svg>
+      <div class="tsr-sleeve">
+        <div class="s-top"><span>TSR-000</span><span>Do not copy</span></div>
+        <div>
+          <div class="s-title">Top<br><em>Secret</em><br>Records</div>
+          <div class="s-bars"><span></span><span></span><span></span></div>
+        </div>
+      </div>
+      <div class="tsr-stamp">CLASSIFIED</div>
+    </div>
   </div>
 </section>
 
-<section class="content wrap">
-  <h2 class="sectiontitle">The Declassified Constitution</h2>
-  <p class="lead"><strong>Preamble.</strong> We, the voices nobody cleared for broadcast, establish this frequency for everyone the official record skipped.</p>
-  <div class="tilegrid">
-    <div class="tile">
-      <h3>I. Marginalised voices first</h3>
-      <p>Airtime goes first to those who've had none. A mic is a right, not a reward.</p>
-    </div>
-    <div class="tile">
-      <h3>II. No filter</h3>
-      <p>Telling the truth about how you live is protected. Testimony, like satire, only lands when nobody holds back.</p>
-    </div>
-    <div class="tile">
-      <h3>III. No permission</h3>
-      <p>No gatekeeper decides who's worth hearing. The more obscure the record, the stronger its claim to rotation.</p>
-    </div>
-    <div class="tile">
-      <h3>IV. The code</h3>
-      <p>Respect the work. No bootlegs, no ripped masters, no leaks — protect the artists who can least afford it. Rare never means unlicensed.</p>
-    </div>
-    <div class="tile">
-      <h3>V. Community</h3>
-      <p>Every listener gets a seat at the table — the Pinboard, the Discord, the chatroom. Loyalty runs both ways.</p>
-    </div>
-    <div class="tile">
-      <h3>VI. Second chances</h3>
-      <p>Forgotten records, overlooked artists, people written off: all eligible for revival.</p>
-    </div>
-    <div class="tile">
-      <h3>VII. No boring</h3>
-      <p>Any release that isn't earning its place gets cut. The people deserve better than filler.</p>
-    </div>
-    <div class="tile">
-      <h3>VIII. Contradiction</h3>
-      <p>Every artist may be both sinner and saint. Judge the work, not a whole life by its worst day.</p>
-    </div>
+<div class="tsr-ticker" aria-hidden="true"><div>
+  <span>Now pressing</span><span>★</span><span>First releases under seal</span><span>★</span><span>Marginalised voices first</span><span>★</span><span>Declassified on request</span><span>★</span><span>No bootlegs. No leaks.</span><span>★</span>
+  <span>Now pressing</span><span>★</span><span>First releases under seal</span><span>★</span><span>Marginalised voices first</span><span>★</span><span>Declassified on request</span><span>★</span><span>No bootlegs. No leaks.</span><span>★</span>
+</div></div>
+
+<section class="tsr-body wrap" id="constitution">
+  <div class="tsr-head">
+    <h2>The Declassified <em>Constitution</em></h2>
+    <button class="tsr-btn" type="button" id="tsr-declassify" aria-pressed="false">Declassify all</button>
   </div>
-  <div class="infobox">
-    <h3>On file</h3>
+
+  <p class="tsr-preamble"><span class="lbl">Preamble</span>We, the voices nobody cleared for broadcast, establish this frequency for everyone the official record skipped.</p>
+
+  <div class="tsr-articles">
+    <article class="tsr-art" tabindex="0">
+      <div class="tsr-cat">TSR-001<b>I</b></div>
+      <div><h3>Marginalised voices first</h3><p>Airtime goes first to those who've had none. <span class="tsr-r">A mic is a right, not a reward.</span></p></div>
+    </article>
+    <article class="tsr-art" tabindex="0">
+      <div class="tsr-cat">TSR-002<b>II</b></div>
+      <div><h3>No filter</h3><p>Telling the truth about how you live is protected. <span class="tsr-r">Testimony, like satire, only lands when nobody holds back.</span></p></div>
+    </article>
+    <article class="tsr-art" tabindex="0">
+      <div class="tsr-cat">TSR-003<b>III</b></div>
+      <div><h3>No permission</h3><p>No gatekeeper decides who's worth hearing. <span class="tsr-r">The more obscure the record, the stronger its claim to rotation.</span></p></div>
+    </article>
+    <article class="tsr-art" tabindex="0">
+      <div class="tsr-cat">TSR-004<b>IV</b></div>
+      <div><h3>The code</h3><p>Respect the work. No bootlegs, no ripped masters, no leaks — <span class="tsr-r">protect the artists who can least afford it.</span> Rare never means unlicensed.</p></div>
+    </article>
+    <article class="tsr-art" tabindex="0">
+      <div class="tsr-cat">TSR-005<b>V</b></div>
+      <div><h3>Community</h3><p>Every listener gets a seat at the table — the Pinboard, the Discord, the chatroom. <span class="tsr-r">Loyalty runs both ways.</span></p></div>
+    </article>
+    <article class="tsr-art" tabindex="0">
+      <div class="tsr-cat">TSR-006<b>VI</b></div>
+      <div><h3>Second chances</h3><p>Forgotten records, overlooked artists, <span class="tsr-r">people written off:</span> all eligible for revival.</p></div>
+    </article>
+    <article class="tsr-art" tabindex="0">
+      <div class="tsr-cat">TSR-007<b>VII</b></div>
+      <div><h3>No boring</h3><p>Any release that isn't earning its place gets cut. <span class="tsr-r">The people deserve better than filler.</span></p></div>
+    </article>
+    <article class="tsr-art" tabindex="0">
+      <div class="tsr-cat">TSR-008<b>VIII</b></div>
+      <div><h3>Contradiction</h3><p>Every artist may be both sinner and saint. <span class="tsr-r">Judge the work, not a whole life by its worst day.</span></p></div>
+    </article>
+  </div>
+
+  <div class="tsr-note">
     <p>Inspired by the themes of Tupac Shakur's 1992 "Code of Thug Life" — community, protection of the vulnerable, and truth-telling. Written by topsecret.fm; not affiliated with or endorsed by the Shakur estate.</p>
   </div>
-
-  <h2 class="sectiontitle">Status: classified</h2>
-  <p class="lead">The first releases are still under seal. Got a record that belongs on file? <a href="mailto:hello@topsecret.fm?subject=Top%20Secret%20Records" style="color: var(--pink); font-weight:600;">hello@topsecret.fm</a>.</p>
 </section>
+
+<section class="tsr-releases wrap">
+  <h2>Release schedule</h2>
+  <div class="tsr-row"><span>TSR-101</span><span class="bar" style="width:82%"></span><span class="st">Under seal</span></div>
+  <div class="tsr-row"><span>TSR-102</span><span class="bar" style="width:58%"></span><span class="st">Pending clearance</span></div>
+  <div class="tsr-row"><span>TSR-103</span><span class="bar" style="width:70%"></span><span class="st">Awaiting your tape</span></div>
+  <div class="tsr-cta">
+    <p>Got a record that belongs on file?</p>
+    <a class="tsr-btn" href="mailto:hello@topsecret.fm?subject=Top%20Secret%20Records">Submit to hello@topsecret.fm</a>
+  </div>
+</section>
+
+<script>
+  (function(){
+    var b = document.getElementById('tsr-declassify'), box = document.getElementById('constitution');
+    if(!b || !box) return;
+    b.addEventListener('click', function(){
+      var on = box.classList.toggle('tsr-declassified');
+      b.setAttribute('aria-pressed', on);
+      b.textContent = on ? 'Reclassify' : 'Declassify all';
+    });
+  })();
+</script>
+
 
 
 <footer>
