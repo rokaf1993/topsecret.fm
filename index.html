@@ -621,7 +621,7 @@
       </div>
       <div>
         <h3>Pre-Jumma Qawwali Hour</h3>
-        <p class="when"><span class="js-live-now" data-day="5" data-start="11" data-end="12" hidden><span class="live-dot" style="display:inline-block; vertical-align:middle; margin-right:6px;"></span>Live now · </span>Every Friday · 11:00–12:00</p>
+        <p class="when"><span class="js-live-now" data-day="5" data-start="13.5" data-end="14.5" hidden><span class="live-dot" style="display:inline-block; vertical-align:middle; margin-right:6px;"></span>Live now · </span>Every Friday · 13:30–14:30</p>
         <p>An hour of devotional qawwali before Friday prayers, from Nusrat Fateh Ali Khan, the Sabri Brothers and Abida Parveen.</p>
       </div>
       <div>
@@ -939,9 +939,10 @@
   // Show "Live now" on weekly shows during their slot (UK time)
   (function(){
     function check(){
-      var p=new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/London',weekday:'short',hour:'2-digit',hour12:false}).formatToParts(new Date());
-      var days={Sun:0,Mon:1,Tue:2,Wed:3,Thu:4,Fri:5,Sat:6},d,h;
-      p.forEach(function(x){ if(x.type==='weekday')d=days[x.value]; if(x.type==='hour')h=parseInt(x.value,10)%24; });
+      var p=new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/London',weekday:'short',hour:'2-digit',minute:'2-digit',hour12:false}).formatToParts(new Date());
+      var days={Sun:0,Mon:1,Tue:2,Wed:3,Thu:4,Fri:5,Sat:6},d,h=0,m=0;
+      p.forEach(function(x){ if(x.type==='weekday')d=days[x.value]; if(x.type==='hour')h=parseInt(x.value,10)%24; if(x.type==='minute')m=parseInt(x.value,10); });
+      h=h+m/60; // fractional hours, so data-start="13.5" means 13:30
       document.querySelectorAll('.js-live-now').forEach(function(el){
         el.hidden=!(d===+el.dataset.day && h>=+el.dataset.start && h<+el.dataset.end);
       });
