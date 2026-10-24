@@ -630,9 +630,9 @@
         <p>Soul &amp; rare groove from Brixton Village: deep cuts, B-sides and forgotten 45s to see you into the weekend.</p>
       </div>
       <div>
-        <h3>The Early Early Morning Breakfast Show</h3>
-        <p class="when">Coming soon</p>
-        <p>Relaxing tunes to ease you into the day.</p>
+        <h3>Early Morning Jams</h3>
+        <p class="when"><span class="js-live-now" data-day="*" data-start="7" data-end="10" hidden><span class="live-dot" style="display:inline-block; vertical-align:middle; margin-right:6px;"></span>Live now · </span>Every day · 07:00–10:00</p>
+        <p>Reggae through to old hip hop classics, with the occasional new jam to start your day.</p>
       </div>
       <div>
         <h3>Come Chai With Me</h3>
@@ -944,7 +944,8 @@
       p.forEach(function(x){ if(x.type==='weekday')d=days[x.value]; if(x.type==='hour')h=parseInt(x.value,10)%24; if(x.type==='minute')m=parseInt(x.value,10); });
       h=h+m/60; // fractional hours, so data-start="13.5" means 13:30
       document.querySelectorAll('.js-live-now').forEach(function(el){
-        el.hidden=!(d===+el.dataset.day && h>=+el.dataset.start && h<+el.dataset.end);
+        var dayOk = el.dataset.day === '*' || d === +el.dataset.day; // "*" = every day
+        el.hidden=!(dayOk && h>=+el.dataset.start && h<+el.dataset.end);
       });
     }
     check(); setInterval(check,60000);
