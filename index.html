@@ -606,80 +606,78 @@
   </section>
 
   <!-- schedule -->
-  <section class="home-section">
+  <section class="home-section" id="schedule">
     <h2 class="sectiontitle">On the schedule</h2>
-    <div class="cols cols--3">
-      <div>
-        <h3>Pete Gorston — Live</h3>
-        <p class="when">11th October · 3pm–4pm (Archived)</p>
-        <p>A mixed indie radio show, live on air.</p>
-      </div>
-      <div>
-        <h3>The Riddim Files</h3>
-        <p class="when"><span class="js-live-now" data-day="4" data-start="15" data-end="16" hidden><span class="live-dot" style="display:inline-block; vertical-align:middle; margin-right:6px;"></span>Live now · </span>Every Thursday · 15:00–16:00</p>
-        <p>Undiscovered reggae sounds from Brixton Village: an hour of riddims you won’t have heard yet, pulled straight from the files.</p>
-      </div>
-      <div>
-        <h3>Pre-Jumma Qawwali Warm up</h3>
-        <p class="when"><span class="js-live-now" data-day="5" data-start="11" data-end="13.5" hidden><span class="live-dot" style="display:inline-block; vertical-align:middle; margin-right:6px;"></span>Live now · </span>Every Friday · 11:00–13:30</p>
-        <p>Two and a half hours of devotional qawwali before Friday prayers, from Nusrat Fateh Ali Khan, the Sabri Brothers and Abida Parveen.</p>
-      </div>
-      <div>
-        <h3>The Rare Groove Dossier</h3>
-        <p class="when"><span class="js-live-now" data-day="5" data-start="14" data-end="15" hidden><span class="live-dot" style="display:inline-block; vertical-align:middle; margin-right:6px;"></span>Live now · </span>Every Friday · 14:00–15:00</p>
-        <p>Soul &amp; rare groove from Brixton Village: deep cuts, B-sides and forgotten 45s to see you into the weekend.</p>
-      </div>
-      <div>
-        <h3>Early Morning Jams</h3>
-        <p class="when"><span class="js-live-now" data-day="*" data-start="7" data-end="10" hidden><span class="live-dot" style="display:inline-block; vertical-align:middle; margin-right:6px;"></span>Live now · </span>Every day · 07:00–10:00</p>
-        <p>Reggae through to old hip hop classics, with the occasional new jam to start your day.</p>
-      </div>
-      <div>
-        <h3>Come Chai With Me</h3>
-        <p class="when">Coming soon</p>
-        <p>Pull up a cup and stay a while — loose conversation, tangents, and whatever's on someone's mind.</p>
-      </div>
-      <div>
-        <h3>Who Wants to Be a £1,000-aire?</h3>
-        <p class="when">Dial-in show · Coming soon</p>
-        <p><em>(’Cos I’m not a millionaire.)</em> The phone-in quiz: dial in, take on the questions, and see how far up the ladder you get.</p>
-      </div>
-      <div>
-        <h3>How to Set Up a Large Language Model on a Raspberry Pi</h3>
-        <p class="when">Coming soon</p>
-        <p>Running your own AI on a tiny computer — details TBA.</p>
-      </div>
-      <div>
-        <h3>SkullRub — Secret Set</h3>
-        <p class="when">Secret date in October · 1 hour</p>
-        <p>An hour in the dark with the SkullRub crew — heads down, lights low, no tracklist and no warning. Full details only for those paying attention. <a href="https://ra.co/promoters/159886" target="_blank" rel="noopener">SkullRub on Resident Advisor →</a></p>
-      </div>
-      <div>
-        <h3>Bounce Against Babylon — dimebagg</h3>
-        <p class="when">Secret date in October · Live only, not recorded</p>
-        <p>dimebagg dials in from Atlanta. No archive, no replay — catch it live or miss it.</p>
-      </div>
-      <div>
-        <h3>Soosh &amp; Jo</h3>
-        <p class="when">End of October</p>
-        <p>Soosh made <em>Colour is Breathe</em> for Error Broadcast, and its 2013 remix record pulled in Slugabed, Dam Mantle, DELS, Synkro and The Cyclist. That gives you some idea of the hazy, beat-led company Soosh keeps. Soosh is now back with the new single <a href="https://open.spotify.com/album/29AAn1Or5yPSG5ANgw3A8E" target="_blank" rel="noopener"><em>Come Alive</em></a>. Soosh is joined by Jo for a back-to-back session. <a href="https://soosh21.bandcamp.com/" target="_blank" rel="noopener">Soosh on Bandcamp →</a></p>
-      </div>
-      <div>
-        <h3>DIN Is Noise — Live</h3>
-        <p class="when">Secret time · 1 hour · Live show</p>
-        <p>Dialling in from Chennai, Jagannathan Sampath plays his own "synth of a 3rd kind": free software that swaps classic waveforms for hand-drawn Bezier curves, with additive synthesis and infinite microtones between every note. <a href="https://dinisnoise.org/" target="_blank" rel="noopener">dinisnoise.org →</a></p>
-      </div>
-      <div>
-        <h3>Memotone’s Hidden 1 Hour of Records from His Shelves</h3>
-        <p class="when"> November 15th 7pm · Live only, not recorded</p>
-        <p>One hour, straight off his shelves. No archive, no replay — catch it live or miss it.</p>
-      </div>
-      <div>
-        <h3>The Archive Shuffle</h3>
-        <p class="when">Whenever no show is live · 24/7</p>
-        <p>The crate never stops spinning. The full archive shuffles at random — you never know what's coming. Neither do we.</p>
-      </div>
+    <style>
+      .sched{ --line: rgba(27,19,48,.18); }
+      .sched-days{ display:grid; grid-template-columns: repeat(7, 1fr); gap:8px; margin-bottom:18px; }
+      .sched-day{ font: inherit; cursor:pointer; text-align:left; background: var(--paper-2); color: var(--ink);
+        border:1px solid var(--ink); padding:10px 12px 12px; display:flex; flex-direction:column; gap:2px; transition: background .15s, color .15s, transform .15s; }
+      .sched-day:hover{ transform: translateY(-2px); }
+      .sched-day .sd-name{ font-size:11px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; }
+      .sched-day .sd-date{ font-family: var(--serif); font-size:30px; font-weight:600; line-height:1.05; }
+      .sched-day .sd-count{ white-space:nowrap; font-size:12px; color: var(--ink-soft); display:flex; align-items:center; gap:6px; }
+      .sched-day .sd-count i{ width:7px; height:7px; border-radius:50%; background: var(--accent); display:inline-block; }
+      .sched-day[aria-selected="true"]{ background: var(--ink); color: var(--paper); box-shadow: 4px 4px 0 var(--accent); }
+      .sched-day[aria-selected="true"] .sd-count{ color: rgba(247,233,221,.75); }
+      .sched-day:focus-visible, .sched-item summary:focus-visible, .sched-more > summary:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+
+      .sched-panel h3.sp-head{ font-size:22px; margin: 4px 0 10px; }
+      .sched-list{ border-top:1px solid var(--ink); }
+      .sched-item{ border-bottom:1px solid var(--line); }
+      .sched-item summary{ list-style:none; cursor:pointer; display:grid; grid-template-columns: 92px 1fr 28px; gap:16px; align-items:center; padding:16px 4px; }
+      .sched-item summary::-webkit-details-marker{ display:none; }
+      .sched-item summary:hover .si-title{ color: var(--accent-text); }
+      .si-time{ font-weight:700; font-size:15px; font-variant-numeric: tabular-nums; }
+      .si-time small{ display:block; font-weight:500; font-size:12px; color: var(--ink-soft); }
+      .si-title{ font-family: var(--serif); font-size:21px; font-weight:600; line-height:1.2; transition: color .15s; }
+      .si-tags{ display:flex; flex-wrap:wrap; gap:6px; margin-top:6px; }
+      .tag{ font-size:10.5px; font-weight:700; letter-spacing:1.2px; text-transform:uppercase; border:1px solid var(--ink); padding:2px 7px; }
+      .tag--live{ background: var(--accent); border-color: var(--accent); color: var(--ink); display:none; align-items:center; gap:5px; }
+      .tag--live::before{ content:""; width:6px; height:6px; border-radius:50%; background: var(--ink); animation: schedpulse 1.4s infinite; }
+      .is-live .tag--live{ display:inline-flex; }
+      @keyframes schedpulse{ 50%{ opacity:.25; } }
+      .si-chev{ width:28px; height:28px; border:1px solid var(--ink); display:grid; place-items:center; font-weight:700; transition: background .2s, color .2s; }
+      .si-chev span{ display:block; transition: transform .2s; }
+      .sched-item[open] .si-chev{ background: var(--ink); color: var(--paper); }
+      .sched-item[open] .si-chev span{ transform: rotate(45deg); }
+      .si-body{ padding: 0 4px 20px 112px; color: var(--ink-soft); font-size:15.5px; line-height:1.6; max-width: 80ch; animation: schedin .2s ease; }
+      .si-body .si-when{ font-size:12px; font-weight:700; letter-spacing:1.2px; text-transform:uppercase; color: var(--ink); margin-bottom:6px; }
+      .si-body a{ color: var(--accent-text); font-weight:600; }
+      @keyframes schedin{ from{ opacity:0; transform: translateY(-4px); } }
+      .sched-empty{ padding:18px 4px; color: var(--ink-soft); border-bottom:1px solid var(--line); }
+      .sched-shuffle{ padding:14px 4px; font-size:14px; color: var(--ink-soft); }
+      .sched-shuffle strong{ color: var(--ink); }
+
+      .sched-more{ margin-top:22px; border:1px solid var(--ink); background: var(--paper-2); }
+      .sched-more > summary{ list-style:none; cursor:pointer; display:flex; justify-content:space-between; align-items:center; padding:14px 18px; font-weight:700; font-size:13px; letter-spacing:1.5px; text-transform:uppercase; }
+      .sched-more > summary::-webkit-details-marker{ display:none; }
+      .sched-more > summary::after{ content:"+"; font-size:18px; transition: transform .2s; }
+      .sched-more[open] > summary::after{ transform: rotate(45deg); }
+      .sched-more .sched-list{ margin: 0 18px 8px; }
+      .sched-more + .sched-more{ margin-top:10px; }
+
+      @media (max-width: 760px){
+        .sched-days{ display:flex; overflow-x:auto; scroll-snap-type:x mandatory; margin: 0 -16px 16px; padding: 2px 16px 8px; scrollbar-width:none; }
+        .sched-days::-webkit-scrollbar{ display:none; }
+        .sched-day{ flex: 0 0 86px; scroll-snap-align:start; }
+        .sched-day .sd-date{ font-size:26px; }
+        .sched-item summary{ grid-template-columns: 62px 1fr 26px; gap:12px; padding:14px 2px; }
+        .si-title{ font-size:18px; }
+        .si-chev{ width:26px; height:26px; }
+        .si-body{ padding: 0 2px 18px 74px; font-size:15px; }
+        .sched-more .sched-list{ margin: 0 12px 6px; }
+        .sched-more > summary{ padding:14px; }
+      }
+      @media (max-width: 420px){ .si-body{ padding-left: 2px; } }
+    </style>
+
+    <div class="sched" id="sched">
+      <div class="sched-days" role="tablist" aria-label="Choose a day"></div>
+      <div class="sched-panel" role="tabpanel" aria-live="polite"></div>
+      <div class="sched-extra"></div>
     </div>
+    <noscript><p>Turn on JavaScript to see the schedule.</p></noscript>
   </section>
 
   <!-- newsletter -->
@@ -959,19 +957,153 @@
 })();
 </script>
 <script>
-  // Show "Live now" on weekly shows during their slot (UK time)
+  /* ---------- the schedule ----------
+     Edit shows here. All times are UK time, in hours (13.5 = 13:30).
+     Weekly/daily show:  days: [5]  (0=Sun, 1=Mon … 6=Sat)  or  days: '*'  for every day
+     One-off show:       date: 'YYYY-MM-DD'  (moves to "Earlier" by itself once the date passes)
+     No date yet:        group: 'tba'      Already aired, no exact date: group: 'earlier'
+     label = short text shown in the time column when there's no start time.
+     when  = the full timing line shown when the show is opened. */
+  var SHOWS = [
+    { title: 'Early Morning Jams', days: '*', start: 7, end: 10, tags: ['Daily'],
+      when: 'Every day · 07:00–10:00',
+      desc: 'Reggae through to old hip hop classics, with the occasional new jam to start your day.' },
+    { title: 'The Riddim Files', days: [4], start: 15, end: 16, tags: ['Weekly'],
+      when: 'Every Thursday · 15:00–16:00',
+      desc: 'Undiscovered reggae sounds from Brixton Village: an hour of riddims you won’t have heard yet, pulled straight from the files.' },
+    { title: 'Pre-Jumma Qawwali Warm up', days: [5], start: 11, end: 13.5, tags: ['Weekly'],
+      when: 'Every Friday · 11:00–13:30',
+      desc: 'Two and a half hours of devotional qawwali before Friday prayers, from Nusrat Fateh Ali Khan, the Sabri Brothers and Abida Parveen.' },
+    { title: 'The Rare Groove Dossier', days: [5], start: 14, end: 15, tags: ['Weekly'],
+      when: 'Every Friday · 14:00–15:00',
+      desc: 'Soul &amp; rare groove from Brixton Village: deep cuts, B-sides and forgotten 45s to see you into the weekend.' },
+    { title: 'Memotone’s Hidden 1 Hour of Records from His Shelves', date: '2026-11-15', start: 19, end: 20, tags: ['Special', 'Live only'],
+      when: 'November 15th 7pm · Live only, not recorded',
+      desc: 'One hour, straight off his shelves. No archive, no replay — catch it live or miss it.' },
+    { title: 'Pete Gorston — Live', date: '2026-10-11', start: 15, end: 16, tags: ['Archived'],
+      when: '11th October · 3pm–4pm (Archived)',
+      desc: 'A mixed indie radio show, live on air.' },
+    { title: 'SkullRub — Secret Set', group: 'earlier', label: 'Oct', tags: ['Secret set'],
+      when: 'Secret date in October · 1 hour',
+      desc: 'An hour in the dark with the SkullRub crew — heads down, lights low, no tracklist and no warning. Full details only for those paying attention. <a href="https://ra.co/promoters/159886" target="_blank" rel="noopener">SkullRub on Resident Advisor →</a>' },
+    { title: 'Bounce Against Babylon — dimebagg', group: 'earlier', label: 'Oct', tags: ['Live only'],
+      when: 'Secret date in October · Live only, not recorded',
+      desc: 'dimebagg dials in from Atlanta. No archive, no replay — catch it live or miss it.' },
+    { title: 'Soosh &amp; Jo', group: 'earlier', label: 'Oct', tags: ['Back-to-back'],
+      when: 'End of October',
+      desc: 'Soosh made <em>Colour is Breathe</em> for Error Broadcast, and its 2013 remix record pulled in Slugabed, Dam Mantle, DELS, Synkro and The Cyclist. That gives you some idea of the hazy, beat-led company Soosh keeps. Soosh is now back with the new single <a href="https://open.spotify.com/album/29AAn1Or5yPSG5ANgw3A8E" target="_blank" rel="noopener"><em>Come Alive</em></a>. Soosh is joined by Jo for a back-to-back session. <a href="https://soosh21.bandcamp.com/" target="_blank" rel="noopener">Soosh on Bandcamp →</a>' },
+    { title: 'DIN Is Noise — Live', group: 'tba', label: 'TBA', tags: ['Live show'],
+      when: 'Secret time · 1 hour · Live show',
+      desc: 'Dialling in from Chennai, Jagannathan Sampath plays his own "synth of a 3rd kind": free software that swaps classic waveforms for hand-drawn Bezier curves, with additive synthesis and infinite microtones between every note. <a href="https://dinisnoise.org/" target="_blank" rel="noopener">dinisnoise.org →</a>' },
+    { title: 'Come Chai With Me', group: 'tba', label: 'Soon', tags: ['Talk'],
+      when: 'Coming soon',
+      desc: 'Pull up a cup and stay a while — loose conversation, tangents, and whatever’s on someone’s mind.' },
+    { title: 'Who Wants to Be a £1,000-aire?', group: 'tba', label: 'Soon', tags: ['Dial-in'],
+      when: 'Dial-in show · Coming soon',
+      desc: '<em>(’Cos I’m not a millionaire.)</em> The phone-in quiz: dial in, take on the questions, and see how far up the ladder you get.' },
+    { title: 'How to Set Up a Large Language Model on a Raspberry Pi', group: 'tba', label: 'Soon', tags: ['Talk'],
+      when: 'Coming soon',
+      desc: 'Running your own AI on a tiny computer — details TBA.' }
+  ];
+  /* fills every hour when nothing else is on */
+  var SHUFFLE = { title: 'The Archive Shuffle', desc: 'The crate never stops spinning. The full archive shuffles at random — you never know what’s coming. Neither do we.' };
+
   (function(){
-    function check(){
-      var p=new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/London',weekday:'short',hour:'2-digit',minute:'2-digit',hour12:false}).formatToParts(new Date());
-      var days={Sun:0,Mon:1,Tue:2,Wed:3,Thu:4,Fri:5,Sat:6},d,h=0,m=0;
-      p.forEach(function(x){ if(x.type==='weekday')d=days[x.value]; if(x.type==='hour')h=parseInt(x.value,10)%24; if(x.type==='minute')m=parseInt(x.value,10); });
-      h=h+m/60; // fractional hours, so data-start="13.5" means 13:30
-      document.querySelectorAll('.js-live-now').forEach(function(el){
-        var dayOk = el.dataset.day === '*' || d === +el.dataset.day; // "*" = every day
-        el.hidden=!(dayOk && h>=+el.dataset.start && h<+el.dataset.end);
+    var root = document.getElementById('sched'); if (!root) return;
+    var DAY = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+    var MON = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+    function london(){
+      var p = {}; new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/London',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hour12:false})
+        .formatToParts(new Date()).forEach(function(x){ p[x.type] = x.value; });
+      return { key: p.year+'-'+p.month+'-'+p.day, y:+p.year, m:+p.month, d:+p.day, h:(+p.hour % 24) + (+p.minute)/60 };
+    }
+    function hhmm(h){ var hh = Math.floor(h), mm = Math.round((h - hh) * 60); return (hh<10?'0':'') + hh + ':' + (mm<10?'0':'') + mm; }
+    function niceDate(key){ var a = key.split('-'); var dt = new Date(Date.UTC(+a[0], +a[1]-1, +a[2], 12)); return DAY[dt.getUTCDay()].slice(0,3) + ' ' + dt.getUTCDate() + ' ' + MON[dt.getUTCMonth()].slice(0,3); }
+
+    var now = london(), base = Date.UTC(now.y, now.m - 1, now.d, 12), days = [];
+    for (var i = 0; i < 7; i++){
+      var dt = new Date(base + i * 864e5);
+      days.push({ key: dt.toISOString().slice(0,10), wd: dt.getUTCDay(), d: dt.getUTCDate(), mo: dt.getUTCMonth(),
+                  name: i === 0 ? 'Today' : i === 1 ? 'Tomorrow' : DAY[dt.getUTCDay()].slice(0,3) });
+    }
+    var lastKey = days[6].key;
+
+    function onDay(s, day){
+      if (s.date) return s.date === day.key;
+      if (s.days) return s.days === '*' || s.days.indexOf(day.wd) > -1;
+      return false;
+    }
+    function item(s, day, timeCol){
+      var el = document.createElement('details'); el.className = 'sched-item';
+      if (day && s.start != null){ el.dataset.day = day.key; el.dataset.start = s.start; el.dataset.end = s.end; }
+      var tags = '<span class="tag tag--live">Live now</span>' + (s.tags || []).map(function(t){ return '<span class="tag">' + t + '</span>'; }).join('');
+      el.innerHTML = '<summary><span class="si-time">' + timeCol + '</span>' +
+        '<span class="si-main"><span class="si-title">' + s.title + '</span><span class="si-tags">' + tags + '</span></span>' +
+        '<span class="si-chev" aria-hidden="true"><span>+</span></span></summary>' +
+        '<div class="si-body"><p class="si-when">' + s.when + '</p><p>' + s.desc + '</p></div>';
+      return el;
+    }
+    function list(items){ var l = document.createElement('div'); l.className = 'sched-list'; items.forEach(function(x){ l.appendChild(x); }); return l; }
+
+    var tabs = root.querySelector('.sched-days'), panel = root.querySelector('.sched-panel'), extra = root.querySelector('.sched-extra');
+
+    function showDay(idx){
+      var day = days[idx];
+      tabs.querySelectorAll('.sched-day').forEach(function(b, j){ b.setAttribute('aria-selected', j === idx ? 'true' : 'false'); b.tabIndex = j === idx ? 0 : -1; });
+      var todays = SHOWS.filter(function(s){ return onDay(s, day); }).sort(function(a, b){ return a.start - b.start; });
+      panel.innerHTML = '<h3 class="sp-head">' + DAY[day.wd] + ' ' + day.d + ' ' + MON[day.mo] + '</h3>';
+      var rows = todays.map(function(s){ return item(s, day, hhmm(s.start) + '<small>–' + hhmm(s.end) + '</small>'); });
+      var l = list(rows);
+      if (!rows.length){ var e = document.createElement('p'); e.className = 'sched-empty'; e.textContent = 'No scheduled shows this day.'; l.appendChild(e); }
+      panel.appendChild(l);
+      var sh = document.createElement('p'); sh.className = 'sched-shuffle';
+      sh.innerHTML = '<strong>All other hours: ' + SHUFFLE.title + '.</strong> ' + SHUFFLE.desc;
+      panel.appendChild(sh);
+      markLive();
+    }
+
+    days.forEach(function(day, idx){
+      var n = SHOWS.filter(function(s){ return onDay(s, day); }).length;
+      var b = document.createElement('button'); b.type = 'button'; b.className = 'sched-day'; b.setAttribute('role', 'tab');
+      b.innerHTML = '<span class="sd-name">' + day.name + '</span><span class="sd-date">' + day.d + '</span>' +
+        '<span class="sd-count">' + (n ? '<i></i>' + n + (n === 1 ? ' show' : ' shows') : 'Shuffle') + '</span>';
+      b.setAttribute('aria-label', DAY[day.wd] + ' ' + day.d + ' ' + MON[day.mo] + ', ' + (n || 'no') + (n === 1 ? ' show' : ' shows'));
+      b.addEventListener('click', function(){ showDay(idx); });
+      b.addEventListener('keydown', function(e){
+        var k = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0; if (!k) return;
+        e.preventDefault(); var j = (idx + k + 7) % 7; showDay(j); tabs.children[j].focus();
+      });
+      tabs.appendChild(b);
+    });
+
+    /* groups under the week view */
+    function group(title, shows, open){
+      if (!shows.length) return;
+      var d = document.createElement('details'); d.className = 'sched-more'; if (open) d.open = true;
+      d.innerHTML = '<summary>' + title + ' <span style="font-weight:500;letter-spacing:0;text-transform:none;opacity:.7;margin-left:auto;margin-right:12px;">' + shows.length + '</span></summary>';
+      d.appendChild(list(shows.map(function(s){
+        var t = s.date ? niceDate(s.date).replace(/^\w+ /, '').replace(' ', '<small>') + '</small>' : (s.label || '—');
+        return item(s, null, t);
+      })));
+      extra.appendChild(d);
+    }
+    var later = SHOWS.filter(function(s){ return s.date && s.date > lastKey; }).sort(function(a, b){ return a.date < b.date ? -1 : 1; });
+    var tba = SHOWS.filter(function(s){ return s.group === 'tba'; });
+    var earlier = SHOWS.filter(function(s){ return (s.date && s.date < now.key) || s.group === 'earlier'; })
+                       .sort(function(a, b){ return (b.date || '0') < (a.date || '0') ? -1 : 1; });
+    group('Later specials', later, false);
+    group('Coming soon — date TBA', tba, false);
+    group('Earlier shows', earlier, false);
+
+    function markLive(){
+      var t = london();
+      root.querySelectorAll('.sched-item[data-start]').forEach(function(el){
+        el.classList.toggle('is-live', el.dataset.day === t.key && t.h >= +el.dataset.start && t.h < +el.dataset.end);
       });
     }
-    check(); setInterval(check,60000);
+    showDay(0);
+    var timer = setInterval(function(){ if (!document.body.contains(root)) return clearInterval(timer); markLive(); }, 60000);
   })();
 </script>
 </body>
