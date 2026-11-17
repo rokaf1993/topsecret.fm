@@ -632,6 +632,7 @@
       .si-time small{ display:block; font-weight:500; font-size:12px; color: var(--ink-soft); }
       .si-title{ font-family: var(--serif); font-size:21px; font-weight:600; line-height:1.2; transition: color .15s; }
       .si-tags{ display:flex; flex-wrap:wrap; gap:6px; margin-top:6px; }
+      .si-player{ display:block; width:100%; height:120px; border:0; margin:12px 0 8px; }
       .tag{ font-size:10.5px; font-weight:700; letter-spacing:1.2px; text-transform:uppercase; border:1px solid var(--ink); padding:2px 7px; }
       .tag--live{ background: var(--accent); border-color: var(--accent); color: var(--ink); display:none; align-items:center; gap:5px; }
       .tag--live::before{ content:""; width:6px; height:6px; border-radius:50%; background: var(--ink); animation: schedpulse 1.4s infinite; }
@@ -837,6 +838,7 @@
         <ul>
           <li><a href="https://discord.gg/47jcnhR2k" target="_blank" rel="noopener">Discord</a></li>
           <li><a href="https://www.instagram.com/topsecret.fm/" target="_blank" rel="noopener">Instagram</a></li>
+          <li><a href="https://www.mixcloud.com/topsecretfm/" target="_blank" rel="noopener">Mixcloud</a></li>
           <li><a href="support.html">Support the station</a></li>
           <li><a href="#">RSS feed</a></li>
         </ul>
@@ -977,9 +979,11 @@
     { title: 'The Rare Groove Dossier', days: [5], start: 14, end: 15, tags: ['Weekly'],
       when: 'Every Friday · 14:00–15:00',
       desc: 'Soul &amp; rare groove from Brixton Village: deep cuts, B-sides and forgotten 45s to see you into the weekend.' },
-    { title: 'Memotone’s Hidden 1 Hour of Records from His Shelves', date: '2026-11-15', start: 19, end: 20, tags: ['Special', 'Live only'],
-      when: 'November 15th 7pm · Live only, not recorded',
-      desc: 'One hour, straight off his shelves. No archive, no replay — catch it live or miss it.' },
+    { title: 'Memotone’s Hidden 1 Hour of Records from His Shelves', date: '2026-11-15', start: 19, end: 20, tags: ['Special', 'Listen back'],
+      when: 'November 15th 7pm · Listen back on Mixcloud',
+      desc: 'One hour of vinyl selections, straight off his shelves, picked at whim. Missed it live? Listen back below.' +
+        '<iframe class="si-player" title="Listen back: Memotone’s 1hr of vinyl selections at whim" loading="lazy" allow="autoplay" src="https://player-widget.mixcloud.com/widget/iframe/?hide_cover=1&amp;light=1&amp;feed=%2Ftopsecretfm%2Fmemotones-1hr-of-vinyl-selections-at-whim%2F"></iframe>' +
+        '<a href="https://www.mixcloud.com/topsecretfm/memotones-1hr-of-vinyl-selections-at-whim/" target="_blank" rel="noopener">Open on Mixcloud →</a>' },
     { title: 'Pete Gorston — Live', date: '2026-10-11', start: 15, end: 16, tags: ['Archived'],
       when: '11th October · 3pm–4pm (Archived)',
       desc: 'A mixed indie radio show, live on air.' },
@@ -987,7 +991,7 @@
       when: 'Secret date in October · 1 hour',
       desc: 'An hour in the dark with the SkullRub crew — heads down, lights low, no tracklist and no warning. Full details only for those paying attention. <a href="https://ra.co/promoters/159886" target="_blank" rel="noopener">SkullRub on Resident Advisor →</a>' },
     { title: 'Bounce Against Babylon — dimebagg', group: 'earlier', label: 'Oct', tags: ['Live only'],
-      when: 'Secret date in October · Live only, not recorded',
+      when: 'Secret date in October · Live shows not recorded',
       desc: 'dimebagg dials in from Atlanta. No archive, no replay — catch it live or miss it.' },
     { title: 'Soosh &amp; Jo', group: 'earlier', label: 'Oct', tags: ['Back-to-back'],
       when: 'End of October',
